@@ -1,40 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# 🧠 Come Como Dios – Planificador Nutricional IA
 
-## Getting Started
+Plataforma inteligente de nutrición personalizada que genera planes semanales completos, listas de la compra y recetas saludables adaptadas a tus objetivos físicos y estilo de vida.
 
-First, run the development server:
+## 🚀 Tecnologías
+
+- [Next.js 14](https://nextjs.org/)
+- [React](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [OpenAI API](https://platform.openai.com/)
+- [CSS Modules](https://github.com/css-modules/css-modules)
+- [html2pdf.js](https://ekoopmans.github.io/html2pdf.js/)
+
+## 🛠️ Instalación
+
+1. Clona el repo:
+
+```bash
+git clone https://github.com/FernandoRoyano/come-como-dios.git
+cd come-como-dios
+```
+
+2. Instala dependencias:
+
+```bash
+npm install
+# o
+yarn install
+```
+
+3. Crea un archivo `.env.local` con tu clave de OpenAI:
+
+```env
+OPENAI_API_KEY=sk-xxxxxx
+```
+
+4. Inicia el servidor:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🧬 Características
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- Planes semanales hiperpersonalizados (7 días completos)
+- Cálculo de TDEE + distribución de macronutrientes
+- Lista de la compra clasificada y optimizada
+- Recetas con enlaces a sitios verificados
+- Exportación en PDF
+- Interfaz limpia y moderna
+- Preparado para expansión (login, seguimiento de usuario, etc.)
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## 📁 Estructura del proyecto
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+```bash
+src/
+├── components/         # Componentes de UI
+├── pages/              # Rutas Next.js
+├── lib/                # Utilidades (prompt, validación)
+└── styles/             # CSS Modules
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🤝 Contribuir
 
-## Learn More
+1. Crea una rama: `git checkout -b feature/nueva-funcionalidad`
+2. Haz tus cambios y commits: `git commit -m 'Nueva funcionalidad'`
+3. Sube tu rama: `git push origin feature/nueva-funcionalidad`
+4. Abre un Pull Request
 
-To learn more about Next.js, take a look at the following resources:
+## 📄 Licencia
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+MIT
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+---
+Creado con 💙 por [Fernando Royano](https://github.com/FernandoRoyano)
