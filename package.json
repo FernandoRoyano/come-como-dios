@@ -11,9 +11,11 @@
   "dependencies": {
     "html2pdf.js": "^0.10.3",
     "next": "15.3.2",
+    "next-auth": "^4.24.11",
     "openai": "^4.100.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

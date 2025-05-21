@@ -7,7 +7,7 @@ interface FormData {
   altura: number;
   sexo: string;
   objetivo: string;
-  restricciones: string;
+  restricciones: string[];
   actividadFisica: string;
   intensidadTrabajo: string;
   numeroComidas: number;
@@ -20,7 +20,7 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: FormData) => void }) => {
     altura: 170,
     sexo: 'Hombre',
     objetivo: 'Perder grasa',
-    restricciones: 'Ninguna',
+    restricciones: [],
     actividadFisica: 'Moderada',
     intensidadTrabajo: 'Moderada',
     numeroComidas: 3,
@@ -32,6 +32,16 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: FormData) => void }) => {
       ...prev,
       [name]: ['edad', 'peso', 'altura', 'numeroComidas'].includes(name) ? Number(value) : value,
     }));
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = e.target;
+    setForm(prev => {
+      const nuevasRestricciones = checked
+        ? [...prev.restricciones, value]
+        : prev.restricciones.filter(r => r !== value);
+      return { ...prev, restricciones: nuevasRestricciones };
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -112,14 +122,25 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: FormData) => void }) => {
 
       <div className={styles['form-group']}>
         <label>Restricciones alimentarias:</label>
-        <select name="restricciones" value={form.restricciones} onChange={handleChange}>
-          <option>Ninguna</option>
-          <option>Intolerancia al gluten</option>
-          <option>Intolerancia a la lactosa</option>
-          <option>Alergia a frutos secos</option>
-          <option>Vegetariano</option>
-          <option>Vegano</option>
-        </select>
+        <div className={styles['checkbox-group']}>
+          {[
+            'Intolerancia al gluten',
+            'Intolerancia a la lactosa',
+            'Alergia a frutos secos',
+            'Vegetariano',
+            'Vegano'
+          ].map((restriccion) => (
+            <label key={restriccion} className={styles['checkbox-label']}>
+              <input
+                type="checkbox"
+                value={restriccion}
+                checked={form.restricciones.includes(restriccion)}
+                onChange={handleCheckboxChange}
+              />
+              {restriccion}
+            </label>
+          ))}
+        </div>
       </div>
 
       <button type="submit" className={styles['submit-button']}>

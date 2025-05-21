@@ -1,0 +1,22 @@
+.auth-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background: linear-gradient(to right, #0ea5e9, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .auth-button:hover {
+    background: linear-gradient(to right, #2563eb, #1e40af);
+    transform: translateY(-2px);
+  }
+  

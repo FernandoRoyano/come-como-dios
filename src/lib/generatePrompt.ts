@@ -31,9 +31,6 @@ export function generatePrompt({
   5. Genera **exactamente 7 días completos** (de Lunes a Domingo). No resumas ni agrupes días.
   6. Incluye un resumen de macros por día.
   7. Genera lista de la compra agregada y clasificada por categorías: "proteinas", "carbohidratos", "verduras", "otros".
-  8. Genera una sección con 3 recetas reales (nombre, descripción, enlace real, minutos, dificultad).
-  9. ⚠️ Enlaces solo de:
-  https://recetasgratis.net, https://directoalpaladar.com, https://myfitnesspal.com, https://cocinavital.mx
   
   📦 FORMATO DE RESPUESTA:
   Devuelve solo un JSON limpio entre estas marcas:
