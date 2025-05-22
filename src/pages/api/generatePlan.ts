@@ -15,7 +15,7 @@ export async function generatePlan(data: PlanData) {
     model: 'gpt-3.5-turbo',
     messages: [{ role: 'user', content: prompt }],
     temperature: 0.7,
-    max_tokens: 4096,
+    max_tokens: 4096
   });
 
   const content = completion.choices[0].message?.content || '';
@@ -31,24 +31,13 @@ export async function generatePlan(data: PlanData) {
 
   const jsonString = content.slice(start + 17, end).trim();
 
-  // Limpiar posibles comentarios o caracteres no válidos
-  const cleanJsonString = jsonString
-    .replace(/\/\/.*$/gm, '') // Eliminar comentarios de una línea
-    .replace(/\/\*[\s\S]*?\*\//g, '') // Eliminar comentarios multilínea
-    .replace(/,(\s*[}\]])/g, '$1') // Eliminar comas trailing
-    .replace(/\n/g, ' ') // Eliminar saltos de línea
-    .replace(/\r/g, '') // Eliminar retornos de carro
-    .replace(/\t/g, ' ') // Eliminar tabulaciones
-    .replace(/\[\.\.\.\]/g, '[]') // Reemplazar [...] con []
-    .replace(/\.\.\./g, ''); // Eliminar otros puntos suspensivos
-
   try {
-    const parsed = JSON.parse(cleanJsonString) as Plan;
+    const parsed = JSON.parse(jsonString) as Plan;
     validatePlan(parsed);
     return { plan: parsed };
   } catch (parseError: unknown) {
     console.error('Error parseando JSON:', parseError);
-    console.error('JSON recibido:', cleanJsonString);
+    console.error('JSON recibido:', jsonString);
     throw new Error(`Error en el formato JSON del plan generado: ${parseError instanceof Error ? parseError.message : 'Error desconocido'}`);
   }
 }
@@ -115,6 +104,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       actividadFisica,
       intensidadTrabajo,
       numeroComidas,
+      alimentosNoDeseados: Array.isArray(req.body.alimentosNoDeseados) ? req.body.alimentosNoDeseados : [],
     });
 
     res.status(200).json(result);

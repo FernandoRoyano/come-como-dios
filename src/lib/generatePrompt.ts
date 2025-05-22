@@ -11,84 +11,92 @@ export function generatePrompt(data: PlanData): string {
     actividadFisica,
     intensidadTrabajo,
     numeroComidas,
+    alimentosNoDeseados
   } = data;
 
-  const restriccionesStr = restricciones.length > 0 
-    ? restricciones.join(', ') 
-    : 'Ninguna';
-
-  return `Eres un nutricionista profesional. Genera un plan de alimentación semanal personalizado con las siguientes características:
+  return `Genera un plan de comidas personalizado para una persona con las siguientes características:
 
 Edad: ${edad} años
 Peso: ${peso} kg
 Altura: ${altura} cm
 Sexo: ${sexo}
 Objetivo: ${objetivo}
-Restricciones alimentarias: ${restriccionesStr}
+Restricciones alimentarias: ${restricciones.join(', ') || 'Ninguna'}
 Actividad física: ${actividadFisica}
 Intensidad del trabajo: ${intensidadTrabajo}
 Número de comidas diarias: ${numeroComidas}
+Alimentos no deseados: ${alimentosNoDeseados.join(', ') || 'Ninguno'}
 
-El plan debe incluir:
+IMPORTANTE: 
+- NO incluir NINGUNO de los alimentos no deseados en el plan de comidas
+- Si se mencionan alimentos no deseados, asegúrate de NO incluirlos en ninguna comida ni en la lista de compra
+- Si un ingrediente es similar a uno no deseado, también debe evitarse
+
+Genera un plan semanal detallado que incluya:
+
 1. Un menú detallado para cada día de la semana (Lunes a Domingo)
-2. Lista de la compra organizada por categorías, indicando la cantidad exacta de cada alimento (por ejemplo: "6 latas de atún", "2 lechugas", "2 bolsas de espinacas"). Las cantidades deben estar ajustadas a las comidas propuestas y sumar lo necesario para toda la semana.
-3. Macronutrientes diarios y totales
+2. Una lista de compra completa y detallada organizada por categorías
+3. Los totales de macronutrientes diarios
 
-IMPORTANTE: Responde ÚNICAMENTE con un objeto JSON válido entre los delimitadores ###JSON_START### y ###JSON_END###.
-NO incluyas ningún texto adicional, explicaciones o comentarios fuera de estos delimitadores.
+IMPORTANTE: La respuesta DEBE comenzar con ###JSON_START### y terminar con ###JSON_END###, y contener SOLO el JSON entre estos delimitadores.
+
+Ejemplo del formato JSON esperado:
 
 ###JSON_START###
 {
   "dias": {
-    "Lunes": {
-      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
-    },
-    "Martes": {
-      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
-    },
-    "Miércoles": {
-      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
-    },
-    "Jueves": {
-      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
-    },
-    "Viernes": {
-      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
-    },
-    "Sábado": {
-      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
-    },
-    "Domingo": {
-      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
-      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
+    "lunes": {
+      "desayuno": {
+        "nombre": "Desayuno energético",
+        "descripcion": "200g avena, 300ml leche, 1 plátano",
+        "calorias": 450,
+        "proteinas": 15,
+        "carbohidratos": 70,
+        "grasas": 10
+      },
+      "almuerzo": {
+        "nombre": "Ensalada de pollo",
+        "descripcion": "150g pechuga, 100g lechuga, 50g tomate",
+        "calorias": 350,
+        "proteinas": 35,
+        "carbohidratos": 15,
+        "grasas": 12
+      },
+      "cena": {
+        "nombre": "Pescado al horno",
+        "descripcion": "200g merluza, 100g patatas, 50g zanahorias",
+        "calorias": 400,
+        "proteinas": 40,
+        "carbohidratos": 30,
+        "grasas": 15
+      }
     }
   },
   "listaCompra": {
-    "verduras": ["2 lechugas", "2 bolsas de espinacas"],
-    "proteinas": ["6 latas de atún", "1 kg de pollo"],
-    "carbohidratos": ["1 kg de arroz", "7 rebanadas de pan integral"],
-    "grasas": ["1 botella de aceite de oliva"]
+    "verduras": ["100g lechuga", "50g tomate", "50g zanahorias"],
+    "proteinas": ["150g pechuga de pollo", "200g merluza"],
+    "carbohidratos": ["200g avena", "100g patatas"],
+    "grasas": ["300ml leche"],
+    "condimentos": ["Sal", "Pimienta"],
+    "lacteos": ["300ml leche"],
+    "frutas": ["1 plátano"]
   },
   "macronutrientes": {
-    "calorias": 0,
-    "proteinas": 0,
-    "carbohidratos": 0,
-    "grasas": 0
+    "calorias": 1200,
+    "proteinas": 90,
+    "carbohidratos": 115,
+    "grasas": 37
   }
 }
-###JSON_END###`;
+###JSON_END###
+
+Asegúrate de que:
+1. Todos los nombres de propiedades y valores string estén entre comillas dobles
+2. Los números no tengan comillas
+3. El JSON sea válido y esté correctamente formateado
+4. NO incluir NINGUNO de los alimentos no deseados en el plan
+5. La lista de compra incluya TODOS los ingredientes necesarios con cantidades exactas
+6. Los macronutrientes sean números reales y positivos
+7. La respuesta DEBE comenzar con ###JSON_START### y terminar con ###JSON_END###`;
 }
   

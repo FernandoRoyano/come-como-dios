@@ -8,6 +8,7 @@ interface FormData {
   sexo: string;
   objetivo: string;
   restricciones: string[];
+  alimentosNoDeseados: string[];
   actividadFisica: string;
   intensidadTrabajo: string;
   numeroComidas: number;
@@ -21,6 +22,7 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: FormData) => void }) => {
     sexo: 'Hombre',
     objetivo: 'Perder grasa',
     restricciones: [],
+    alimentosNoDeseados: [],
     actividadFisica: 'Moderada',
     intensidadTrabajo: 'Moderada',
     numeroComidas: 3,
@@ -42,6 +44,14 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: FormData) => void }) => {
         : prev.restricciones.filter(r => r !== value);
       return { ...prev, restricciones: nuevasRestricciones };
     });
+  };
+
+  const handleAlimentosNoDeseadosChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const alimentos = e.target.value
+      .split(',')
+      .map(alimento => alimento.trim())
+      .filter(alimento => alimento.length > 0);
+    setForm(prev => ({ ...prev, alimentosNoDeseados: alimentos }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -144,6 +154,20 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: FormData) => void }) => {
             </label>
           ))}
         </div>
+      </div>
+
+      <div className={styles['form-group']}>
+        <label>Alimentos que no te gustan:</label>
+        <textarea
+          name="alimentosNoDeseados"
+          value={form.alimentosNoDeseados.join(', ')}
+          onChange={handleAlimentosNoDeseadosChange}
+          placeholder="Escribe los alimentos que no te gustan separados por comas (ej: brócoli, coliflor, hígado)"
+          className={styles['textarea']}
+        />
+        <small className={styles['help-text']}>
+          Indica los alimentos o ingredientes que no te gustan o no quieres comer. Sepáralos por comas.
+        </small>
       </div>
 
       <button type="submit" className={styles['submit-button']}>

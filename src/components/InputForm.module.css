@@ -38,7 +38,8 @@
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+.form-group textarea {
   padding: 0.8rem 1rem;
   border-radius: 12px;
   border: 2px solid #e2e8f0;
@@ -48,18 +49,33 @@
   transition: all 0.2s ease;
 }
 
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
 .form-group input:hover,
-.form-group select:hover {
+.form-group select:hover,
+.form-group textarea:hover {
   border-color: #94a3b8;
   background-color: #f1f5f9;
 }
 
 .form-group input:focus,
-.form-group select:focus {
+.form-group select:focus,
+.form-group textarea:focus {
   border-color: #0ea5e9;
   outline: none;
   background-color: #fff;
   box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+.help-text {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-top: 0.5rem;
 }
 
 .checkbox-group {

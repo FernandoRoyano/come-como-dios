@@ -39,4 +39,5 @@ export interface PlanData {
   actividadFisica: string;
   intensidadTrabajo: string;
   numeroComidas: number;
+  alimentosNoDeseados: string[];
 } 
