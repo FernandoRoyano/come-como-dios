@@ -128,7 +128,10 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: FormData) => void }) => {
             'Intolerancia a la lactosa',
             'Alergia a frutos secos',
             'Vegetariano',
-            'Vegano'
+            'Vegano',
+            'Dieta keto',
+            'Dieta mediterránea',
+            'Low carb'
           ].map((restriccion) => (
             <label key={restriccion} className={styles['checkbox-label']}>
               <input
@@ -137,14 +140,14 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: FormData) => void }) => {
                 checked={form.restricciones.includes(restriccion)}
                 onChange={handleCheckboxChange}
               />
-              {restriccion}
+              <span>{restriccion}</span>
             </label>
           ))}
         </div>
       </div>
 
       <button type="submit" className={styles['submit-button']}>
-        Generar plan
+        🧠 Generar plan personalizado
       </button>
     </form>
   );
