@@ -63,8 +63,11 @@ Eres un nutricionista profesional. Crea una comida para el día "${dia}", tipo "
     const parsed = JSON.parse(jsonString);
 
     res.status(200).json(parsed);
-  } catch (error: any) {
-    console.error('❌ Error generando comida:', error.message);
-    res.status(500).json({ message: 'Error generando la comida.' });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: 'Error al regenerar la comida.' });
+    }
   }
 }

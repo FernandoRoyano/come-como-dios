@@ -2,33 +2,6 @@ import styles from './PlanViewer.module.css';
 import { useState } from 'react';
 import { Plan, Comida } from '@/types/plan';
 
-interface Dia {
-  dia: string;
-  comidas: Comida[];
-  totalesDia?: {
-    calorias: number;
-    proteinas: number;
-    carbohidratos: number;
-    grasas: number;
-  };
-}
-
-interface ListaCompra {
-  verduras: string[];
-  proteinas: string[];
-  carbohidratos: string[];
-  grasas: string[];
-  otros?: string[];
-}
-
-interface Receta {
-  nombre: string;
-  descripcion: string;
-  enlace: string;
-  tiempoPrep: number;
-  dificultad: string;
-}
-
 interface Props {
   plan: Plan;
   restricciones: string[];

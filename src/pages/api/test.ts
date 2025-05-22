@@ -1,29 +1,51 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import OpenAI from 'openai';
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-});
+import { generateTraining } from './generateTraining';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
+  if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Método no permitido' });
   }
 
   try {
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: 'Hola, ¿cómo estás?' }],
-      temperature: 0.7,
-      max_tokens: 100,
-    });
+    // Datos de prueba
+    const testData = {
+      entrenamiento: {
+        ubicacion: 'gimnasio',
+        material: {
+          pesas: true,
+          bandas: true,
+          maquinas: true,
+          barras: true,
+          otros: []
+        },
+        nivel: 'intermedio',
+        diasEntrenamiento: 5,
+        duracionSesion: 60,
+        objetivos: ['ganar masa muscular', 'mejorar fuerza'],
+        lesiones: [],
+        preferencias: ['ejercicios compuestos']
+      },
+      edad: 30,
+      peso: 75,
+      altura: 175,
+      sexo: 'masculino',
+      objetivo: 'ganar masa muscular',
+      actividadFisica: 'moderada'
+    };
 
-    const content = completion.choices[0].message?.content || '';
-    res.status(200).json({ message: content });
+    // Activar modo de prueba
+    process.env.TEST_MODE = 'true';
+
+    const result = await generateTraining(testData);
+
+    // Desactivar modo de prueba
+    process.env.TEST_MODE = 'false';
+
+    res.status(200).json(result);
   } catch (error: unknown) {
-    console.error('Error en la prueba:', error instanceof Error ? error.message : 'Error desconocido');
+    console.error('Error en prueba:', error);
     res.status(500).json({ 
-      message: 'Error en la prueba de IA.',
+      message: 'Error en la prueba', 
       details: error instanceof Error ? error.message : 'Error desconocido'
     });
   }
