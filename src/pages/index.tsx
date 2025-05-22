@@ -33,8 +33,8 @@ export default function Home() {
       if (!response.ok) throw new Error(result.message || 'Error desconocido');
 
       setPlan(result.plan);
-    } catch (err) {
-      console.error(err);
+    } catch (error: unknown) {
+      console.error(error);
       setPlan({
         dias: {},
         listaCompra: {},
