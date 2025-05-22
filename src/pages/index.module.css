@@ -6,19 +6,38 @@
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', 'Poppins', 'Montserrat', Arial, sans-serif;
 }
 
 .title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 1rem;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #0ea5e9;
+  margin-bottom: 1.2rem;
+  letter-spacing: -1px;
+  font-family: 'Poppins', 'Inter', Arial, sans-serif;
 }
 
 .description {
-  font-size: 1.125rem;
-  color: #475569;
-  margin-bottom: 2rem;
+  font-size: 1.25rem;
+  color: #334155;
+  margin-bottom: 2.5rem;
+  font-weight: 500;
+  line-height: 1.6;
+  font-family: 'Inter', 'Poppins', Arial, sans-serif;
+  background: linear-gradient(90deg, #0ea5e9 0%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.saludo {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 2.5rem;
+  font-family: 'Inter', 'Poppins', Arial, sans-serif;
+  letter-spacing: 0.2px;
 }
 
 .notice {

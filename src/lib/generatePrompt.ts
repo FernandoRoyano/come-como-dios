@@ -31,7 +31,7 @@ Número de comidas diarias: ${numeroComidas}
 
 El plan debe incluir:
 1. Un menú detallado para cada día de la semana (Lunes a Domingo)
-2. Lista de la compra organizada por categorías
+2. Lista de la compra organizada por categorías, indicando la cantidad exacta de cada alimento (por ejemplo: "6 latas de atún", "2 lechugas", "2 bolsas de espinacas"). Las cantidades deben estar ajustadas a las comidas propuestas y sumar lo necesario para toda la semana.
 3. Macronutrientes diarios y totales
 
 IMPORTANTE: Responde ÚNICAMENTE con un objeto JSON válido entre los delimitadores ###JSON_START### y ###JSON_END###.
@@ -77,10 +77,10 @@ NO incluyas ningún texto adicional, explicaciones o comentarios fuera de estos 
     }
   },
   "listaCompra": {
-    "verduras": [],
-    "proteinas": [],
-    "carbohidratos": [],
-    "grasas": []
+    "verduras": ["2 lechugas", "2 bolsas de espinacas"],
+    "proteinas": ["6 latas de atún", "1 kg de pollo"],
+    "carbohidratos": ["1 kg de arroz", "7 rebanadas de pan integral"],
+    "grasas": ["1 botella de aceite de oliva"]
   },
   "macronutrientes": {
     "calorias": 0,

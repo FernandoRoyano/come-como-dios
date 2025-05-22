@@ -55,8 +55,11 @@ export default function Home() {
     <main className={styles.main}>
       <h1 className={styles.title}>Come Como Dios</h1>
       <p className={styles.description}>
-        🧬 Tu plan de alimentación semanal 100% personalizado con IA. 
+        🧬 Tu plan de alimentación semanal 100% personalizado con IA.<br />
         Diseñado para ayudarte a lograr tus objetivos de salud y nutrición de forma inteligente y sencilla.
+      </p>
+      <p className={styles.saludo}>
+        {session ? `Hola, ${session.user?.name}` : ''}
       </p>
       <AuthButton />
       {status === 'loading' ? (
