@@ -1,4 +1,7 @@
-export function generatePrompt({
+import { PlanData } from '@/types/plan';
+
+export function generatePrompt(data: PlanData): string {
+  const {
     edad,
     peso,
     altura,
@@ -7,42 +10,69 @@ export function generatePrompt({
     restricciones,
     actividadFisica,
     intensidadTrabajo,
-    numeroComidas,
-  }: any): string {
-    return `
-  Eres un nutricionista clínico profesional con experiencia en planes hiperpersonalizados. Tu objetivo es generar un plan de alimentación semanal **100% adaptado**, basado en evidencia científica y estilo de vida real.
-  
-  📌 DATOS DEL PACIENTE:
-  - Edad: ${edad}
-  - Sexo: ${sexo}
-  - Peso: ${peso} kg
-  - Altura: ${altura} cm
-  - Objetivo: ${objetivo}
-  - Actividad física: ${actividadFisica}
-  - Tipo de trabajo: ${intensidadTrabajo}
-  - Restricciones alimentarias: ${restricciones}
-  - Comidas diarias: ${numeroComidas}
-  
-  🧠 INSTRUCCIONES:
-  1. Calcula el TDEE con Mifflin-St Jeor y ajusta calorías al objetivo.
-  2. Divide macronutrientes entre las ${numeroComidas} comidas.
-  3. Cada comida debe tener: nombre, descripción breve (máx. 12 palabras con cantidades exactas), calorías, proteínas, carbohidratos, grasas.
-  4. Usa ingredientes simples y comunes. Siempre especifica cantidades de **todos** los ingredientes.
-  5. Genera **exactamente 7 días completos** (de Lunes a Domingo). No resumas ni agrupes días.
-  6. Incluye un resumen de macros por día.
-  7. Genera lista de la compra agregada y clasificada por categorías: "proteinas", "carbohidratos", "verduras", "otros".
-  
-  📦 FORMATO DE RESPUESTA:
-  Devuelve solo un JSON limpio entre estas marcas:
-  ###JSON_START###
-  {
-    "dias": [...],
-    "listaCompra": {...},
-    "recetas": [...]
+    numeroComidas
+  } = data;
+
+  const restrStr = restricciones.length > 0
+    ? restricciones.join(', ')
+    : 'Ninguna';
+
+  return `
+Eres un nutricionista profesional. Crea un plan de alimentación semanal completo para un paciente con las siguientes características:
+
+🔹 Datos del paciente:
+- Edad: ${edad} años
+- Peso: ${peso} kg
+- Altura: ${altura} cm
+- Sexo: ${sexo}
+- Objetivo: ${objetivo}
+- Actividad física: ${actividadFisica}
+- Intensidad del trabajo: ${intensidadTrabajo}
+- Número de comidas al día: ${numeroComidas}
+- Restricciones alimentarias: ${restrStr}
+
+🧾 El plan debe incluir:
+1. 7 días completos con ${numeroComidas} comidas cada día
+2. Cada comida debe tener:
+   - Nombre
+   - Descripción con ingredientes y cantidades exactas
+   - Valor nutricional (calorías, proteínas, carbohidratos, grasas)
+3. Lista de la compra organizada por categorías
+4. Resumen de macronutrientes diarios
+
+📦 Devuelve el plan en formato JSON entre los delimitadores ###JSON_START### y ###JSON_END### con esta estructura:
+
+{
+  "dias": {
+    "Lunes": {
+      "desayuno": {
+        "nombre": "Desayuno",
+        "descripcion": "100g avena, 200ml leche, 1 plátano",
+        "calorias": 450,
+        "proteinas": 20,
+        "carbohidratos": 50,
+        "grasas": 15
+      },
+      "almuerzo": { ... },
+      "cena": { ... }
+    },
+    "Martes": { ... },
+    // ... resto de días
+  },
+  "listaCompra": {
+    "Frutas": ["Plátanos", "Manzanas", ...],
+    "Verduras": ["Espinacas", "Tomates", ...],
+    // ... resto de categorías
+  },
+  "macronutrientes": {
+    "calorias": 2500,
+    "proteinas": 150,
+    "carbohidratos": 300,
+    "grasas": 80
   }
-  ###JSON_END###
-  
-  ❌ NO EXPLIQUES NADA. NO INCLUYAS TEXTO EXTRA, ENCABEZADOS NI COMENTARIOS.
-  `;
-  }
+}
+
+❌ No incluyas explicaciones, encabezados, texto adicional ni comentarios.
+`;
+}
   

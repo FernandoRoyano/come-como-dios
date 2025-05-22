@@ -4,17 +4,18 @@ import InputForm from '../components/InputForm';
 import PlanViewer from '@/components/PlanViewer';
 import AuthButton from '@/components/AuthButton';
 import styles from './index.module.css';
+import { Plan, PlanData } from '@/types/plan';
 
 export default function Home() {
-  const [plan, setPlan] = useState<any>(null);
-  const [formData, setFormData] = useState<any>(null); // ✅ Añadido para guardar el formulario
+  const [plan, setPlan] = useState<Plan | null>(null);
+  const [formData, setFormData] = useState<PlanData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { data: session, status } = useSession();
 
-  const handleFormSubmit = async (data: any) => {
+  const handleFormSubmit = async (data: PlanData) => {
     setLoading(true);
     setPlan(null);
-    setFormData(data); // ✅ Guardamos datos del usuario
+    setFormData(data);
 
     try {
       const response = await fetch('/api/generatePlan', {
@@ -30,7 +31,7 @@ export default function Home() {
       setPlan(result.plan);
     } catch (err) {
       console.error(err);
-      setPlan({ error: '⚠️ Error al generar el plan con IA.' });
+      setPlan({ error: '⚠️ Error al generar el plan con IA.' } as Plan);
     }
 
     setLoading(false);

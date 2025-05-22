@@ -2,22 +2,11 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 import { generatePrompt } from '@/lib/generatePrompt';
 import { validatePlan } from '@/lib/validatePlan';
+import { Plan, PlanData } from '@/types/plan';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 });
-
-interface PlanData {
-  edad: number;
-  peso: number;
-  altura: number;
-  sexo: string;
-  objetivo: string;
-  restricciones: string[];
-  actividadFisica: string;
-  intensidadTrabajo: string;
-  numeroComidas: number;
-}
 
 export async function generatePlan(data: PlanData) {
   const prompt = generatePrompt(data);
@@ -54,10 +43,10 @@ export async function generatePlan(data: PlanData) {
     .replace(/\.\.\./g, ''); // Eliminar otros puntos suspensivos
 
   try {
-    const parsed = JSON.parse(cleanJsonString);
+    const parsed = JSON.parse(cleanJsonString) as Plan;
     validatePlan(parsed);
     return { plan: parsed };
-  } catch (parseError: any) {
+  } catch (parseError: Error) {
     console.error('Error parseando JSON:', parseError);
     console.error('JSON recibido:', cleanJsonString);
     throw new Error(`Error en el formato JSON del plan generado: ${parseError.message}`);
@@ -129,7 +118,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     res.status(200).json(result);
-  } catch (error: any) {
+  } catch (error: Error) {
     console.error('❌ Error al generar o parsear el plan:', error.message);
     res.status(500).json({ 
       message: 'Error generando el plan con IA.', 
