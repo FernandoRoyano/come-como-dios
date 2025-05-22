@@ -108,23 +108,30 @@ const PlanViewer = ({ plan, restricciones, objetivo, numeroComidas }: Props) => 
           <div key={index} className={styles['day-card']}>
             <h3>Día {index + 1}: {diaNombre}</h3>
 
-            {Object.entries(dia).map(([tipoComida, comida]) => (
-              <div key={tipoComida} className={styles['meal-item']}>
-                <strong>{comida.nombre}:</strong>
-                <p>{comida.descripcion}</p>
-                <small>
-                  Cal: {comida.calorias} | Prot: {comida.proteinas}g | Carb: {comida.carbohidratos}g | Grasas: {comida.grasas}g
-                </small>
-                <button onClick={() => regenerateMeal(diaNombre, comida.nombre)} className={styles['regen-button']}>
-                  🔄 Regenerar
-                </button>
-              </div>
-            ))}
+            {Object.entries(dia).map(([tipoComida, comida]) => {
+              if (typeof comida === 'object' && comida !== null && 'nombre' in comida) {
+                return (
+                  <div key={tipoComida} className={styles['meal-item']}>
+                    <strong>{comida.nombre}:</strong>
+                    <p>{comida.descripcion}</p>
+                    <small>
+                      Cal: {comida.calorias} | Prot: {comida.proteinas}g | Carb: {comida.carbohidratos}g | Grasas: {comida.grasas}g
+                    </small>
+                    <button onClick={() => regenerateMeal(diaNombre, comida.nombre)} className={styles['regen-button']}>
+                      🔄 Regenerar
+                    </button>
+                  </div>
+                );
+              }
+              return null;
+            })}
 
             <div className={styles['totales-dia']}>
               <strong>Total día:</strong>{' '}
               {(() => {
-                const comidas = Object.values(dia);
+                const comidas = Object.values(dia).filter((comida): comida is Comida => 
+                  typeof comida === 'object' && comida !== null && 'nombre' in comida
+                );
                 const totalCalorias = comidas.reduce((acc, c) => acc + c.calorias, 0);
                 const totalProteinas = comidas.reduce((acc, c) => acc + c.proteinas, 0);
                 const totalCarbohidratos = comidas.reduce((acc, c) => acc + c.carbohidratos, 0);
