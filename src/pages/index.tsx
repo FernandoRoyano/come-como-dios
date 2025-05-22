@@ -6,8 +6,12 @@ import AuthButton from '@/components/AuthButton';
 import styles from './index.module.css';
 import { Plan, PlanData } from '@/types/plan';
 
+interface PlanWithError extends Plan {
+  error?: string;
+}
+
 export default function Home() {
-  const [plan, setPlan] = useState<Plan | null>(null);
+  const [plan, setPlan] = useState<PlanWithError | null>(null);
   const [formData, setFormData] = useState<PlanData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { data: session, status } = useSession();
@@ -31,7 +35,17 @@ export default function Home() {
       setPlan(result.plan);
     } catch (err) {
       console.error(err);
-      setPlan({ error: '⚠️ Error al generar el plan con IA.' } as Plan);
+      setPlan({
+        dias: {},
+        listaCompra: {},
+        macronutrientes: {
+          calorias: 0,
+          proteinas: 0,
+          carbohidratos: 0,
+          grasas: 0
+        },
+        error: '⚠️ Error al generar el plan con IA.'
+      });
     }
 
     setLoading(false);
@@ -51,12 +65,12 @@ export default function Home() {
         <>
           <InputForm onSubmit={handleFormSubmit} />
           {loading && <p style={{ marginTop: '2rem' }}>🧠 Generando tu plan personalizado con IA...</p>}
-          {!loading && plan?.dias && (
+          {!loading && plan?.dias && Object.keys(plan.dias).length > 0 && (
             <PlanViewer
               plan={plan}
-              restricciones={formData?.restricciones}
-              objetivo={formData?.objetivo}
-              numeroComidas={formData?.numeroComidas}
+              restricciones={formData?.restricciones || []}
+              objetivo={formData?.objetivo || ''}
+              numeroComidas={formData?.numeroComidas || 3}
             />
           )}
           {!loading && plan?.error && <p style={{ color: 'red' }}>{plan.error}</p>}

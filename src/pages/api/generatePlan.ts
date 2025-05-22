@@ -46,10 +46,10 @@ export async function generatePlan(data: PlanData) {
     const parsed = JSON.parse(cleanJsonString) as Plan;
     validatePlan(parsed);
     return { plan: parsed };
-  } catch (parseError: Error) {
+  } catch (parseError: unknown) {
     console.error('Error parseando JSON:', parseError);
     console.error('JSON recibido:', cleanJsonString);
-    throw new Error(`Error en el formato JSON del plan generado: ${parseError.message}`);
+    throw new Error(`Error en el formato JSON del plan generado: ${parseError instanceof Error ? parseError.message : 'Error desconocido'}`);
   }
 }
 
@@ -118,11 +118,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     res.status(200).json(result);
-  } catch (error: Error) {
-    console.error('❌ Error al generar o parsear el plan:', error.message);
+  } catch (error: unknown) {
+    console.error('❌ Error al generar o parsear el plan:', error instanceof Error ? error.message : 'Error desconocido');
     res.status(500).json({ 
       message: 'Error generando el plan con IA.', 
-      details: error.message,
+      details: error instanceof Error ? error.message : 'Error desconocido',
       timestamp: new Date().toISOString()
     });
   }

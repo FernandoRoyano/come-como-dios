@@ -1,4 +1,4 @@
-import { Plan } from '@/types/plan';
+import { Plan, Comida } from '@/types/plan';
 
 export function validatePlan(plan: Plan): void {
   if (!plan.dias || typeof plan.dias !== 'object') {
@@ -21,8 +21,8 @@ export function validatePlan(plan: Plan): void {
 
     // Validar cada comida
     ['desayuno', 'almuerzo', 'cena'].forEach(tipoComida => {
-      const comida = comidas[tipoComida as keyof typeof comidas];
-      if (!comida.nombre || !comida.descripcion || 
+      const comida = comidas[tipoComida as keyof typeof comidas] as Comida;
+      if (!comida || !comida.nombre || !comida.descripcion || 
           typeof comida.calorias !== 'number' || 
           typeof comida.proteinas !== 'number' || 
           typeof comida.carbohidratos !== 'number' || 
