@@ -17,7 +17,7 @@ export function generatePrompt(data: PlanData): string {
     ? restricciones.join(', ') 
     : 'Ninguna';
 
-  return `Genera un plan de alimentación semanal personalizado con las siguientes características:
+  return `Eres un nutricionista profesional. Genera un plan de alimentación semanal personalizado con las siguientes características:
 
 Edad: ${edad} años
 Peso: ${peso} kg
@@ -30,11 +30,13 @@ Intensidad del trabajo: ${intensidadTrabajo}
 Número de comidas diarias: ${numeroComidas}
 
 El plan debe incluir:
-1. Un menú detallado para cada día de la semana
+1. Un menú detallado para cada día de la semana (Lunes a Domingo)
 2. Lista de la compra organizada por categorías
 3. Macronutrientes diarios y totales
 
-Responde SOLO con un objeto JSON con la siguiente estructura:
+IMPORTANTE: Responde ÚNICAMENTE con un objeto JSON válido entre los delimitadores ###JSON_START### y ###JSON_END###.
+NO incluyas ningún texto adicional, explicaciones o comentarios fuera de estos delimitadores.
+
 ###JSON_START###
 {
   "dias": {
@@ -43,7 +45,36 @@ Responde SOLO con un objeto JSON con la siguiente estructura:
       "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
       "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
     },
-    // ... resto de días
+    "Martes": {
+      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
+      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
+      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
+    },
+    "Miércoles": {
+      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
+      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
+      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
+    },
+    "Jueves": {
+      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
+      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
+      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
+    },
+    "Viernes": {
+      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
+      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
+      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
+    },
+    "Sábado": {
+      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
+      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
+      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
+    },
+    "Domingo": {
+      "desayuno": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
+      "almuerzo": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 },
+      "cena": { "nombre": "", "descripcion": "", "calorias": 0, "proteinas": 0, "carbohidratos": 0, "grasas": 0 }
+    }
   },
   "listaCompra": {
     "verduras": [],
