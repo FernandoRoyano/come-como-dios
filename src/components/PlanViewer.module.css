@@ -31,18 +31,52 @@
   }
   
   .meal-item {
+    background: #f8fafc;
+    padding: 1.2rem;
+    border-radius: 12px;
     margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .meal-item strong {
+    display: block;
+    font-size: 1.1rem;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
   }
   
   .meal-item p {
     margin: 0.25rem 0 0.5rem;
     font-size: 1rem;
     color: #334155;
+    line-height: 1.5;
   }
   
   .meal-item small {
+    display: block;
     font-size: 0.85rem;
     color: #64748b;
+    margin-bottom: 0.8rem;
+  }
+  
+  .regen-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    background-color: #f1f5f9;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .regen-button:hover {
+    background-color: #e2e8f0;
+    border-color: #cbd5e1;
   }
   
   .totales-dia {

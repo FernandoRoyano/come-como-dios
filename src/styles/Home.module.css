@@ -81,6 +81,59 @@
   font-weight: 500;
 }
 
+.regen-button {
+  appearance: none;
+  border-radius: 128px;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--gray-alpha-200);
+  background: transparent;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
+  margin-top: 8px;
+  gap: 6px;
+}
+
+.regen-button:hover {
+  background: var(--button-secondary-hover);
+  border-color: transparent;
+}
+
+.meal-item {
+  background: var(--gray-alpha-100);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.meal-item strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.meal-item p {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.meal-item small {
+  display: block;
+  color: var(--gray-alpha-200);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
 a.primary {
   background: var(--foreground);
   color: var(--background);
