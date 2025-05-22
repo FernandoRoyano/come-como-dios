@@ -94,7 +94,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const camposFaltantes = Object.entries(camposRequeridos)
     .filter(([key]) => !req.body[key])
-    .map(([_, label]) => label);
+    .map(([, label]) => label);
 
   if (camposFaltantes.length > 0) {
     return res.status(400).json({
