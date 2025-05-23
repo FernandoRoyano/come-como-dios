@@ -4,12 +4,9 @@ import { Plan, Comida } from '@/types/plan';
 
 interface Props {
   plan: Plan;
-  restricciones: string[];
-  objetivo: string;
-  numeroComidas: number;
 }
 
-const PlanViewer = ({ plan, restricciones, objetivo, numeroComidas }: Props) => {
+const PlanViewer = ({ plan }: Props) => {
   const [currentPlan, setCurrentPlan] = useState<Plan>(plan);
 
   const handleDownloadPDF = async () => {
@@ -27,45 +24,6 @@ const PlanViewer = ({ plan, restricciones, objetivo, numeroComidas }: Props) => 
     };
 
     html2pdf().set(opt).from(element).save();
-  };
-
-  const regenerateMeal = async (diaNombre: string, comidaNombre: string) => {
-    try {
-      const res = await fetch('/api/regenerateMeal', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          dia: diaNombre,
-          comida: comidaNombre,
-          restricciones,
-          objetivo,
-          numeroComidas,
-        }),
-      });
-
-      const nuevaComida = await res.json();
-
-      const updatedDias = { ...currentPlan.dias };
-      const dia = updatedDias[diaNombre];
-      
-      if (dia) {
-        const tipoComida = Object.keys(dia).find(key => {
-          const comida = dia[key as keyof typeof dia];
-          return typeof comida === 'object' && comida !== null && 'nombre' in comida && comida.nombre === comidaNombre;
-        });
-
-        if (tipoComida) {
-          updatedDias[diaNombre] = {
-            ...dia,
-            [tipoComida]: nuevaComida
-          };
-        }
-      }
-
-      setCurrentPlan({ ...currentPlan, dias: updatedDias });
-    } catch (err) {
-      console.error('Error regenerando la comida:', err);
-    }
   };
 
   return (
@@ -90,9 +48,6 @@ const PlanViewer = ({ plan, restricciones, objetivo, numeroComidas }: Props) => 
                     <small>
                       Cal: {comida.calorias} | Prot: {comida.proteinas}g | Carb: {comida.carbohidratos}g | Grasas: {comida.grasas}g
                     </small>
-                    <button onClick={() => regenerateMeal(diaNombre, comida.nombre)} className={styles['regen-button']}>
-                      🔄 Regenerar
-                    </button>
                   </div>
                 );
               }

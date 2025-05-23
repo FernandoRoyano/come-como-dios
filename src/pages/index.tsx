@@ -4,6 +4,9 @@ import styles from './index.module.css';
 import TrainingViewer from '../components/TrainingViewer';
 import PlanViewer from '../components/PlanViewer';
 import { PlanEntrenamiento, Plan } from '../types/plan';
+import AuthButton from '../components/AuthButton';
+import { signIn } from 'next-auth/react';
+
 
 export default function Home() {
   const { data: session } = useSession();
@@ -19,100 +22,8 @@ export default function Home() {
     entrenamiento: false,
   });
 
-  const handleTrainingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      entrenamiento: {
-        ubicacion: formData.get('ubicacion') as string,
-        material: {
-          pesas: formData.get('pesas') === 'true',
-          bandas: formData.get('bandas') === 'true',
-          maquinas: formData.get('maquinas') === 'true',
-          barras: formData.get('barras') === 'true',
-          otros: (formData.get('otros') as string)?.split(',').map(item => item.trim()) || []
-        },
-        nivel: formData.get('nivel') as string,
-        diasEntrenamiento: parseInt(formData.get('dias') as string),
-        duracionSesion: parseInt(formData.get('duracion') as string),
-        objetivos: (formData.get('objetivos') as string)?.split(',').map(item => item.trim()) || [],
-        lesiones: (formData.get('lesiones') as string)?.split(',').map(item => item.trim()) || [],
-        preferencias: (formData.get('preferencias') as string)?.split(',').map(item => item.trim()) || []
-      },
-      edad: parseInt(formData.get('edad') as string),
-      peso: parseInt(formData.get('peso') as string),
-      altura: parseInt(formData.get('altura') as string),
-      sexo: formData.get('sexo') as string,
-      objetivo: formData.get('objetivo') as string,
-      actividadFisica: formData.get('actividadFisica') as string
-    };
-
-    try {
-      const response = await fetch('/api/generateTraining', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al generar el plan de entrenamiento');
-      }
-
-      const result = await response.json();
-      setTrainingPlan(result.plan);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error desconocido');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleNutritionSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      edad: parseInt(formData.get('edad') as string),
-      peso: parseInt(formData.get('peso') as string),
-      altura: parseInt(formData.get('altura') as string),
-      sexo: formData.get('sexo') as string,
-      objetivo: formData.get('objetivo') as string,
-      restricciones: (formData.get('restricciones') as string)?.split(',').map(item => item.trim()) || [],
-      actividadFisica: formData.get('actividadFisica') as string,
-      intensidadTrabajo: formData.get('intensidadTrabajo') as string,
-      numeroComidas: parseInt(formData.get('numeroComidas') as string),
-      alimentosNoDeseados: (formData.get('alimentosNoDeseados') as string)?.split(',').map(item => item.trim()) || []
-    };
-
-    try {
-      const response = await fetch('/api/generatePlan', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al generar el plan nutricional');
-      }
-
-      const result = await response.json();
-      setPlan(result.plan);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error desconocido');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  const handleTrainingSubmit = async (e: React.FormEvent<HTMLFormElement>) => { /* ... */ };
+  const handleNutritionSubmit = async (e: React.FormEvent<HTMLFormElement>) => { /* ... */ };
   const togglePlan = (plan: 'nutricion' | 'entrenamiento') => {
     setSelectedPlans(prev => ({
       ...prev,
@@ -129,49 +40,60 @@ export default function Home() {
             <p className={styles.subtitle}>Tu asistente personal de nutrición y entrenamiento</p>
           </div>
         </header>
-
+  
         <main className={styles.main}>
-          <div className={styles.authMessage}>
-            <h2>¡Bienvenido a Come Como Dios!</h2>
-            <p>
-              Tu asistente personal de nutrición y entrenamiento que te ayudará a alcanzar tus objetivos
-              de manera saludable y sostenible. Con planes personalizados y seguimiento continuo,
-              estamos aquí para guiarte en tu camino hacia una vida más saludable.
+          <div className={styles.planSelector}>
+            <h2>¿Qué tipo de plan deseas generar?</h2>
+            <p className={styles.planSelectorSubtitle}>
+              Selecciona el tipo de plan que deseas generar. Puedes elegir uno o ambos.
             </p>
-
-            <div className={styles.features}>
-              <div className={styles.feature}>
+            <div className={styles.planButtons}>
+              <button
+                onClick={() => togglePlan('nutricion')}
+                className={`${styles.planButton} ${selectedPlans.nutricion ? styles.planButtonSelected : ''}`}
+              >
                 <span>🍎</span>
-                <h3>Planes Nutricionales</h3>
-                <p>
-                  Recibe planes de alimentación personalizados basados en tus objetivos,
-                  preferencias y necesidades específicas.
-                </p>
-              </div>
-
-              <div className={styles.feature}>
+                <h3>Plan Nutricional</h3>
+                <p>Dieta personalizada adaptada a tus objetivos</p>
+                <div className={styles.planButtonCheck}>
+                  {selectedPlans.nutricion ? '✓' : ''}
+                </div>
+              </button>
+              <button
+                onClick={() => togglePlan('entrenamiento')}
+                className={`${styles.planButton} ${selectedPlans.entrenamiento ? styles.planButtonSelected : ''}`}
+              >
                 <span>💪</span>
-                <h3>Rutinas de Entrenamiento</h3>
-                <p>
-                  Accede a rutinas de ejercicio adaptadas a tu nivel y objetivos,
-                  con instrucciones detalladas y seguimiento de progreso.
-                </p>
-              </div>
-
-              <div className={styles.feature}>
-                <span>📊</span>
-                <h3>Seguimiento de Progreso</h3>
-                <p>
-                  Monitorea tu evolución con métricas detalladas y ajustes
-                  automáticos de tu plan según tus resultados.
-                </p>
-              </div>
+                <h3>Plan de Entrenamiento</h3>
+                <p>Rutina de ejercicios personalizada</p>
+                <div className={styles.planButtonCheck}>
+                  {selectedPlans.entrenamiento ? '✓' : ''}
+                </div>
+              </button>
+              <button
+                onClick={() => setSelectedPlans({ nutricion: true, entrenamiento: true })}
+                className={`${styles.planButton} ${selectedPlans.nutricion && selectedPlans.entrenamiento ? styles.planButtonSelected : ''}`}
+              >
+                <span>🎯</span>
+                <h3>Plan Completo</h3>
+                <p>Nutrición y entrenamiento personalizados</p>
+                <div className={styles.planButtonCheck}>
+                  {selectedPlans.nutricion && selectedPlans.entrenamiento ? '✓' : ''}
+                </div>
+              </button>
             </div>
+            <button
+  onClick={() => signIn('google')}
+  className={styles.continueButton}
+>
+  Iniciar Sesión con Google
+</button>
           </div>
         </main>
       </div>
     );
   }
+  
 
   return (
     <div className={styles.container}>
@@ -506,33 +428,24 @@ export default function Home() {
             <div className={styles.planHeader}>
               <h2 className={styles.planTitle}>Tu Plan Nutricional</h2>
               <div className={styles.planButtons}>
-                {!trainingPlan && (
-                  <button
-                    onClick={() => {
-                      setSelectedPlans({ nutricion: false, entrenamiento: true });
-                    }}
-                    className={styles.generateOtherButton}
-                  >
-                    Generar Plan de Entrenamiento
-                  </button>
-                )}
                 <button
+                  className={styles.generateOtherButton}
+                  onClick={() => setPlan(null)}
+                >
+                  Generar otro plan
+                </button>
+                <button
+                  className={styles.newPlanButton}
                   onClick={() => {
                     setPlan(null);
-                    setSelectedPlans({ nutricion: true, entrenamiento: false });
+                    setSelectedPlans({ nutricion: false, entrenamiento: false });
                   }}
-                  className={styles.newPlanButton}
                 >
-                  Generar Nuevo Plan Nutricional
+                  Volver al inicio
                 </button>
               </div>
             </div>
-            <PlanViewer
-              plan={plan}
-              restricciones={plan.restricciones || []}
-              objetivo={plan.objetivo || ''}
-              numeroComidas={plan.numeroComidas || 3}
-            />
+            <PlanViewer plan={plan} />
           </div>
         )}
 
@@ -541,24 +454,20 @@ export default function Home() {
             <div className={styles.planHeader}>
               <h2 className={styles.planTitle}>Tu Plan de Entrenamiento</h2>
               <div className={styles.planButtons}>
-                {!plan && (
-                  <button
-                    onClick={() => {
-                      setSelectedPlans({ nutricion: true, entrenamiento: false });
-                    }}
-                    className={styles.generateOtherButton}
-                  >
-                    Generar Plan Nutricional
-                  </button>
-                )}
                 <button
+                  className={styles.generateOtherButton}
+                  onClick={() => setTrainingPlan(null)}
+                >
+                  Generar otro plan
+                </button>
+                <button
+                  className={styles.newPlanButton}
                   onClick={() => {
                     setTrainingPlan(null);
-                    setSelectedPlans({ nutricion: false, entrenamiento: true });
+                    setSelectedPlans({ nutricion: false, entrenamiento: false });
                   }}
-                  className={styles.newPlanButton}
                 >
-                  Generar Nuevo Plan de Entrenamiento
+                  Volver al inicio
                 </button>
               </div>
             </div>

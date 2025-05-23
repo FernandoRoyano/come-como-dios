@@ -21,22 +21,23 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  debug: true,
   callbacks: {
-    async signIn({ user, account, profile }) {
-      console.log('SignIn Callback:', { user, account, profile });
-      return true;
-    },
     async session({ session, token }) {
-      console.log('Session Callback:', { session, token });
       if (session.user) {
         session.user.id = token.sub;
       }
       return session;
     },
     async jwt({ token, account, profile }) {
-      console.log('JWT Callback:', { token, account, profile });
+      if (account) {
+        token.accessToken = account.access_token;
+      }
       return token;
     }
-  }
+  },
+  pages: {
+    signIn: '/',
+    error: '/',
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 });
