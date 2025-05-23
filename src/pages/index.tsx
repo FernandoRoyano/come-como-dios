@@ -1,15 +1,14 @@
 import { useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import styles from './index.module.css';
 import TrainingViewer from '../components/TrainingViewer';
 import PlanViewer from '../components/PlanViewer';
 import { PlanEntrenamiento, Plan } from '../types/plan';
 import AuthButton from '../components/AuthButton';
-import { signIn } from 'next-auth/react';
 
 
 export default function Home() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [plan, setPlan] = useState<Plan | null>(null);
   const [trainingPlan, setTrainingPlan] = useState<PlanEntrenamiento | null>(null);
   const [loading, setLoading] = useState(false);
@@ -22,8 +21,85 @@ export default function Home() {
     entrenamiento: false,
   });
 
-  const handleTrainingSubmit = async (e: React.FormEvent<HTMLFormElement>) => { /* ... */ };
-  const handleNutritionSubmit = async (e: React.FormEvent<HTMLFormElement>) => { /* ... */ };
+  const handleTrainingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      const form = e.currentTarget;
+      const data = {
+        edad: Number((form.edad as HTMLInputElement).value),
+        peso: Number((form.peso as HTMLInputElement).value),
+        altura: Number((form.altura as HTMLInputElement).value),
+        sexo: (form.sexo as HTMLSelectElement).value,
+        objetivo: (form.objetivo as HTMLSelectElement).value,
+        actividadFisica: (form.actividadFisica as HTMLSelectElement).value,
+        ubicacion: (form.ubicacion as HTMLSelectElement).value,
+        nivel: (form.nivel as HTMLSelectElement).value,
+        dias: Number((form.dias as HTMLSelectElement).value),
+        duracion: Number((form.duracion as HTMLSelectElement).value),
+        material: {
+          pesas: (form.pesas as HTMLInputElement).checked,
+          bandas: (form.bandas as HTMLInputElement).checked,
+          maquinas: (form.maquinas as HTMLInputElement).checked,
+          barras: (form.barras as HTMLInputElement).checked,
+          otros: (form.otros as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+        },
+        objetivos: (form.objetivos as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+        lesiones: (form.lesiones as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+        preferencias: (form.preferencias as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+      };
+      const response = await fetch('/api/generateTraining', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Error generando el plan de entrenamiento');
+      const result = await response.json();
+      setTrainingPlan(result.plan);
+    } catch (err: any) {
+      setError(err.message || 'Error desconocido');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleNutritionSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      const form = e.currentTarget;
+      const data = {
+        edad: Number((form.edad as HTMLInputElement).value),
+        peso: Number((form.peso as HTMLInputElement).value),
+        altura: Number((form.altura as HTMLInputElement).value),
+        sexo: (form.sexo as HTMLSelectElement).value,
+        objetivo: (form.objetivo as HTMLSelectElement).value,
+        actividadFisica: (form.actividadFisica as HTMLSelectElement).value,
+        intensidadTrabajo: (form.intensidadTrabajo as HTMLSelectElement).value,
+        numeroComidas: Number((form.numeroComidas as HTMLSelectElement).value),
+        restricciones: (form.restricciones as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+        alimentosNoDeseados: (form.alimentosNoDeseados as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+      };
+      const response = await fetch('/api/generatePlan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Error generando el plan nutricional');
+      const result = await response.json();
+      if (!result.plan) {
+        throw new Error('El plan generado no tiene datos válidos.');
+      }
+      setPlan(result.plan);
+    } catch (err: any) {
+      setError(err.message || 'Error desconocido');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const togglePlan = (plan: 'nutricion' | 'entrenamiento') => {
     setSelectedPlans(prev => ({
       ...prev,
@@ -40,55 +116,13 @@ export default function Home() {
             <p className={styles.subtitle}>Tu asistente personal de nutrición y entrenamiento</p>
           </div>
         </header>
-  
         <main className={styles.main}>
-          <div className={styles.planSelector}>
-            <h2>¿Qué tipo de plan deseas generar?</h2>
-            <p className={styles.planSelectorSubtitle}>
-              Selecciona el tipo de plan que deseas generar. Puedes elegir uno o ambos.
-            </p>
-            <div className={styles.planButtons}>
-              <button
-                onClick={() => togglePlan('nutricion')}
-                className={`${styles.planButton} ${selectedPlans.nutricion ? styles.planButtonSelected : ''}`}
-              >
-                <span>🍎</span>
-                <h3>Plan Nutricional</h3>
-                <p>Dieta personalizada adaptada a tus objetivos</p>
-                <div className={styles.planButtonCheck}>
-                  {selectedPlans.nutricion ? '✓' : ''}
-                </div>
-              </button>
-              <button
-                onClick={() => togglePlan('entrenamiento')}
-                className={`${styles.planButton} ${selectedPlans.entrenamiento ? styles.planButtonSelected : ''}`}
-              >
-                <span>💪</span>
-                <h3>Plan de Entrenamiento</h3>
-                <p>Rutina de ejercicios personalizada</p>
-                <div className={styles.planButtonCheck}>
-                  {selectedPlans.entrenamiento ? '✓' : ''}
-                </div>
-              </button>
-              <button
-                onClick={() => setSelectedPlans({ nutricion: true, entrenamiento: true })}
-                className={`${styles.planButton} ${selectedPlans.nutricion && selectedPlans.entrenamiento ? styles.planButtonSelected : ''}`}
-              >
-                <span>🎯</span>
-                <h3>Plan Completo</h3>
-                <p>Nutrición y entrenamiento personalizados</p>
-                <div className={styles.planButtonCheck}>
-                  {selectedPlans.nutricion && selectedPlans.entrenamiento ? '✓' : ''}
-                </div>
-              </button>
-            </div>
-            <button
-  onClick={() => signIn('google')}
-  className={styles.continueButton}
->
-  Iniciar Sesión con Google
-</button>
-          </div>
+          <button
+            onClick={() => signIn('google')}
+            className={styles.continueButton}
+          >
+            Iniciar Sesión con Google
+          </button>
         </main>
       </div>
     );
@@ -102,8 +136,14 @@ export default function Home() {
           <h1 className={styles.title}>Come Como Dios</h1>
           <p className={styles.subtitle}>Tu asistente personal de nutrición y entrenamiento</p>
         </div>
+        <button
+          onClick={() => signOut()}
+          className={styles.continueButton}
+          style={{ marginTop: 16 }}
+        >
+          Cerrar Sesión
+        </button>
       </header>
-
       <main className={styles.main}>
         {loading && (
           <div className={styles.loading}>
@@ -155,17 +195,6 @@ export default function Home() {
                 </div>
               </button>
             </div>
-            <button
-              onClick={() => {
-                if (selectedPlans.nutricion || selectedPlans.entrenamiento) {
-                  setSelectedPlans(prev => ({ ...prev, showForm: true }));
-                }
-              }}
-              className={styles.continueButton}
-              disabled={!selectedPlans.nutricion && !selectedPlans.entrenamiento}
-            >
-              Continuar
-            </button>
           </div>
         )}
 
