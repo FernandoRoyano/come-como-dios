@@ -51,13 +51,22 @@ export default function Home() {
         sexo: (form.sexo as HTMLSelectElement).value,
         objetivo: (form.objetivo as HTMLSelectElement).value,
         actividadFisica: (form.actividadFisica as HTMLSelectElement).value,
+        // Estos campos son requeridos por el tipo PlanData pero no por entrenamiento, así que los pasamos vacíos
+        restricciones: [],
+        alimentosNoDeseados: [],
+        intensidadTrabajo: '',
+        numeroComidas: 0,
+        servicios: { nutricion: false, entrenamiento: true },
       };
       const response = await fetch('/api/generateTraining', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error('Error generando el plan de entrenamiento');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Error generando el plan de entrenamiento');
+      }
       const result = await response.json();
       setTrainingPlan(result.plan);
     } catch (err: any) {
