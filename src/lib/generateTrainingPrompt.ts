@@ -15,6 +15,16 @@ export function generateTrainingPrompt(data: PlanData): string {
     throw new Error('No se proporcionaron datos de entrenamiento');
   }
 
+  // Adaptar reglas según los días de entrenamiento
+  let reglasDias = '';
+  if (entrenamiento.diasEntrenamiento === 1) {
+    reglasDias = `1. Cada día normal DEBE tener entre 3 y 8 ejercicios\n2. Los días de descanso activo DEBEN tener 1-2 ejercicios\n3. El domingo NO debe tener ejercicios`;
+  } else if (entrenamiento.diasEntrenamiento === 2) {
+    reglasDias = `1. Cada día normal DEBE tener entre 4 y 8 ejercicios\n2. Los días de descanso activo DEBEN tener 2-3 ejercicios\n3. El domingo NO debe tener ejercicios`;
+  } else {
+    reglasDias = `1. Cada día normal DEBE tener EXACTAMENTE 6 ejercicios\n2. Los días de descanso activo DEBEN tener EXACTAMENTE 2-3 ejercicios\n3. El domingo NO debe tener ejercicios`;
+  }
+
   return `IMPORTANTE: DEBES responder SOLO con un bloque JSON válido, comenzando con ###JSON_START### y terminando con ###JSON_END###.
 
 Genera un plan de entrenamiento personalizado y detallado para una persona con las siguientes características:
@@ -42,33 +52,11 @@ Material disponible:
 - Barras: ${entrenamiento.material.barras ? 'Sí' : 'No'}
 - Otro material: ${entrenamiento.material.otros.join(', ') || 'Ninguno'}
 
-REGLAS ESTRICTAS DE VALIDACIÓN:
-1. Cada día normal DEBE tener EXACTAMENTE 6 ejercicios
-2. Los días de descanso activo DEBEN tener EXACTAMENTE 2-3 ejercicios
-3. El domingo NO debe tener ejercicios
-4. TODOS los ejercicios DEBEN incluir:
-   - Nombre del ejercicio
-   - Número de series
-   - Número de repeticiones
-   - Tiempo de descanso
-   - URL de imagen
-   - Notas técnicas
-5. El JSON DEBE ser válido y estar correctamente formateado
-6. TODOS los días especificados DEBEN estar incluidos
-7. NO se permiten días con menos de 6 ejercicios (excepto descanso activo y domingo)
-
-FORMATO DE RESPUESTA:
-Tu respuesta DEBE comenzar exactamente con:
-###JSON_START###
-
-Y terminar exactamente con:
-###JSON_END###
-
-Entre estos delimitadores, DEBE haber SOLO un objeto JSON válido, sin ningún otro texto.
+REGLAS ESTRICTAS DE VALIDACIÓN:\n${reglasDias}\n4. TODOS los ejercicios DEBEN incluir:\n   - Nombre del ejercicio\n   - Número de series\n   - Número de repeticiones\n   - Tiempo de descanso\n   - URL de imagen\n   - Notas técnicas\n5. El JSON DEBE ser válido y estar correctamente formateado\n6. TODOS los días especificados DEBEN estar incluidos\n7. NO se permiten días con menos ejercicios de los indicados (excepto descanso activo y domingo)\n\nFORMATO DE RESPUESTA:\nTu respuesta DEBE comenzar exactamente con:\n###JSON_START###\n\nY terminar exactamente con:\n###JSON_END###\n\nEntre estos delimitadores, DEBE haber SOLO un objeto JSON válido, sin ningún otro texto.
 
 Instrucciones específicas para el plan:
-1. Cada día de entrenamiento normal debe incluir EXACTAMENTE 6 ejercicios diferentes
-2. Los días de descanso activo deben incluir EXACTAMENTE 2-3 ejercicios de movilidad y recuperación
+1. Cada día de entrenamiento normal debe incluir entre 3 y 8 ejercicios diferentes
+2. Los días de descanso activo deben incluir entre 1 y 3 ejercicios de movilidad y recuperación
 3. El domingo es día de descanso completo sin ejercicios
 4. Los ejercicios deben estar organizados por grupos musculares
 5. Incluir ejercicios compuestos y de aislamiento
@@ -456,4 +444,4 @@ Ejemplo del formato JSON esperado:
 ###JSON_END###
 
 IMPORTANTE: Tu respuesta DEBE comenzar con ###JSON_START### y terminar con ###JSON_END###, y contener SOLO el JSON entre estos delimitadores.`;
-} 
+}

@@ -26,6 +26,14 @@ const PlanViewer = ({ plan }: Props) => {
     html2pdf().set(opt).from(element).save();
   };
 
+  if (!currentPlan || !currentPlan.dias || typeof currentPlan.dias !== 'object') {
+    return (
+      <div className={styles['plan-container']}>
+        <h2 className={styles['plan-title']}>No se pudo cargar el plan. El formato recibido es incorrecto.</h2>
+      </div>
+    );
+  }
+
   return (
     <>
       <button onClick={handleDownloadPDF} className={styles['pdf-button']}>

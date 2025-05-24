@@ -27,27 +27,30 @@ export default function Home() {
     setError(null);
     try {
       const form = e.currentTarget;
+      // ADAPTACIÓN: enviar la estructura esperada por la API
       const data = {
+        entrenamiento: {
+          ubicacion: (form.ubicacion as HTMLSelectElement).value,
+          material: {
+            pesas: (form.pesas as HTMLInputElement).checked,
+            bandas: (form.bandas as HTMLInputElement).checked,
+            maquinas: (form.maquinas as HTMLInputElement).checked,
+            barras: (form.barras as HTMLInputElement).checked,
+            otros: (form.otros as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+          },
+          nivel: (form.nivel as HTMLSelectElement).value,
+          diasEntrenamiento: Number((form.dias as HTMLSelectElement).value),
+          duracionSesion: Number((form.duracion as HTMLSelectElement).value),
+          objetivos: (form.objetivos as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+          lesiones: (form.lesiones as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+          preferencias: (form.preferencias as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+        },
         edad: Number((form.edad as HTMLInputElement).value),
         peso: Number((form.peso as HTMLInputElement).value),
         altura: Number((form.altura as HTMLInputElement).value),
         sexo: (form.sexo as HTMLSelectElement).value,
         objetivo: (form.objetivo as HTMLSelectElement).value,
         actividadFisica: (form.actividadFisica as HTMLSelectElement).value,
-        ubicacion: (form.ubicacion as HTMLSelectElement).value,
-        nivel: (form.nivel as HTMLSelectElement).value,
-        dias: Number((form.dias as HTMLSelectElement).value),
-        duracion: Number((form.duracion as HTMLSelectElement).value),
-        material: {
-          pesas: (form.pesas as HTMLInputElement).checked,
-          bandas: (form.bandas as HTMLInputElement).checked,
-          maquinas: (form.maquinas as HTMLInputElement).checked,
-          barras: (form.barras as HTMLInputElement).checked,
-          otros: (form.otros as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
-        },
-        objetivos: (form.objetivos as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
-        lesiones: (form.lesiones as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
-        preferencias: (form.preferencias as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
       };
       const response = await fetch('/api/generateTraining', {
         method: 'POST',
@@ -107,7 +110,9 @@ export default function Home() {
     }));
   };
 
-  if (!session) {
+  console.log('STATUS', status, 'SESSION', session);
+
+  if (status === 'loading' && !session) {
     return (
       <div className={styles.container}>
         <header className={styles.header}>
@@ -117,12 +122,71 @@ export default function Home() {
           </div>
         </header>
         <main className={styles.main}>
+          <div className={styles.loading}>
+            <div className={styles.loadingSpinner}></div>
+            <p>Cargando...</p>
+            <pre style={{background:'#fff',color:'#333',padding:'1rem',borderRadius:'8px',marginTop:'1rem',fontSize:'1rem'}}>
+{`status: ${status}\nsession: ${JSON.stringify(session, null, 2)}`}
+            </pre>
+          </div>
           <button
             onClick={() => signIn('google')}
             className={styles.continueButton}
+            disabled
           >
             Iniciar Sesión con Google
           </button>
+        </main>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <div className={styles.headerContent}>
+            <h1 className={styles.title} style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>Come Como Dios</h1>
+            <p className={styles.subtitle} style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>Tu asistente personal de nutrición y entrenamiento</p>
+          </div>
+        </header>
+        <main className={styles.main}>
+          <section className={styles.authMessage}>
+            <h2 style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>¡Bienvenido/a!</h2>
+            <p style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>
+              Descubre cómo la inteligencia artificial puede ayudarte a alcanzar tus objetivos de salud y fitness. Genera planes personalizados de nutrición y entrenamiento en segundos, adaptados a tus preferencias, necesidades y estilo de vida.
+            </p>
+          </section>
+          <section className={styles.features}>
+            <div className={styles.feature}>
+              <span role="img" aria-label="Nutrición">🍎</span>
+              <h3 style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>Plan Nutricional</h3>
+              <p style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>Dieta personalizada según tus objetivos, restricciones y gustos.</p>
+            </div>
+            <div className={styles.feature}>
+              <span role="img" aria-label="Entrenamiento">💪</span>
+              <h3 style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>Plan de Entrenamiento</h3>
+              <p style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>Rutinas adaptadas a tu nivel, material disponible y metas.</p>
+            </div>
+            <div className={styles.feature}>
+              <span role="img" aria-label="IA">🤖</span>
+              <h3 style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>100% Personalizado</h3>
+              <p style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>Planes generados por IA, únicos para ti, en segundos.</p>
+            </div>
+            <div className={styles.feature}>
+              <span role="img" aria-label="Fácil">⚡</span>
+              <h3 style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>Fácil y Rápido</h3>
+              <p style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>Solo responde unas preguntas y obtén tu plan al instante.</p>
+            </div>
+          </section>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+            <button
+              onClick={() => signIn('google')}
+              className={styles.continueButton}
+            >
+              Iniciar Sesión con Google
+            </button>
+          </div>
         </main>
       </div>
     );
@@ -303,6 +367,8 @@ export default function Home() {
               <label htmlFor="dias">Días de Entrenamiento por Semana</label>
               <select name="dias" id="dias" required>
                 <option value="">Selecciona los días</option>
+                <option value="1">1 día</option>
+                <option value="2">2 días</option>
                 <option value="3">3 días</option>
                 <option value="4">4 días</option>
                 <option value="5">5 días</option>
