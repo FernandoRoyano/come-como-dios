@@ -1,6 +1,7 @@
 import styles from './TrainingViewer.module.css';
 import { PlanEntrenamiento } from '@/types/plan';
 import { useEffect, useState, useCallback } from 'react';
+import path from 'path';
 
 interface Props {
   plan: PlanEntrenamiento;
@@ -80,10 +81,25 @@ const TrainingViewer = ({ plan }: Props) => {
     }
   }, [html2pdf]);
 
+  function normalizaNombreEjercicio(nombre: string) {
+    return nombre
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quita tildes
+      .replace(/ñ/g, 'n')
+      .replace(/[^a-z0-9 ]/g, '') // solo letras, numeros y espacios
+      .replace(/ +/g, '-') // espacios a guiones
+      + '.png';
+  }
+
   const renderEjercicio = useCallback((ejercicio: any, index: number) => {
     const ejercicioId = `${ejercicio.nombre}-${index}`;
     const hasError = imageErrors[ejercicioId];
-    const imageSrc = hasError ? getPlaceholderImage() : ejercicio.imagen;
+    let imageSrc = ejercicio.imagen;
+    if (!imageSrc) {
+      const nombreArchivo = normalizaNombreEjercicio(ejercicio.nombre);
+      imageSrc = `/ejercicios/${nombreArchivo}`;
+    }
+    if (hasError) imageSrc = getPlaceholderImage();
 
     return (
       <div key={index} className={styles['ejercicio-card']}>
@@ -219,4 +235,4 @@ const TrainingViewer = ({ plan }: Props) => {
   );
 };
 
-export default TrainingViewer; 
+export default TrainingViewer;

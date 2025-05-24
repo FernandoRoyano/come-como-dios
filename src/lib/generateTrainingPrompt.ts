@@ -52,7 +52,7 @@ Material disponible:
 - Barras: ${entrenamiento.material.barras ? 'Sí' : 'No'}
 - Otro material: ${entrenamiento.material.otros.join(', ') || 'Ninguno'}
 
-REGLAS ESTRICTAS DE VALIDACIÓN:\n${reglasDias}\n4. TODOS los ejercicios DEBEN incluir:\n   - Nombre del ejercicio\n   - Número de series\n   - Número de repeticiones\n   - Tiempo de descanso\n   - URL de imagen\n   - Notas técnicas\n5. El JSON DEBE ser válido y estar correctamente formateado\n6. TODOS los días especificados DEBEN estar incluidos\n7. NO se permiten días con menos ejercicios de los indicados (excepto descanso activo y domingo)\n\nFORMATO DE RESPUESTA:\nTu respuesta DEBE comenzar exactamente con:\n###JSON_START###\n\nY terminar exactamente con:\n###JSON_END###\n\nEntre estos delimitadores, DEBE haber SOLO un objeto JSON válido, sin ningún otro texto.
+REGLAS ESTRICTAS DE VALIDACIÓN:\n${reglasDias}\n4. TODOS los ejercicios DEBEN incluir:\n   - Nombre del ejercicio\n   - Número de series\n   - Número de repeticiones\n   - Tiempo de descanso\n   - Campo imagen (dejar vacío: "imagen": "")\n   - Notas técnicas\n5. El JSON DEBE ser válido y estar correctamente formateado\n6. TODOS los días especificados DEBEN estar incluidos\n7. NO se permiten días con menos ejercicios de los indicados (excepto descanso activo y domingo)\n\nFORMATO DE RESPUESTA:\nTu respuesta DEBE comenzar exactamente con:\n###JSON_START###\n\nY terminar exactamente con:\n###JSON_END###\n\nEntre estos delimitadores, DEBE haber SOLO un objeto JSON válido, sin ningún otro texto.
 
 Instrucciones específicas para el plan:
 1. Cada día de entrenamiento normal debe incluir entre 3 y 8 ejercicios diferentes
@@ -67,6 +67,7 @@ Instrucciones específicas para el plan:
 10. Incluir progresión semanal en intensidad o volumen
 11. Añadir ejercicios de movilidad y estiramiento
 12. Especificar técnica y puntos clave para cada ejercicio
+13. TODOS los ejercicios deben tener el campo imagen vacío ("imagen": "").
 
 Ejemplo del formato JSON esperado:
 
@@ -84,7 +85,7 @@ Ejemplo del formato JSON esperado:
           "series": 4,
           "repeticiones": "8-10",
           "descanso": "90 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/bench-press-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Mantener los hombros retraídos y los pies firmes en el suelo",
           "material": "Barra y banco",
           "musculos": ["Pectoral mayor", "Tríceps", "Deltoides anterior"],
@@ -95,7 +96,7 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "12-15",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/dumbbell-fly-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Mantener una ligera flexión en los codos",
           "material": "Mancuernas y banco",
           "musculos": ["Pectoral mayor", "Deltoides anterior"],
@@ -106,23 +107,21 @@ Ejemplo del formato JSON esperado:
           "series": 4,
           "repeticiones": "8-10",
           "descanso": "90 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/incline-bench-press-muscles-worked.jpg",
-          "notas": "Ajustar el banco a 30-45 grados"
+          "imagen": ""
         },
         {
           "nombre": "Extensiones de Tríceps en Polea",
           "series": 3,
           "repeticiones": "12-15",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/tricep-pushdown-muscles-worked.jpg",
-          "notas": "Mantener los codos cerca del cuerpo"
+          "imagen": ""
         },
         {
           "nombre": "Fondos en Paralelas",
           "series": 3,
           "repeticiones": "10-12",
           "descanso": "90 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/dips-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Inclinar el torso hacia adelante para enfatizar el pecho"
         },
         {
@@ -130,8 +129,7 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "10-12",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/french-press-muscles-worked.jpg",
-          "notas": "Mantener los brazos estables"
+          "imagen": ""
         }
       ]
     },
@@ -146,7 +144,7 @@ Ejemplo del formato JSON esperado:
           "series": 4,
           "repeticiones": "8-10",
           "descanso": "120 segundos",
-          "imagen": "https://example.com/images/squat.jpg",
+          "imagen": "",
           "notas": "Mantener el pecho arriba y las rodillas alineadas"
         },
         {
@@ -154,7 +152,7 @@ Ejemplo del formato JSON esperado:
           "series": 4,
           "repeticiones": "8-10",
           "descanso": "120 segundos",
-          "imagen": "https://example.com/images/romanian-deadlift.jpg",
+          "imagen": "",
           "notas": "Mantener la espalda recta y las rodillas ligeramente flexionadas"
         },
         {
@@ -162,7 +160,7 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "12-15",
           "descanso": "60 segundos",
-          "imagen": "https://example.com/images/leg-extension.jpg",
+          "imagen": "",
           "notas": "Contraer los cuádriceps en la parte superior"
         },
         {
@@ -170,7 +168,7 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "12-15",
           "descanso": "60 segundos",
-          "imagen": "https://example.com/images/leg-curl.jpg",
+          "imagen": "",
           "notas": "Mantener las caderas firmes en el banco"
         },
         {
@@ -178,7 +176,7 @@ Ejemplo del formato JSON esperado:
           "series": 4,
           "repeticiones": "15-20",
           "descanso": "45 segundos",
-          "imagen": "https://example.com/images/calf-raise.jpg",
+          "imagen": "",
           "notas": "Hacer el movimiento completo"
         },
         {
@@ -186,7 +184,7 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "10-12 por pierna",
           "descanso": "60 segundos",
-          "imagen": "https://example.com/images/lunges.jpg",
+          "imagen": "",
           "notas": "Mantener el torso erguido"
         }
       ]
@@ -237,7 +235,7 @@ Ejemplo del formato JSON esperado:
           "series": 4,
           "repeticiones": "8-10",
           "descanso": "90 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/overhead-press-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Mantener el core activo y la espalda recta"
         },
         {
@@ -245,7 +243,7 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "12-15",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/lateral-raise-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Mantener una ligera flexión en los codos"
         },
         {
@@ -253,7 +251,7 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "12-15",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/front-raise-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Controlar el movimiento en ambas fases"
         },
         {
@@ -261,15 +259,14 @@ Ejemplo del formato JSON esperado:
           "series": 4,
           "repeticiones": "8-10",
           "descanso": "90 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/barbell-curl-muscles-worked.jpg",
-          "notas": "Mantener los codos cerca del cuerpo"
+          "imagen": ""
         },
         {
           "nombre": "Curl Martillo con Mancuernas",
           "series": 3,
           "repeticiones": "10-12",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/hammer-curl-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Mantener las muñecas neutras"
         },
         {
@@ -277,7 +274,7 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "10-12",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/incline-curl-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Ajustar el banco a 45 grados"
         }
       ]
@@ -293,7 +290,7 @@ Ejemplo del formato JSON esperado:
           "series": 4,
           "repeticiones": "8-10",
           "descanso": "90 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/pull-up-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Si no se pueden hacer completas, usar bandas de asistencia"
         },
         {
@@ -301,7 +298,7 @@ Ejemplo del formato JSON esperado:
           "series": 4,
           "repeticiones": "8-10",
           "descanso": "90 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/barbell-row-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Mantener la espalda recta y el core activo"
         },
         {
@@ -309,7 +306,7 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "10-12",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/dumbbell-row-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Mantener el torso paralelo al suelo"
         },
         {
@@ -317,23 +314,21 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "12-15",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/tricep-pushdown-muscles-worked.jpg",
-          "notas": "Mantener los codos cerca del cuerpo"
+          "imagen": ""
         },
         {
           "nombre": "Extensiones de Tríceps con Mancuerna",
           "series": 3,
           "repeticiones": "12-15",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/tricep-extension-muscles-worked.jpg",
-          "notas": "Mantener el brazo superior estable"
+          "imagen": ""
         },
         {
           "nombre": "Fondos en Paralelas",
           "series": 3,
           "repeticiones": "10-12",
           "descanso": "90 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/dips-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Inclinar el torso hacia adelante para enfatizar el pecho"
         }
       ]
@@ -349,7 +344,7 @@ Ejemplo del formato JSON esperado:
           "series": 4,
           "repeticiones": "8-10",
           "descanso": "120 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/squat-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Mantener el pecho arriba y las rodillas alineadas"
         },
         {
@@ -357,7 +352,7 @@ Ejemplo del formato JSON esperado:
           "series": 4,
           "repeticiones": "8-10",
           "descanso": "120 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/romanian-deadlift-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Mantener la espalda recta y las rodillas ligeramente flexionadas"
         },
         {
@@ -365,7 +360,7 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "12-15",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/leg-extension-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Contraer los cuádriceps en la parte superior"
         },
         {
@@ -373,7 +368,7 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "12-15",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/leg-curl-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Mantener las caderas firmes en el banco"
         },
         {
@@ -381,7 +376,7 @@ Ejemplo del formato JSON esperado:
           "series": 4,
           "repeticiones": "15-20",
           "descanso": "45 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/calf-raise-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Hacer el movimiento completo"
         },
         {
@@ -389,7 +384,7 @@ Ejemplo del formato JSON esperado:
           "series": 3,
           "repeticiones": "10-12 por pierna",
           "descanso": "60 segundos",
-          "imagen": "https://www.inspireusafoundation.org/wp-content/uploads/2022/03/lunges-muscles-worked.jpg",
+          "imagen": "",
           "notas": "Mantener el torso erguido"
         }
       ]
