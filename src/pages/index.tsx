@@ -4,7 +4,6 @@ import styles from './index.module.css';
 import TrainingViewer from '../components/TrainingViewer';
 import PlanViewer from '../components/PlanViewer';
 import { PlanEntrenamiento, Plan } from '../types/plan';
-import AuthButton from '../components/AuthButton';
 
 
 export default function Home() {
@@ -69,8 +68,8 @@ export default function Home() {
       }
       const result = await response.json();
       setTrainingPlan(result.plan);
-    } catch (err: any) {
-      setError(err.message || 'Error desconocido');
+    } catch (err) {
+      setError((err as Error).message || 'Error desconocido');
     } finally {
       setLoading(false);
     }
@@ -93,6 +92,7 @@ export default function Home() {
         numeroComidas: Number((form.numeroComidas as HTMLSelectElement).value),
         restricciones: (form.restricciones as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
         alimentosNoDeseados: (form.alimentosNoDeseados as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+        servicios: { nutricion: true, entrenamiento: false },
       };
       const response = await fetch('/api/generatePlan', {
         method: 'POST',
@@ -105,8 +105,8 @@ export default function Home() {
         throw new Error('El plan generado no tiene datos válidos.');
       }
       setPlan(result.plan);
-    } catch (err: any) {
-      setError(err.message || 'Error desconocido');
+    } catch (err) {
+      setError((err as Error).message || 'Error desconocido');
     } finally {
       setLoading(false);
     }

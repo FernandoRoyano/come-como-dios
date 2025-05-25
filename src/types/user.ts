@@ -3,7 +3,7 @@ export interface UserPlan {
   userId: string;
   type: 'nutrition' | 'training';
   createdAt: Date;
-  plan: any; // Aquí almacenaremos el plan completo
+  plan: unknown; // Aquí almacenaremos el plan completo
   metadata: {
     title: string;
     description?: string;
@@ -17,4 +17,4 @@ export interface User {
   name: string;
   image?: string;
   plans: UserPlan[];
-} 
+}

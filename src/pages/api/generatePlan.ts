@@ -95,6 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const result = await generatePlan({
+      servicios: { nutricion: true, entrenamiento: false },
       edad,
       peso,
       altura,

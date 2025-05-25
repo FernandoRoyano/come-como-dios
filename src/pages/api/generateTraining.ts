@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 import { generateTrainingPrompt } from '@/lib/generateTrainingPrompt';
-import { PlanEntrenamiento } from '@/types/plan';
+import { PlanEntrenamiento, PlanData } from '@/types/plan';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 });
 
-export async function generateTraining(data: any) {
+export async function generateTraining(data: PlanData) {
   try {
     console.log('Generando plan de entrenamiento con datos:', data);
     const prompt = generateTrainingPrompt(data);
@@ -321,7 +321,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       altura,
       sexo,
       objetivo,
-      actividadFisica
+      actividadFisica,
+      // Campos requeridos por PlanData pero no usados en entrenamiento
+      servicios: { nutricion: false, entrenamiento: true },
+      restricciones: [],
+      alimentosNoDeseados: [],
+      intensidadTrabajo: '',
+      numeroComidas: 0
     });
 
     console.log('Plan generado exitosamente');

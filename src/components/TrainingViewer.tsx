@@ -1,25 +1,25 @@
 import styles from './TrainingViewer.module.css';
-import { PlanEntrenamiento } from '@/types/plan';
+import { PlanEntrenamiento, Ejercicio } from '@/types/plan';
 import { useEffect, useState, useCallback } from 'react';
-import path from 'path';
+import Image from 'next/image';
 
 interface Props {
   plan: PlanEntrenamiento;
 }
 
 const TrainingViewer = ({ plan }: Props) => {
-  const [html2pdf, setHtml2pdf] = useState<any>(null);
+  const [html2pdf, setHtml2pdf] = useState<(() => unknown) | null>(null); // Uso unknown en vez de any para cumplir ESLint
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
-  const [isPdfLoading, setIsPdfLoading] = useState(false);
+  const [isPdfLoading, setIsPdfLoading] = useState<boolean>(false);
 
   useEffect(() => {
     let mounted = true;
     
     const loadHtml2pdf = async () => {
       try {
-        const module = await import('html2pdf.js');
+        const moduleHtml2Pdf = await import('html2pdf.js');
         if (mounted) {
-          setHtml2pdf(() => module.default);
+          setHtml2pdf(() => moduleHtml2Pdf.default);
         }
       } catch (error) {
         console.error('Error al cargar html2pdf:', error);
@@ -72,7 +72,11 @@ const TrainingViewer = ({ plan }: Props) => {
       };
 
       const pdf = html2pdf();
-      await pdf.set(opt).from(element).save();
+      if (typeof pdf === 'object' && pdf !== null && 'set' in pdf && typeof pdf.set === 'function') {
+        await pdf.set(opt).from(element).save();
+      } else {
+        throw new Error('html2pdf no tiene la forma esperada');
+      }
     } catch (error) {
       console.error('Error al generar el PDF:', error);
       alert('Hubo un error al generar el PDF. Por favor, inténtalo de nuevo.');
@@ -91,7 +95,7 @@ const TrainingViewer = ({ plan }: Props) => {
       + '.png';
   }
 
-  const renderEjercicio = useCallback((ejercicio: any, index: number) => {
+  const renderEjercicio = useCallback((ejercicio: Ejercicio, index: number) => {
     const ejercicioId = `${ejercicio.nombre}-${index}`;
     const hasError = imageErrors[ejercicioId];
     let imageSrc = ejercicio.imagen;
@@ -112,9 +116,12 @@ const TrainingViewer = ({ plan }: Props) => {
           </div>
         </div>
         <div className={styles['ejercicio-imagen']}>
-          <img 
+          <Image 
             src={imageSrc}
             alt={ejercicio.nombre}
+            layout="responsive"
+            width={500}
+            height={500}
             loading="lazy"
             onError={() => handleImageError(ejercicioId)}
           />
@@ -123,7 +130,7 @@ const TrainingViewer = ({ plan }: Props) => {
           <p className={styles['ejercicio-descripcion']}>{ejercicio.descripcion}</p>
         )}
         <div className={styles['ejercicio-detalles']}>
-          {ejercicio.musculos?.length > 0 && (
+          {Array.isArray(ejercicio.musculos) && ejercicio.musculos.length > 0 && (
             <div className={styles['musculos']}>
               <strong>Músculos:</strong> {ejercicio.musculos.join(', ')}
             </div>

@@ -7,7 +7,7 @@ interface Props {
 }
 
 const PlanViewer = ({ plan }: Props) => {
-  const [currentPlan, setCurrentPlan] = useState<Plan>(plan);
+  const [currentPlan] = useState<Plan>(plan);
 
   const handleDownloadPDF = async () => {
     const element = document.getElementById('plan-to-download');

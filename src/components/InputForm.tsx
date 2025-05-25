@@ -3,10 +3,8 @@ import styles from './InputForm.module.css';
 import { validateRestrictions } from '@/lib/validateRestrictions';
 import { PlanData } from '@/types/plan';
 
-interface FormData extends PlanData {}
-
 const InputForm = ({ onSubmit }: { onSubmit: (data: PlanData) => void }) => {
-  const [form, setForm] = useState<FormData>({
+  const [form, setForm] = useState<PlanData>({
     servicios: {
       nutricion: true,
       entrenamiento: false
@@ -82,7 +80,7 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: PlanData) => void }) => {
     setForm(prev => ({ ...prev, alimentosNoDeseados: alimentos }));
   };
 
-  const handleEntrenamientoChange = (campo: string, valor: any) => {
+  const handleEntrenamientoChange = (campo: string, valor: string | number | null) => {
     setForm(prev => ({
       ...prev,
       entrenamiento: {
