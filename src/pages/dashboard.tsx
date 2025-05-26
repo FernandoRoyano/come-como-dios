@@ -80,6 +80,13 @@ export default function Dashboard() {
         <h1>Mi Panel Personal</h1>
         <p>Bienvenido, {session?.user?.name}</p>
       </header>
+<section className={styles.userSummary}>
+  <div className={styles.userCard}>
+    <h2>Resumen de Usuario</h2>
+    <p><strong>Nombre:</strong> {session?.user?.name}</p>
+    <p><strong>Email:</strong> {session?.user?.email}</p>
+  </div>
+</section>
 
       <main className={styles.main}>
         <section className={styles.plansSection}>

@@ -1,7 +1,16 @@
 // Archivo de utilidades para verificar si existe una imagen en la carpeta ejercicios
 
+// Solo exportar la función si estamos en Node.js (no en navegador)
+const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
+
 export function existeImagenEjercicio(nombreArchivo: string): boolean {
-  // Solo funciona en Node.js (no en el navegador)
+  if (!isNode) {
+    if (typeof window !== 'undefined') {
+      // Advertencia en frontend
+      console.warn('existeImagenEjercicio solo debe usarse en backend/Node.js');
+    }
+    return false;
+  }
   try {
     const fs = require('fs');
     const path = require('path');
