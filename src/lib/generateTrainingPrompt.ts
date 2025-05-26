@@ -52,7 +52,24 @@ Material disponible:
 - Barras: ${entrenamiento.material.barras ? 'Sí' : 'No'}
 - Otro material: ${entrenamiento.material.otros.join(', ') || 'Ninguno'}
 
-REGLAS ESTRICTAS DE VALIDACIÓN:\n${reglasDias}\n4. TODOS los ejercicios DEBEN incluir:\n   - Nombre del ejercicio\n   - Número de series\n   - Número de repeticiones\n   - Tiempo de descanso\n   - Campo imagen (dejar vacío: "imagen": "")\n   - Notas técnicas\n5. El JSON DEBE ser válido y estar correctamente formateado\n6. TODOS los días especificados DEBEN estar incluidos\n7. NO se permiten días con menos ejercicios de los indicados (excepto descanso activo y domingo)\n\nFORMATO DE RESPUESTA:\nTu respuesta DEBE comenzar exactamente con:\n###JSON_START###\n\nY terminar exactamente con:\n###JSON_END###\n\nEntre estos delimitadores, DEBE haber SOLO un objeto JSON válido, sin ningún otro texto.
+REGLAS MUY ESTRICTAS:
+- Debes generar SIEMPRE los 7 días de la semana: lunes, martes, miercoles, jueves, viernes, sabado y domingo.
+- Lunes a sábado deben tener al menos 6 ejercicios cada uno (excepto "descanso activo" que puede tener 2-3).
+- Domingo debe ser de descanso completo, sin ejercicios.
+- Si algún día es de "descanso activo", debe tener al menos 2 ejercicios de movilidad o estiramiento.
+- NO repitas ejercicios en el mismo día.
+- TODOS los ejercicios deben tener nombre, series, repeticiones, descanso, imagen vacía, notas, material, músculos y descripción.
+- El JSON debe ser perfectamente válido y cumplir el ejemplo.
+- Si no puedes cumplir alguna regla, repite el día hasta que esté correcto.
+
+FORMATO DE RESPUESTA:
+Tu respuesta DEBE comenzar exactamente con:
+###JSON_START###
+
+Y terminar exactamente con:
+###JSON_END###
+
+Entre estos delimitadores, DEBE haber SOLO un objeto JSON válido, sin ningún otro texto.
 
 Instrucciones específicas para el plan:
 1. Cada día de entrenamiento normal debe incluir entre 3 y 8 ejercicios diferentes

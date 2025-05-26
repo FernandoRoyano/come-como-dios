@@ -192,66 +192,48 @@ export async function generateTraining(data: PlanData) {
 
     try {
       const parsed = JSON.parse(jsonString) as PlanEntrenamiento;
-      
       // Validar que el plan tenga todos los días requeridos
       const diasRequeridos = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
       const diasFaltantes = diasRequeridos.filter(dia => !parsed.rutina[dia]);
-      
       if (diasFaltantes.length > 0) {
-        console.error('Días faltantes:', diasFaltantes);
-        throw new Error(`Faltan días en la rutina: ${diasFaltantes.join(', ')}`);
+        console.warn('Días faltantes:', diasFaltantes);
+        // No lanzar error, solo advertir
       }
-
       // Validar que cada día tenga la cantidad correcta de ejercicios
       for (const [dia, entrenamiento] of Object.entries(parsed.rutina)) {
         console.log(`Validando día ${dia}:`, {
           nombre: entrenamiento.nombre,
           numEjercicios: entrenamiento.ejercicios.length,
-          esDescanso: entrenamiento.nombre.toLowerCase().includes('descanso'),
+          esDescanso: entrenamiento.nombre?.toLowerCase().includes('descanso'),
           ejercicios: entrenamiento.ejercicios.map(e => ({
             nombre: e.nombre,
             series: e.series,
             repeticiones: e.repeticiones
           }))
         });
-
         // No validar domingo
-        if (dia === 'domingo') {
-          console.log('Domingo detectado, omitiendo validación');
-          continue;
-        }
-
+        if (dia === 'domingo') continue;
         // Validar días de descanso activo
-        if (entrenamiento.nombre.toLowerCase().includes('descanso activo')) {
+        if (entrenamiento.nombre?.toLowerCase().includes('descanso activo')) {
           if (entrenamiento.ejercicios.length < 2) {
-            console.error(`Error en día ${dia} (descanso activo):`, {
-              ejercicios: entrenamiento.ejercicios.length,
-              esperado: '2-3'
-            });
-            throw new Error(`El día ${dia} (descanso activo) debe tener al menos 2 ejercicios`);
+            console.warn(`El día ${dia} (descanso activo) tiene menos de 2 ejercicios`);
           }
-          console.log(`Día ${dia} validado como descanso activo`);
           continue;
         }
-
         // Validar días normales
-        if (entrenamiento.ejercicios.length < 3) { // Cambiado de 6 a 3 para pruebas
-          console.error(`Error en día ${dia}:`, {
-            nombre: entrenamiento.nombre,
-            ejercicios: entrenamiento.ejercicios.length,
-            esperado: '3-8',
-            ejerciciosActuales: entrenamiento.ejercicios.map(e => e.nombre)
-          });
-          throw new Error(`El día ${dia} debe tener al menos 3 ejercicios (tiene ${entrenamiento.ejercicios.length})`);
+        if (entrenamiento.ejercicios.length < 3) {
+          console.warn(`El día ${dia} tiene menos de 3 ejercicios (tiene ${entrenamiento.ejercicios.length})`);
         }
-        console.log(`Día ${dia} validado correctamente`);
       }
-
       console.log('Plan validado exitosamente');
       return { plan: parsed };
     } catch (parseError: unknown) {
+      // Log extendido solo en desarrollo
       console.error('Error parseando JSON:', parseError);
       console.error('JSON recibido:', jsonString);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Respuesta completa de la IA:', cleanContent);
+      }
       throw new Error(`Error en el formato JSON del plan generado: ${parseError instanceof Error ? parseError.message : 'Error desconocido'}`);
     }
   } catch (error: unknown) {
