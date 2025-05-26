@@ -9,7 +9,7 @@ import { PlanEntrenamiento, Plan } from '../types/plan';
 export default function Home() {
   const { data: session, status } = useSession();
   const [plan, setPlan] = useState<Plan | null>(null);
-  const [trainingPlan, setTrainingPlan] = useState<PlanEntrenamiento | null>(null);
+  const [trainingResult, setTrainingResult] = useState<{ plan: PlanEntrenamiento, userData: any } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedPlans, setSelectedPlans] = useState<{
@@ -19,6 +19,54 @@ export default function Home() {
     nutricion: false,
     entrenamiento: false,
   });
+  const [trainingUserData, setTrainingUserData] = useState<any | null>(null);
+
+  // Función para generar el resumen contextual
+  function getTrainingResumen(data: any) {
+    if (!data) return '';
+    const sexo = data.sexo === 'masculino' ? 'Hombre' : data.sexo === 'femenino' ? 'Mujer' : '';
+    const edad = data.edad ? `${data.edad} años` : '';
+    const altura = data.altura ? `${(data.altura / 100).toFixed(2)} m` : '';
+    let actividad = '';
+    switch (data.actividadFisica) {
+      case 'sedentario': actividad = 'se mueve poco'; break;
+      case 'ligero': actividad = 'actividad ligera'; break;
+      case 'moderado': actividad = 'actividad moderada'; break;
+      case 'activo': actividad = 'actividad alta'; break;
+      case 'muy_activo': actividad = 'actividad muy alta'; break;
+      default: actividad = '';
+    }
+    let objetivo = '';
+    switch (data.objetivo) {
+      case 'perdida_grasa': objetivo = 'quiere perder grasa'; break;
+      case 'ganancia_musculo': objetivo = 'quiere ganar músculo'; break;
+      case 'mantenimiento': objetivo = 'quiere mantener su peso'; break;
+      case 'fuerza': objetivo = 'quiere ganar fuerza'; break;
+      case 'resistencia': objetivo = 'quiere mejorar su resistencia'; break;
+      default: objetivo = '';
+    }
+    let ubicacion = data.entrenamiento?.ubicacion === 'casa' ? 'entrenará en casa' : data.entrenamiento?.ubicacion === 'gimnasio' ? 'entrenará en gimnasio' : '';
+    let nivel = data.entrenamiento?.nivel ? (data.entrenamiento.nivel === 'principiante' ? 'es novato' : data.entrenamiento.nivel === 'intermedio' ? 'nivel intermedio' : 'nivel avanzado') : '';
+    let materialArr = [];
+    if (data.entrenamiento?.material) {
+      if (data.entrenamiento.material.pesas) materialArr.push('pesas');
+      if (data.entrenamiento.material.bandas) materialArr.push('bandas elásticas');
+      if (data.entrenamiento.material.maquinas) materialArr.push('máquinas');
+      if (data.entrenamiento.material.barras) materialArr.push('barras');
+      if (Array.isArray(data.entrenamiento.material.otros) && data.entrenamiento.material.otros.length > 0) materialArr.push(...data.entrenamiento.material.otros);
+    }
+    let material = materialArr.length > 0 ? `dispone de ${materialArr.join(' y ')}` : '';
+    return [
+      sexo,
+      edad,
+      altura,
+      actividad,
+      objetivo,
+      ubicacion,
+      nivel,
+      material
+    ].filter(Boolean).join(', ') + '.';
+  }
 
   const handleTrainingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,7 +74,6 @@ export default function Home() {
     setError(null);
     try {
       const form = e.currentTarget;
-      // ADAPTACIÓN: enviar la estructura esperada por la API
       const data = {
         entrenamiento: {
           ubicacion: (form.ubicacion as HTMLSelectElement).value,
@@ -57,6 +104,7 @@ export default function Home() {
         numeroComidas: 0,
         servicios: { nutricion: false, entrenamiento: true },
       };
+      // Guardar plan y datos juntos
       const response = await fetch('/api/generateTraining', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -67,7 +115,7 @@ export default function Home() {
         throw new Error(errorData.message || 'Error generando el plan de entrenamiento');
       }
       const result = await response.json();
-      setTrainingPlan(result.plan);
+      setTrainingResult({ plan: result.plan, userData: data });
     } catch (err) {
       setError((err as Error).message || 'Error desconocido');
     } finally {
@@ -227,7 +275,7 @@ export default function Home() {
 
         {error && <div className={styles.error}>{error}</div>}
 
-        {!selectedPlans.nutricion && !selectedPlans.entrenamiento && !plan && !trainingPlan && (
+        {!selectedPlans.nutricion && !selectedPlans.entrenamiento && !plan && !trainingResult && (
           <div className={styles.planSelector}>
             <h2>¿Qué tipo de plan deseas generar?</h2>
             <p className={styles.planSelectorSubtitle}>
@@ -271,7 +319,7 @@ export default function Home() {
           </div>
         )}
 
-        {selectedPlans.entrenamiento && !trainingPlan && (
+        {selectedPlans.entrenamiento && !trainingResult && (
           <form onSubmit={handleTrainingSubmit} className={styles.form}>
             <div className={styles.formHeader}>
               <h2>Personaliza tu Plan de Entrenamiento</h2>
@@ -553,21 +601,21 @@ export default function Home() {
           </div>
         )}
 
-        {trainingPlan && (
+        {trainingResult && (
           <div className={styles.planContainer}>
             <div className={styles.planHeader}>
               <h2 className={styles.planTitle}>Tu Plan de Entrenamiento</h2>
               <div className={styles.planButtons}>
                 <button
                   className={styles.generateOtherButton}
-                  onClick={() => setTrainingPlan(null)}
+                  onClick={() => setTrainingResult(null)}
                 >
                   Generar otro plan
                 </button>
                 <button
                   className={styles.newPlanButton}
                   onClick={() => {
-                    setTrainingPlan(null);
+                    setTrainingResult(null);
                     setSelectedPlans({ nutricion: false, entrenamiento: false });
                   }}
                 >
@@ -575,16 +623,16 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            <TrainingViewer plan={trainingPlan} />
+            <TrainingViewer plan={trainingResult.plan} resumen={getTrainingResumen(trainingResult.userData)} />
           </div>
         )}
 
-        {(plan || trainingPlan) && (
+        {(plan || trainingResult) && (
           <div className={styles.planActions}>
             <button
               onClick={() => {
                 setPlan(null);
-                setTrainingPlan(null);
+                setTrainingResult(null);
                 setSelectedPlans({ nutricion: false, entrenamiento: false });
               }}
               className={styles.backToSelectorButton}
@@ -595,11 +643,11 @@ export default function Home() {
         )}
       </main>
 
-      {(selectedPlans.nutricion || selectedPlans.entrenamiento || plan || trainingPlan) && (
+      {(selectedPlans.nutricion || selectedPlans.entrenamiento || plan || trainingResult) && (
         <button
           onClick={() => {
             setPlan(null);
-            setTrainingPlan(null);
+            setTrainingResult(null);
             setSelectedPlans({ nutricion: false, entrenamiento: false });
           }}
           className={styles.homeButton}
