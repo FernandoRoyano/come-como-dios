@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 import { generateTrainingPrompt } from '@/lib/generateTrainingPrompt';
-import { PlanEntrenamiento, PlanData } from '@/types/plan';
+import { PlanData } from '@/types/plan'; // Eliminado PlanEntrenamiento porque no se usa
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -9,7 +9,7 @@ const openai = new OpenAI({
 
 export async function generateTraining(data: PlanData) {
   try {
-    console.log('Generando plan de entrenamiento con datos:', data);
+    console.warn('Generando plan de entrenamiento con datos:', data);
     const prompt = generateTrainingPrompt(data);
 
     // Datos de prueba para verificar el sistema
@@ -109,132 +109,60 @@ export async function generateTraining(data: PlanData) {
 
     // En modo de prueba, retornar los datos de prueba
     if (process.env.NODE_ENV === 'development' && process.env.TEST_MODE === 'true') {
-      console.log('Modo de prueba activado, retornando datos de prueba');
+      console.warn('Modo de prueba activado, retornando datos de prueba');
       return { plan: testData };
     }
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7,
-      max_tokens: 4096
-    });
-
-    const content = completion.choices[0].message?.content || '';
-
-    if (!content) {
-      console.error('No se recibió contenido de la IA');
-      throw new Error('No se recibió respuesta de la IA');
-    }
-
-    console.log('Respuesta de la IA recibida, procesando...');
-    console.log('Longitud del contenido:', content.length);
-    console.log('Primeros 100 caracteres:', content.substring(0, 100));
-
-    // Limpiar el contenido de posibles caracteres no deseados
-    const cleanContent = content.replace(/[\u200B-\u200D\uFEFF]/g, '');
-
-    // Buscar los delimitadores de manera más flexible
-    const startMarker = '###JSON_START###';
-    const endMarker = '###JSON_END###';
-    
-    let start = cleanContent.indexOf(startMarker);
-    let end = cleanContent.indexOf(endMarker);
-
-    // Si no se encuentran los delimitadores exactos, intentar con variaciones
-    if (start === -1 || end === -1) {
-      console.log('Buscando delimitadores alternativos...');
-      const possibleStartMarkers = [
-        '###JSON_START###',
-        'JSON_START',
-        'START_JSON',
-        '{'
-      ];
-      const possibleEndMarkers = [
-        '###JSON_END###',
-        'JSON_END',
-        'END_JSON',
-        '}'
-      ];
-
-      for (const marker of possibleStartMarkers) {
-        start = cleanContent.indexOf(marker);
-        if (start !== -1) {
-          start += marker.length;
-          break;
-        }
-      }
-
-      for (const marker of possibleEndMarkers) {
-        end = cleanContent.indexOf(marker, start);
-        if (end !== -1) break;
-      }
-    } else {
-      start += startMarker.length;
-    }
-
-    if (start === -1 || end === -1) {
-      console.error('Contenido recibido:', cleanContent);
-      throw new Error('No se encontraron los delimitadores de JSON esperados.');
-    }
-
-    // Extraer y limpiar el JSON
-    let jsonString = cleanContent.slice(start, end).trim();
-    
-    // Limpiar el JSON de posibles caracteres no deseados
-    jsonString = jsonString
-      .replace(/[\u200B-\u200D\uFEFF]/g, '') // Eliminar caracteres invisibles
-      .replace(/[\n\r]+/g, ' ') // Reemplazar saltos de línea con espacios
-      .replace(/\s+/g, ' ') // Normalizar espacios
-      .trim();
-
-    console.log('JSON extraído (primeros 200 caracteres):', jsonString.substring(0, 200));
+    console.warn('Iniciando generación de plan de entrenamiento...');
+    console.warn('Entorno actual:', process.env.NODE_ENV);
 
     try {
-      const parsed = JSON.parse(jsonString) as PlanEntrenamiento;
-      // Validar que el plan tenga todos los días requeridos
-      const diasRequeridos = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-      const diasFaltantes = diasRequeridos.filter(dia => !parsed.rutina[dia]);
-      if (diasFaltantes.length > 0) {
-        console.warn('Días faltantes:', diasFaltantes);
-        // No lanzar error, solo advertir
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.7,
+        max_tokens: 4096
+      });
+
+      console.warn('Respuesta completa de OpenAI recibida:', completion);
+
+      const content = completion.choices[0].message?.content || '';
+
+      if (!content) {
+        console.error('No se recibió contenido de la IA');
+        throw new Error('No se recibió respuesta de la IA');
       }
-      // Validar que cada día tenga la cantidad correcta de ejercicios
-      for (const [dia, entrenamiento] of Object.entries(parsed.rutina)) {
-        console.log(`Validando día ${dia}:`, {
-          nombre: entrenamiento.nombre,
-          numEjercicios: entrenamiento.ejercicios.length,
-          esDescanso: entrenamiento.nombre?.toLowerCase().includes('descanso'),
-          ejercicios: entrenamiento.ejercicios.map(e => ({
-            nombre: e.nombre,
-            series: e.series,
-            repeticiones: e.repeticiones
-          }))
-        });
-        // No validar domingo
-        if (dia === 'domingo') continue;
-        // Validar días de descanso activo
-        if (entrenamiento.nombre?.toLowerCase().includes('descanso activo')) {
-          if (entrenamiento.ejercicios.length < 2) {
-            console.warn(`El día ${dia} (descanso activo) tiene menos de 2 ejercicios`);
-          }
-          continue;
-        }
-        // Validar días normales
-        if (entrenamiento.ejercicios.length < 3) {
-          console.warn(`El día ${dia} tiene menos de 3 ejercicios (tiene ${entrenamiento.ejercicios.length})`);
-        }
+
+      console.warn('Contenido recibido (primeros 200 caracteres):', content.substring(0, 200));
+
+      // Limpiar el contenido de posibles caracteres no deseados
+      const cleanContent = content.replace(/[\n\r]+/g, ' ').trim();
+
+      console.warn('Contenido limpio (primeros 200 caracteres):', cleanContent.substring(0, 200));
+
+      // Buscar delimitadores de JSON
+      const startMarker = '###JSON_START###';
+      const endMarker = '###JSON_END###';
+      let start = cleanContent.indexOf(startMarker);
+      const end = cleanContent.indexOf(endMarker); // Cambiado let a const
+
+      if (start === -1 || end === -1) {
+        console.error('Delimitadores no encontrados en el contenido:', cleanContent);
+        throw new Error('No se encontraron los delimitadores de JSON esperados.');
       }
-      console.log('Plan validado exitosamente');
+
+      start += startMarker.length;
+      const jsonString = cleanContent.slice(start, end).trim();
+
+      console.warn('JSON extraído (primeros 200 caracteres):', jsonString.substring(0, 200));
+
+      const parsed = JSON.parse(jsonString);
+      console.warn('JSON parseado exitosamente:', parsed);
+
       return { plan: parsed };
-    } catch (parseError: unknown) {
-      // Log extendido solo en desarrollo
-      console.error('Error parseando JSON:', parseError);
-      console.error('JSON recibido:', jsonString);
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Respuesta completa de la IA:', cleanContent);
-      }
-      throw new Error(`Error en el formato JSON del plan generado: ${parseError instanceof Error ? parseError.message : 'Error desconocido'}`);
+    } catch (error) {
+      console.error('Error durante la generación del plan:', error);
+      throw error;
     }
   } catch (error: unknown) {
     console.error('Error en generateTraining:', error);
@@ -248,7 +176,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    console.log('Recibida petición para generar plan de entrenamiento');
     const {
       entrenamiento,
       edad,
@@ -259,7 +186,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       actividadFisica
     } = req.body;
 
-    console.log('Datos recibidos:', {
+    console.warn('Recibida petición para generar plan de entrenamiento');
+    console.warn('Datos recibidos:', {
       entrenamiento,
       edad,
       peso,
@@ -312,7 +240,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       numeroComidas: 0
     });
 
-    console.log('Plan generado exitosamente');
+    console.warn('Plan generado exitosamente');
     res.status(200).json(result);
   } catch (error: unknown) {
     console.error('❌ Error al generar o parsear el plan:', error instanceof Error ? error.message : 'Error desconocido');

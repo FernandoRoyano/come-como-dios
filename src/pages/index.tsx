@@ -3,13 +3,13 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import styles from './index.module.css';
 import TrainingViewer from '../components/TrainingViewer';
 import PlanViewer from '../components/PlanViewer';
-import { PlanEntrenamiento, Plan } from '../types/plan';
+import { PlanEntrenamiento, Plan, UserData } from '../types/plan';
 
 
 export default function Home() {
   const { data: session, status } = useSession();
   const [plan, setPlan] = useState<Plan | null>(null);
-  const [trainingResult, setTrainingResult] = useState<{ plan: PlanEntrenamiento, userData: any } | null>(null);
+  const [trainingResult, setTrainingResult] = useState<{ plan: PlanEntrenamiento, userData: UserData } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedPlans, setSelectedPlans] = useState<{
@@ -19,35 +19,18 @@ export default function Home() {
     nutricion: false,
     entrenamiento: false,
   });
-  const [trainingUserData, setTrainingUserData] = useState<any | null>(null);
 
   // Función para generar el resumen contextual
-  function getTrainingResumen(data: any) {
+  function getTrainingResumen(data: UserData) {
     if (!data) return '';
     const sexo = data.sexo === 'masculino' ? 'Hombre' : data.sexo === 'femenino' ? 'Mujer' : '';
     const edad = data.edad ? `${data.edad} años` : '';
     const altura = data.altura ? `${(data.altura / 100).toFixed(2)} m` : '';
-    let actividad = '';
-    switch (data.actividadFisica) {
-      case 'sedentario': actividad = 'se mueve poco'; break;
-      case 'ligero': actividad = 'actividad ligera'; break;
-      case 'moderado': actividad = 'actividad moderada'; break;
-      case 'activo': actividad = 'actividad alta'; break;
-      case 'muy_activo': actividad = 'actividad muy alta'; break;
-      default: actividad = '';
-    }
-    let objetivo = '';
-    switch (data.objetivo) {
-      case 'perdida_grasa': objetivo = 'quiere perder grasa'; break;
-      case 'ganancia_musculo': objetivo = 'quiere ganar músculo'; break;
-      case 'mantenimiento': objetivo = 'quiere mantener su peso'; break;
-      case 'fuerza': objetivo = 'quiere ganar fuerza'; break;
-      case 'resistencia': objetivo = 'quiere mejorar su resistencia'; break;
-      default: objetivo = '';
-    }
-    let ubicacion = data.entrenamiento?.ubicacion === 'casa' ? 'entrenará en casa' : data.entrenamiento?.ubicacion === 'gimnasio' ? 'entrenará en gimnasio' : '';
-    let nivel = data.entrenamiento?.nivel ? (data.entrenamiento.nivel === 'principiante' ? 'es novato' : data.entrenamiento.nivel === 'intermedio' ? 'nivel intermedio' : 'nivel avanzado') : '';
-    let materialArr = [];
+    const actividad = data.actividadFisica || '';
+    const objetivo = data.objetivo || '';
+    const ubicacion = data.entrenamiento?.ubicacion || '';
+    const nivel = data.entrenamiento?.nivel || '';
+    const materialArr = [];
     if (data.entrenamiento?.material) {
       if (data.entrenamiento.material.pesas) materialArr.push('pesas');
       if (data.entrenamiento.material.bandas) materialArr.push('bandas elásticas');
@@ -55,7 +38,7 @@ export default function Home() {
       if (data.entrenamiento.material.barras) materialArr.push('barras');
       if (Array.isArray(data.entrenamiento.material.otros) && data.entrenamiento.material.otros.length > 0) materialArr.push(...data.entrenamiento.material.otros);
     }
-    let material = materialArr.length > 0 ? `dispone de ${materialArr.join(' y ')}` : '';
+    const material = materialArr.length > 0 ? `dispone de ${materialArr.join(' y ')}` : '';
     return [
       sexo,
       edad,
@@ -65,7 +48,7 @@ export default function Home() {
       ubicacion,
       nivel,
       material
-    ].filter(Boolean).join(', ') + '.';
+    ].filter(Boolean).join(', ');
   }
 
   const handleTrainingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

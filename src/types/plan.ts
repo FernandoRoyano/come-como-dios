@@ -104,4 +104,23 @@ export interface PlanData {
   actividadFisica: string;
   intensidadTrabajo: string;
   numeroComidas: number;
-} 
+}
+
+export interface UserData {
+  sexo: string; // Cambiado para aceptar cualquier string
+  edad: number;
+  altura: number; // en centímetros
+  actividadFisica: string; // Cambiado para aceptar cualquier string
+  objetivo: string; // Cambiado para aceptar cualquier string
+  entrenamiento?: {
+    ubicacion: string; // Cambiado para aceptar cualquier string
+    nivel: string; // Cambiado para aceptar cualquier string
+    material?: {
+      pesas?: boolean;
+      bandas?: boolean;
+      maquinas?: boolean;
+      barras?: boolean;
+      otros?: string[];
+    };
+  };
+}
