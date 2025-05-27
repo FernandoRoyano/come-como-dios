@@ -33,6 +33,7 @@ export interface Plan {
 }
 
 export interface Ejercicio {
+  id: string; // Identificador único para el ejercicio
   nombre: string;
   series: number;
   repeticiones: string;
@@ -104,6 +105,7 @@ export interface PlanData {
   actividadFisica: string;
   intensidadTrabajo: string;
   numeroComidas: number;
+  caloriasRecomendadas?: number; // Nueva propiedad para las calorías diarias recomendadas
 }
 
 export interface UserData {

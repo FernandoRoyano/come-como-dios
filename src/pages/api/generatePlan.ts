@@ -8,8 +8,58 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 });
 
+function calcularCaloriasDiarias({ peso, altura, edad, sexo, actividadFisica, objetivo }: { peso: number; altura: number; edad: number; sexo: string; actividadFisica: string; objetivo: string }): number {
+  // Ecuación de Mifflin-St Jeor para TMB
+  const tmb = sexo === 'masculino'
+    ? 10 * peso + 6.25 * altura - 5 * edad + 5
+    : 10 * peso + 6.25 * altura - 5 * edad - 161;
+
+  // Factores de actividad física más específicos
+  const factoresActividad: { [key: string]: number } = {
+    'sedentario': 1.2,
+    'ligero': 1.375,
+    'moderado': 1.55,
+    'activo': 1.725,
+    'muy activo': 1.9
+  };
+
+  const factorActividad = factoresActividad[actividadFisica.toLowerCase()] || 1.2; // Por defecto, sedentario
+
+  // Calorías base según actividad física
+  let calorias = tmb * factorActividad;
+
+  // Ajustes según el objetivo del usuario
+  if (objetivo.toLowerCase() === 'perder peso') {
+    calorias -= 500; // Déficit calórico típico
+  } else if (objetivo.toLowerCase() === 'ganar músculo') {
+    calorias += 500; // Superávit calórico típico
+  }
+
+  // Validaciones adicionales para garantizar un rango razonable
+  if (calorias < 1200) {
+    console.warn('Calorías calculadas demasiado bajas, ajustando a 1200.');
+    calorias = 1200;
+  } else if (calorias > 4000) {
+    console.warn('Calorías calculadas demasiado altas, ajustando a 4000.');
+    calorias = 4000;
+  }
+
+  return Math.round(calorias);
+}
+
 export async function generatePlan(data: PlanData) {
-  const prompt = generatePrompt(data);
+  const caloriasRecomendadas = calcularCaloriasDiarias({
+    peso: data.peso,
+    altura: data.altura,
+    edad: data.edad,
+    sexo: data.sexo,
+    actividadFisica: data.actividadFisica,
+    objetivo: data.objetivo
+  });
+
+  console.warn('Calorías diarias recomendadas calculadas:', caloriasRecomendadas);
+
+  const prompt = generatePrompt({ ...data, caloriasRecomendadas });
 
   const completion = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',

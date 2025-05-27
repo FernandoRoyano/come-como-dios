@@ -1,91 +1,78 @@
-import { Plan, Comida } from '@/types/plan';
+import { PlanEntrenamiento, DiaEntrenamiento, SemanaProgresion } from '@/types/plan';
 
-export function validatePlan(plan: Plan): void {
+export function validatePlan(plan: any): boolean {
   if (!plan || typeof plan !== 'object') {
-    throw new Error('El plan debe ser un objeto válido');
+    return false;
   }
 
-  if (!plan.dias || typeof plan.dias !== 'object') {
-    throw new Error('El plan debe contener días válidos');
+  const { rutina, progresion, consideraciones } = plan as PlanEntrenamiento;
+
+  if (!rutina || typeof rutina !== 'object') {
+    return false;
   }
 
-  if (!plan.listaCompra || typeof plan.listaCompra !== 'object') {
-    throw new Error('El plan debe contener una lista de compra válida');
-  }
-
-  if (!plan.macronutrientes || typeof plan.macronutrientes !== 'object') {
-    throw new Error('El plan debe contener macronutrientes válidos');
-  }
-
-  // Validar cada día
-  Object.entries(plan.dias).forEach(([dia, comidas]) => {
-    if (!comidas || typeof comidas !== 'object') {
-      throw new Error(`El día ${dia} debe ser un objeto válido`);
+  const isRutinaValid = Object.entries(rutina).every(([dia, diaEntrenamiento]) => {
+    const entrenamiento = diaEntrenamiento as DiaEntrenamiento;
+    if (!entrenamiento || typeof entrenamiento !== 'object') {
+      return false;
     }
 
-    if (!comidas.desayuno || !comidas.almuerzo || !comidas.cena) {
-      throw new Error(`El día ${dia} debe contener desayuno, almuerzo y cena`);
+    const { nombre, ejercicios, duracion, intensidad, calorias } = entrenamiento;
+    if (
+      typeof nombre !== 'string' ||
+      !Array.isArray(ejercicios) ||
+      typeof duracion !== 'number' ||
+      typeof intensidad !== 'string' ||
+      typeof calorias !== 'number'
+    ) {
+      return false;
     }
 
-    // Validar cada comida
-    ['desayuno', 'almuerzo', 'cena'].forEach(tipoComida => {
-      const comida = comidas[tipoComida as keyof typeof comidas] as Comida;
-      if (!comida || typeof comida !== 'object') {
-        throw new Error(`La comida ${tipoComida} del día ${dia} debe ser un objeto válido`);
-      }
-
-      if (!comida.nombre || typeof comida.nombre !== 'string') {
-        throw new Error(`La comida ${tipoComida} del día ${dia} debe tener un nombre válido`);
-      }
-
-      if (!comida.descripcion || typeof comida.descripcion !== 'string') {
-        throw new Error(`La comida ${tipoComida} del día ${dia} debe tener una descripción válida`);
-      }
-
-      if (typeof comida.calorias !== 'number' || isNaN(comida.calorias)) {
-        throw new Error(`La comida ${tipoComida} del día ${dia} debe tener calorías válidas`);
-      }
-
-      if (typeof comida.proteinas !== 'number' || isNaN(comida.proteinas)) {
-        throw new Error(`La comida ${tipoComida} del día ${dia} debe tener proteínas válidas`);
-      }
-
-      if (typeof comida.carbohidratos !== 'number' || isNaN(comida.carbohidratos)) {
-        throw new Error(`La comida ${tipoComida} del día ${dia} debe tener carbohidratos válidos`);
-      }
-
-      if (typeof comida.grasas !== 'number' || isNaN(comida.grasas)) {
-        throw new Error(`La comida ${tipoComida} del día ${dia} debe tener grasas válidas`);
-      }
+    return ejercicios.every(ejercicio => {
+      const { nombre, series, repeticiones, descanso } = ejercicio;
+      return (
+        typeof nombre === 'string' &&
+        typeof series === 'number' &&
+        typeof repeticiones === 'string' &&
+        typeof descanso === 'string'
+      );
     });
   });
 
-  // Validar lista de compra
-  Object.entries(plan.listaCompra).forEach(([categoria, items]) => {
-    if (!Array.isArray(items)) {
-      throw new Error(`La categoría ${categoria} de la lista de compra debe ser un array`);
-    }
+  if (!isRutinaValid) {
+    return false;
+  }
 
-    items.forEach((item, index) => {
-      if (typeof item !== 'string') {
-        throw new Error(`El item ${index} de la categoría ${categoria} debe ser un string`);
-      }
-    });
+  if (!progresion || !Array.isArray(progresion.semanas)) {
+    return false;
+  }
+
+  const isProgresionValid = progresion.semanas.every((semana: SemanaProgresion) => {
+    const { semana: numeroSemana, objetivos, ajustes } = semana;
+    return (
+      typeof numeroSemana === 'number' &&
+      Array.isArray(objetivos) &&
+      Array.isArray(ajustes)
+    );
   });
 
-  // Validar macronutrientes
-  const { calorias, proteinas, carbohidratos, grasas } = plan.macronutrientes;
-  if (typeof calorias !== 'number' || isNaN(calorias)) {
-    throw new Error('Las calorías deben ser un número válido');
+  if (!isProgresionValid) {
+    return false;
   }
-  if (typeof proteinas !== 'number' || isNaN(proteinas)) {
-    throw new Error('Las proteínas deben ser un número válido');
+
+  if (!consideraciones || typeof consideraciones !== 'object') {
+    return false;
   }
-  if (typeof carbohidratos !== 'number' || isNaN(carbohidratos)) {
-    throw new Error('Los carbohidratos deben ser un número válido');
+
+  const { calentamiento, enfriamiento, descanso, notas } = consideraciones;
+  if (
+    !Array.isArray(calentamiento) ||
+    !Array.isArray(enfriamiento) ||
+    typeof descanso !== 'string' ||
+    typeof notas !== 'string'
+  ) {
+    return false;
   }
-  if (typeof grasas !== 'number' || isNaN(grasas)) {
-    throw new Error('Las grasas deben ser un número válido');
-  }
+
+  return true;
 }
-  
