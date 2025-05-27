@@ -25,6 +25,7 @@
   margin: 0;
   background: linear-gradient(135deg, #fff 0%, #e4e8eb 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -527,6 +528,16 @@
 
 .homeButton span {
   font-size: 1.2rem;
+}
+
+/* Aplicar la tipografía global */
+.title,
+.subtitle,
+.planSelector h2,
+.planSelectorSubtitle,
+.planButton h3,
+.planButton p {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 @media (max-width: 768px) {

@@ -5,6 +5,39 @@ import TrainingViewer from '../components/TrainingViewer';
 import PlanViewer from '../components/PlanViewer';
 import { PlanEntrenamiento, Plan, UserData } from '../types/plan';
 
+function UserContextDisplay({ data }: { data: UserData }) {
+  if (!data) return null;
+
+  const sexo = data.sexo === 'masculino' ? 'Hombre' : data.sexo === 'femenino' ? 'Mujer' : '';
+  const edad = data.edad ? `${data.edad} años` : '';
+  const altura = data.altura ? `${(data.altura / 100).toFixed(2)} m` : '';
+  const actividad = data.actividadFisica || '';
+  const objetivo = data.objetivo || '';
+  const nivel = data.entrenamiento?.nivel || '';
+  const materialArr = [];
+
+  if (data.entrenamiento?.material) {
+    if (data.entrenamiento.material.pesas) materialArr.push('pesas');
+    if (data.entrenamiento.material.bandas) materialArr.push('bandas elásticas');
+    if (data.entrenamiento.material.maquinas) materialArr.push('máquinas');
+    if (data.entrenamiento.material.barras) materialArr.push('barras');
+  }
+
+  const material = materialArr.length > 0 ? materialArr.join(', ') : 'No especificado';
+
+  return (
+    <div className={styles['user-context']}>
+      <h2>Información del Usuario</h2>
+      <div className={styles['context-item']}><strong>Género:</strong> {sexo}</div>
+      <div className={styles['context-item']}><strong>Edad:</strong> {edad}</div>
+      <div className={styles['context-item']}><strong>Altura:</strong> {altura}</div>
+      <div className={styles['context-item']}><strong>Actividad Física:</strong> {actividad}</div>
+      <div className={styles['context-item']}><strong>Objetivo:</strong> {objetivo}</div>
+      <div className={styles['context-item']}><strong>Nivel:</strong> {nivel}</div>
+      <div className={styles['context-item']}><strong>Material Disponible:</strong> {material}</div>
+    </div>
+  );
+}
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -586,6 +619,7 @@ export default function Home() {
 
         {trainingResult && (
           <div className={styles.planContainer}>
+            <UserContextDisplay data={trainingResult.userData} />
             <div className={styles.planHeader}>
               <h2 className={styles.planTitle}>Tu Plan de Entrenamiento</h2>
               <div className={styles.planButtons}>

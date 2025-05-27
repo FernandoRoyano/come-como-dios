@@ -56,6 +56,13 @@
   color: #0f172a;
   transition: all 0.2s ease;
   margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  font-family: inherit;
 }
 
 .form-group textarea {

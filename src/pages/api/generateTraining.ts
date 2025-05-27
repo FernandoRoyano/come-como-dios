@@ -12,6 +12,8 @@ export async function generateTraining(data: PlanData) {
     console.warn('Generando plan de entrenamiento con datos:', data);
     const prompt = generateTrainingPrompt(data);
 
+    console.warn('Prompt generado para OpenAI:', prompt);
+
     // Datos de prueba para verificar el sistema
     const testData = {
       rutina: {
@@ -148,7 +150,8 @@ export async function generateTraining(data: PlanData) {
 
       if (start === -1 || end === -1) {
         console.error('Delimitadores no encontrados en el contenido:', cleanContent);
-        throw new Error('No se encontraron los delimitadores de JSON esperados.');
+        console.warn('Respuesta completa de OpenAI:', completion);
+        throw new Error('No se encontraron los delimitadores de JSON esperados. Por favor, verifica el prompt o la configuración del modelo.');
       }
 
       start += startMarker.length;

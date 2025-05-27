@@ -219,3 +219,9 @@ a.secondary {
     filter: invert();
   }
 }
+
+/* Unificar la tipografía global */
+:root {
+  --font-geist-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-geist-mono: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
