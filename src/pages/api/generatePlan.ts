@@ -9,39 +9,30 @@ const openai = new OpenAI({
 });
 
 function calcularCaloriasDiarias({ peso, altura, edad, sexo, actividadFisica, objetivo }: { peso: number; altura: number; edad: number; sexo: string; actividadFisica: string; objetivo: string }): number {
-  // Ecuación de Mifflin-St Jeor para TMB
   const tmb = sexo === 'masculino'
     ? 10 * peso + 6.25 * altura - 5 * edad + 5
     : 10 * peso + 6.25 * altura - 5 * edad - 161;
 
-  // Factores de actividad física más específicos
-  const factoresActividad: { [key: string]: number } = {
+  const factoresActividad: Record<string, number> = {
     'sedentario': 1.2,
     'ligero': 1.375,
     'moderado': 1.55,
     'activo': 1.725,
-    'muy activo': 1.9
+    'muy activo': 2.0 // Incrementado para reflejar actividad física elevada
   };
 
-  const factorActividad = factoresActividad[actividadFisica.toLowerCase()] || 1.2; // Por defecto, sedentario
+  const factorActividad = factoresActividad[actividadFisica.toLowerCase()] || 1.2;
 
-  // Calorías base según actividad física
   let calorias = tmb * factorActividad;
 
-  // Ajustes según el objetivo del usuario
-  if (objetivo.toLowerCase() === 'perder peso') {
-    calorias -= 500; // Déficit calórico típico
-  } else if (objetivo.toLowerCase() === 'ganar músculo') {
-    calorias += 500; // Superávit calórico típico
+  if (objetivo.toLowerCase() === 'ganar músculo') {
+    calorias += 750; // Incrementado para reflejar mejor el objetivo de ganar músculo
   }
 
-  // Validaciones adicionales para garantizar un rango razonable
-  if (calorias < 1200) {
-    console.warn('Calorías calculadas demasiado bajas, ajustando a 1200.');
-    calorias = 1200;
-  } else if (calorias > 4000) {
-    console.warn('Calorías calculadas demasiado altas, ajustando a 4000.');
-    calorias = 4000;
+  if (calorias < 1500) {
+    calorias = 1500; // Ajuste mínimo para evitar valores demasiado bajos
+  } else if (calorias > 4500) {
+    calorias = 4500; // Ajuste máximo para evitar valores extremos
   }
 
   return Math.round(calorias);
@@ -57,9 +48,23 @@ export async function generatePlan(data: PlanData) {
     objetivo: data.objetivo
   });
 
-  console.warn('Calorías diarias recomendadas calculadas:', caloriasRecomendadas);
+  const caloriasPorComida = Math.round(caloriasRecomendadas / data.numeroComidas);
 
-  const prompt = generatePrompt({ ...data, caloriasRecomendadas });
+  const contexto = `
+    Contexto del usuario:
+    - Edad: ${data.edad} años
+    - Peso: ${data.peso} kg
+    - Altura: ${data.altura} cm
+    - Sexo: ${data.sexo}
+    - Actividad física: ${data.actividadFisica}
+    - Objetivo: ${data.objetivo}
+    - Restricciones alimenticias: ${data.restricciones.join(', ') || 'Ninguna'}
+    - Alimentos no deseados: ${data.alimentosNoDeseados.join(', ') || 'Ninguno'}
+    - Número de comidas: ${data.numeroComidas}
+    - Calorías por comida: ${caloriasPorComida}
+  `;
+
+  const prompt = `${contexto}\n\n${generatePrompt({ ...data, caloriasRecomendadas })}`;
 
   const completion = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
@@ -75,7 +80,6 @@ export async function generatePlan(data: PlanData) {
   const end = content.indexOf('###JSON_END###');
 
   if (start === -1 || end === -1) {
-    console.error('Contenido recibido:', content);
     throw new Error('No se encontraron los delimitadores de JSON esperados.');
   }
 
@@ -83,11 +87,15 @@ export async function generatePlan(data: PlanData) {
 
   try {
     const parsed = JSON.parse(jsonString) as Plan;
+
+    // Validar que el número de comidas generadas coincida con el solicitado
+    if (parsed.comidas && parsed.comidas.length !== data.numeroComidas) {
+      throw new Error(`El número de comidas generadas (${parsed.comidas.length}) no coincide con el solicitado (${data.numeroComidas}).`);
+    }
+
     validatePlan(parsed);
     return { plan: parsed };
   } catch (parseError: unknown) {
-    console.error('Error parseando JSON:', parseError);
-    console.error('JSON recibido:', jsonString);
     throw new Error(`Error en el formato JSON del plan generado: ${parseError instanceof Error ? parseError.message : 'Error desconocido'}`);
   }
 }
@@ -137,9 +145,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 
-  if (typeof numeroComidas !== 'number' || numeroComidas < 3 || numeroComidas > 6) {
+  if (typeof numeroComidas !== 'number' || numeroComidas < 1 || numeroComidas > 6) {
     return res.status(400).json({
-      message: 'El número de comidas debe ser un número entre 3 y 6'
+      message: 'El número de comidas debe ser un número entre 1 y 6'
     });
   }
 
@@ -160,7 +168,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.status(200).json(result);
   } catch (error: unknown) {
-    console.error('❌ Error al generar o parsear el plan:', error instanceof Error ? error.message : 'Error desconocido');
     res.status(500).json({ 
       message: 'Error generando el plan con IA.', 
       details: error instanceof Error ? error.message : 'Error desconocido',

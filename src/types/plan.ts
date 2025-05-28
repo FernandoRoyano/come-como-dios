@@ -30,6 +30,7 @@ export interface Plan {
   restricciones?: string[];
   objetivo?: string;
   numeroComidas?: number;
+  comidas?: Comida[]; // Nueva propiedad para almacenar las comidas generadas
 }
 
 export interface Ejercicio {

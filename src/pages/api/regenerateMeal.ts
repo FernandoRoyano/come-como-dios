@@ -9,16 +9,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Método no permitido' });
   }
 
-  const { dia, comida, restricciones, objetivo, numeroComidas } = req.body;
+  const { dia, comida, restricciones, objetivo, numeroComidas, caloriasTotales } = req.body;
 
   // Validación básica
-  if (!dia || !comida || !objetivo || !numeroComidas) {
-    return res.status(400).json({ message: 'Faltan datos requeridos: día, comida, objetivo o número de comidas' });
+  if (!dia || !comida || !objetivo || !numeroComidas || !caloriasTotales) {
+    return res.status(400).json({ message: 'Faltan datos requeridos: día, comida, objetivo, número de comidas o calorías totales' });
   }
 
   const restrStr = Array.isArray(restricciones) && restricciones.length > 0
     ? restricciones.join(', ')
     : 'Ninguna';
+
+  // Calcular calorías por comida
+  const caloriasPorComida = Math.round(caloriasTotales / numeroComidas);
 
   const prompt = `
 Eres un nutricionista profesional. Crea una comida para el día "${dia}", tipo "${comida}", con las siguientes condiciones:
@@ -26,6 +29,7 @@ Eres un nutricionista profesional. Crea una comida para el día "${dia}", tipo "
 🔹 Objetivo del paciente: ${objetivo}
 🔹 Número total de comidas al día: ${numeroComidas}
 🔹 Restricciones alimentarias: ${restrStr}
+🔹 Calorías asignadas para esta comida: ${caloriasPorComida}
 
 🧾 La comida debe contener:
 - Nombre del tipo de comida: "${comida}"
@@ -37,7 +41,7 @@ Eres un nutricionista profesional. Crea una comida para el día "${dia}", tipo "
 {
   "nombre": "${comida}",
   "descripcion": "100g avena, 200ml leche, 1 plátano",
-  "calorias": 450,
+  "calorias": ${caloriasPorComida},
   "proteinas": 20,
   "carbohidratos": 50,
   "grasas": 15

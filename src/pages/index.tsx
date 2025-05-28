@@ -176,6 +176,37 @@ export default function Home() {
     }
   };
 
+  const handleRegenerateMeal = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      const form = e.currentTarget;
+      const data = {
+        dia: (form.dia as HTMLSelectElement).value,
+        comida: (form.comida as HTMLSelectElement).value,
+        restricciones: (form.restricciones as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+        objetivo: (form.objetivo as HTMLSelectElement).value,
+        numeroComidas: Number((form.numeroComidas as HTMLSelectElement).value),
+      };
+
+      const response = await fetch('/api/regenerateMeal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error('Error al regenerar la comida');
+
+      const result = await response.json();
+      alert(`Comida regenerada: ${result.nombre}\nDescripción: ${result.descripcion}\nCalorías: ${result.calorias}, Proteínas: ${result.proteinas}, Carbohidratos: ${result.carbohidratos}, Grasas: ${result.grasas}`);
+    } catch (err) {
+      setError((err as Error).message || 'Error desconocido');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const togglePlan = (plan: 'nutricion' | 'entrenamiento') => {
     setSelectedPlans(prev => ({
       ...prev,
@@ -559,6 +590,8 @@ export default function Home() {
               <label htmlFor="numeroComidas">Número de Comidas Diarias</label>
               <select name="numeroComidas" id="numeroComidas" required>
                 <option value="">Selecciona el número</option>
+                <option value="1">1 comida</option>
+                <option value="2">2 comidas</option>
                 <option value="3">3 comidas</option>
                 <option value="4">4 comidas</option>
                 <option value="5">5 comidas</option>
@@ -614,6 +647,73 @@ export default function Home() {
               </div>
             </div>
             <PlanViewer plan={plan} />
+
+            {/* Formulario para regenerar comidas */}
+            <form onSubmit={handleRegenerateMeal} className={styles.form}>
+              <div className={styles.formHeader}>
+                <h2>Regenerar Comida</h2>
+                <p>Selecciona las opciones para regenerar una comida específica</p>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="dia">Día</label>
+                <select name="dia" id="dia" required>
+                  <option value="">Selecciona el día</option>
+                  <option value="lunes">Lunes</option>
+                  <option value="martes">Martes</option>
+                  <option value="miercoles">Miércoles</option>
+                  <option value="jueves">Jueves</option>
+                  <option value="viernes">Viernes</option>
+                  <option value="sabado">Sábado</option>
+                  <option value="domingo">Domingo</option>
+                </select>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="comida">Tipo de Comida</label>
+                <select name="comida" id="comida" required>
+                  <option value="">Selecciona el tipo</option>
+                  <option value="desayuno">Desayuno</option>
+                  <option value="almuerzo">Almuerzo</option>
+                  <option value="cena">Cena</option>
+                  <option value="snack">Snack</option>
+                </select>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="restricciones">Restricciones Alimentarias (separadas por comas)</label>
+                <input type="text" name="restricciones" id="restricciones" placeholder="Ej: sin gluten, sin lactosa" />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="objetivo">Objetivo</label>
+                <select name="objetivo" id="objetivo" required>
+                  <option value="">Selecciona el objetivo</option>
+                  <option value="perdida_grasa">Pérdida de grasa</option>
+                  <option value="ganancia_musculo">Ganancia muscular</option>
+                  <option value="mantenimiento">Mantenimiento</option>
+                </select>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="numeroComidas">Número de Comidas Diarias</label>
+                <select name="numeroComidas" id="numeroComidas" required>
+                  <option value="">Selecciona el número</option>
+                  <option value="1">1 comida</option>
+                  <option value="2">2 comidas</option>
+                  <option value="3">3 comidas</option>
+                  <option value="4">4 comidas</option>
+                  <option value="5">5 comidas</option>
+                  <option value="6">6 comidas</option>
+                </select>
+              </div>
+
+              <div className={styles.formActions}>
+                <button type="submit" className={styles.submitButton}>
+                  Regenerar Comida
+                </button>
+              </div>
+            </form>
           </div>
         )}
 
