@@ -7,7 +7,7 @@ export function validatePlan(plan: PlanEntrenamiento): boolean {
 
   if (!rutina || typeof rutina !== 'object') return false;
 
-  const isRutinaValida = Object.entries(rutina).every(([_, dia]: [string, DiaEntrenamiento]) => {
+  const isRutinaValida = Object.entries(rutina).every(([, dia]: [string, DiaEntrenamiento]) => {
     if (
       !dia ||
       typeof dia !== 'object' ||

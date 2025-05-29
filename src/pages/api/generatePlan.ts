@@ -95,7 +95,7 @@ export async function generatePlan(data: PlanData) {
 
     const entrenamiento: PlanEntrenamiento = {
       rutina: Object.fromEntries(
-        Object.entries(parsed.dias).map(([key, dia]) => [
+        Object.entries(parsed.dias).map(([key]) => [
           key,
           {
             nombre: key,

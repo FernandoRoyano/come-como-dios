@@ -121,18 +121,18 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: PlanData) => void }) => {
     }));
   };
 
-  const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, checked } = e.target;
-    setForm(prev => ({
-      ...prev,
-      entrenamiento: {
-        ...prev.entrenamiento!,
-        objetivos: checked
-          ? [...prev.entrenamiento!.objetivos, value]
-          : prev.entrenamiento!.objetivos.filter(obj => obj !== value)
-      }
-    }));
-  };
+const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { value, checked } = e.target;
+  setForm(prev => ({
+    ...prev,
+    entrenamiento: {
+      ...prev.entrenamiento!,
+      objetivos: checked
+        ? [...prev.entrenamiento!.objetivos, value]
+        : prev.entrenamiento!.objetivos.filter((obj: string) => obj !== value)
+    }
+  }));
+};
 
   const handleEntrenamientoLesionesChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const lesiones = e.target.value

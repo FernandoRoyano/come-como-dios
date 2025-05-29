@@ -1,15 +1,49 @@
-// Archivo: src/types/planEntrenamiento.ts
+export interface Comida {
+  nombre: string;
+  descripcion: string;
+  calorias: number;
+  proteinas: number;
+  carbohidratos: number;
+  grasas: number;
+}
+
+export interface Dia {
+  desayuno: Comida;
+  almuerzo: Comida;
+  cena: Comida;
+  snacks?: Comida[];
+}
+
+export interface Plan {
+  dias: {
+    [key: string]: Dia;
+  };
+  listaCompra: {
+    [key: string]: string[];
+  };
+  macronutrientes: {
+    calorias: number;
+    proteinas: number;
+    carbohidratos: number;
+    grasas: number;
+  };
+  restricciones?: string[];
+  objetivo?: string;
+  numeroComidas?: number;
+  comidas?: Comida[];
+}
 
 export interface Ejercicio {
   id: string;
   nombre: string;
   series: number;
   repeticiones: string;
-  descripcion: string;
-  material: string;
-  musculos: string[];
-  notas: string;
-  descanso: string;
+  descripcion?: string;
+  material?: string;
+  musculos?: string[];
+  notas?: string;
+  imagen?: string;
+  descanso?: string;
 }
 
 export interface DiaEntrenamiento {
@@ -30,10 +64,10 @@ export interface PlanEntrenamiento {
   rutina: {
     [key: string]: DiaEntrenamiento;
   };
-  progresion: string | {
+  progresion: {
     semanas: SemanaProgresion[];
   };
-  consideraciones: string | {
+  consideraciones: {
     calentamiento: string[];
     enfriamiento: string[];
     descanso: string;
@@ -41,71 +75,27 @@ export interface PlanEntrenamiento {
   };
 }
 
-export interface DatosEntrenamiento {
-  ubicacion: 'casa' | 'gimnasio' | null;
-  material: {
-    pesas: boolean;
-    bandas: boolean;
-    maquinas: boolean;
-    barras: boolean;
-    otros: string[];
-  };
-  nivel: string;
-  diasEntrenamiento: number;
-  duracionSesion: number;
-  objetivos: string[];
-  lesiones: string[];
-  preferencias: string[];
-}
-
-// Archivo: src/types/planNutricional.ts
-
-export interface Comida {
-  nombre: string;
-  descripcion: string;
-  calorias: number;
-  proteinas: number;
-  carbohidratos: number;
-  grasas: number;
-}
-
-export interface Dia {
-  desayuno: Comida;
-  almuerzo: Comida;
-  cena: Comida;
-  snacks?: Comida[];
-}
-
-export interface PlanNutricional {
-  dias: {
-    [key: string]: Dia;
-  };
-  listaCompra: {
-    [key: string]: string[];
-  };
-  macronutrientes: {
-    calorias: number;
-    proteinas: number;
-    carbohidratos: number;
-    grasas: number;
-  };
-  restricciones?: string[];
-  objetivo?: string;
-  numeroComidas?: number;
-  comidas?: Comida[];
-}
-
-// Archivo: src/types/plan.ts
-
-import { PlanEntrenamiento, DatosEntrenamiento } from './planEntrenamiento';
-import { PlanNutricional } from './planNutricional';
-
 export interface PlanData {
   servicios: {
     nutricion: boolean;
     entrenamiento: boolean;
   };
-  entrenamiento?: DatosEntrenamiento;
+  entrenamiento?: {
+    ubicacion: 'casa' | 'gimnasio' | null;
+    material: {
+      pesas: boolean;
+      bandas: boolean;
+      maquinas: boolean;
+      barras: boolean;
+      otros: string[];
+    };
+    nivel: string;
+    diasEntrenamiento: number;
+    duracionSesion: number;
+    objetivos: string[];
+    lesiones: string[];
+    preferencias: string[];
+  };
   edad: number;
   peso: number;
   altura: number;
@@ -119,7 +109,21 @@ export interface PlanData {
   caloriasRecomendadas?: number;
 }
 
-export interface PlanCompleto {
-  nutricional?: PlanNutricional;
-  entrenamiento?: PlanEntrenamiento;
+export interface UserData {
+  sexo: string;
+  edad: number;
+  altura: number;
+  actividadFisica: string;
+  objetivo: string;
+  entrenamiento?: {
+    ubicacion: string;
+    nivel: string;
+    material?: {
+      pesas?: boolean;
+      bandas?: boolean;
+      maquinas?: boolean;
+      barras?: boolean;
+      otros?: string[];
+    };
+  };
 }

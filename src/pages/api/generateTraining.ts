@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 import { generateTrainingPrompt } from '@/lib/generateTrainingPrompt';
-import { PlanData } from '@/types/plan';
+import { PlanData, PlanEntrenamiento, SemanaProgresion } from '@/types/plan';
 import { validatePlan } from '@/lib/validatePlan';
 import { v4 as uuidv4 } from 'uuid';
 import { distribuirDias } from '@/utils/distributeTrainingDays';
@@ -72,7 +72,7 @@ export async function generateTraining(data: PlanData) {
     let parsed: ParsedPlan;
     try {
       parsed = JSON.parse(jsonString);
-    } catch (error) {
+    } catch {
       throw new Error('El JSON recibido no es válido.');
     }
 
@@ -90,23 +90,27 @@ export async function generateTraining(data: PlanData) {
     const rutinaDistribuida = Object.fromEntries(
       todosLosDias.map(dia => {
         const entrada = diasSeleccionados.includes(dia) ? diasGenerados.shift() : undefined;
-        const ejercicios = Array.isArray(entrada?.[1]) ? entrada[1] : [];
+        type Ejercicio = string | { nombre: string };
+        const ejercicios: Ejercicio[] = Array.isArray(entrada?.[1]) ? (entrada[1] as Ejercicio[]) : [];
 
         return [
           dia,
           {
             nombre: dia,
-            ejercicios: ejercicios.map(ejercicio => ({
-              id: uuidv4(),
-              nombre: typeof ejercicio === 'string' ? ejercicio : ejercicio.nombre,
-              series: 3,
-              repeticiones: '10-12',
-              descripcion: '',
-              material: '',
-              musculos: [],
-              notas: '',
-              descanso: ''
-            })),
+            ejercicios: ejercicios.map(ejercicio => {
+              const nombreEjercicio = typeof ejercicio === 'string' ? ejercicio : ejercicio.nombre;
+              return {
+                id: uuidv4(),
+                nombre: nombreEjercicio,
+                series: 3,
+                repeticiones: '10-12',
+                descripcion: '',
+                material: '',
+                musculos: [],
+                notas: '',
+                descanso: ''
+              };
+            }),
             duracion: ejercicios.length * 10,
             intensidad: 'media',
             calorias: ejercicios.length * 50
@@ -115,16 +119,53 @@ export async function generateTraining(data: PlanData) {
       })
     );
 
-    const transformedPlan = {
+    const progresionPorDefecto: { semanas: SemanaProgresion[] } = {
+      semanas: Array(4).fill({
+        semana: '',
+        objetivo: '',
+        detalles: ''
+      })
+    };
+
+    const consideracionesPorDefecto: { calentamiento: string[]; enfriamiento: string[]; descanso: string; notas: string } = {
+      calentamiento: [],
+      enfriamiento: [],
+      descanso: '',
+      notas: ''
+    };
+
+    const progresionValida: { semanas: SemanaProgresion[] } = (() => {
+      const progresion = parsed.plan_entrenamiento?.progresion;
+      if (
+        progresion &&
+        typeof progresion === 'object' &&
+        'semanas' in progresion &&
+        Array.isArray((progresion as { semanas: unknown }).semanas)
+      ) {
+        return progresion as { semanas: SemanaProgresion[] };
+      }
+      return progresionPorDefecto;
+    })();
+
+    const consideracionesValidas: { calentamiento: string[]; enfriamiento: string[]; descanso: string; notas: string } = (() => {
+      const consideraciones = parsed.plan_entrenamiento?.consideraciones;
+      if (
+        consideraciones &&
+        typeof consideraciones === 'object' &&
+        'calentamiento' in consideraciones &&
+        'enfriamiento' in consideraciones &&
+        'descanso' in consideraciones &&
+        'notas' in consideraciones
+      ) {
+        return consideraciones as { calentamiento: string[]; enfriamiento: string[]; descanso: string; notas: string };
+      }
+      return consideracionesPorDefecto;
+    })();
+
+    const transformedPlan: PlanEntrenamiento = {
       rutina: rutinaDistribuida,
-      progresion:
-        parsed.plan_entrenamiento?.progresion ||
-        parsed.progresion ||
-        'Progresión no proporcionada.',
-      consideraciones:
-        parsed.plan_entrenamiento?.consideraciones ||
-        parsed.consideraciones ||
-        'Consideraciones no proporcionadas.',
+      progresion: progresionValida,
+      consideraciones: consideracionesValidas
     };
 
     const isValid = validatePlan(transformedPlan);
