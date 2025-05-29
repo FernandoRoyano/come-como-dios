@@ -1,22 +1,23 @@
-// src/pages/api/generateTraining.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 import { generateTrainingPrompt } from '@/lib/generateTrainingPrompt';
 import { PlanData } from '@/types/plan';
 import { validatePlan } from '@/lib/validatePlan';
 import { v4 as uuidv4 } from 'uuid';
+import { distribuirDias } from '@/utils/distributeTrainingDays';
+import { typedEntries } from '@/utils/typedEntries';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || 'test-api-key',
 });
 
 function handleError(res: NextApiResponse, error: unknown, customMessage: string) {
-  console.error('[ERROR API]', {
+  console.error(customMessage, error instanceof Error ? error.message : error);
+  res.status(500).json({
     message: customMessage,
-    details: error instanceof Error ? error.message : error,
+    details: error instanceof Error ? error.message : 'Error desconocido',
     timestamp: new Date().toISOString(),
   });
-  res.status(500).json({ message: customMessage });
 }
 
 interface ParsedPlan {
@@ -32,21 +33,14 @@ interface ParsedPlan {
 
 function validarEstructuraParsed(parsed: ParsedPlan): boolean {
   if (!parsed) return false;
-
-  const rutina = parsed.plan_entrenamiento?.dias_entrenamiento || parsed.rutina;
-
-  return (
-    rutina &&
-    typeof rutina === 'object' &&
-    Object.values(rutina).some((dia) => Array.isArray(dia) && dia.length > 0)
-  );
+  const diasEntrenamiento =
+    parsed.plan_entrenamiento?.dias_entrenamiento || parsed.rutina;
+  return Boolean(diasEntrenamiento && typeof diasEntrenamiento === 'object');
 }
 
 export async function generateTraining(data: PlanData) {
+  const prompt = generateTrainingPrompt(data);
   try {
-    const prompt = generateTrainingPrompt(data);
-    console.warn('Prompt generado:', prompt);
-
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: prompt }],
@@ -54,76 +48,87 @@ export async function generateTraining(data: PlanData) {
       max_tokens: 4096,
     });
 
-    if (!completion.choices || !completion.choices[0]?.message?.content) {
-      throw new Error('La respuesta de OpenAI no contiene un mensaje válido.');
-    }
-
-    const content = completion.choices[0].message.content;
+    const content = completion.choices[0].message?.content || '';
     const cleanContent = content.replace(/\n|\r/g, ' ').trim();
 
-    const jsonMatch = cleanContent.match(/###JSON_START###([\s\S]*?)###JSON_END###/) || cleanContent.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error('No se pudo extraer un JSON válido del contenido.');
-    }
+    const startMarker = '###JSON_START###';
+    const endMarker = '###JSON_END###';
+    let jsonString = '';
 
-    const jsonString = jsonMatch[1]?.trim() || jsonMatch[0];
+    const start = cleanContent.indexOf(startMarker);
+    const end = cleanContent.indexOf(endMarker);
+
+    if (start !== -1 && end !== -1) {
+      jsonString = cleanContent.slice(start + startMarker.length, end).trim();
+    } else {
+      const possibleJson = cleanContent.match(/\{[\s\S]*\}/);
+      if (possibleJson) {
+        jsonString = possibleJson[0];
+      } else {
+        throw new Error('No se pudo extraer un JSON válido del contenido.');
+      }
+    }
 
     let parsed: ParsedPlan;
     try {
       parsed = JSON.parse(jsonString);
-    } catch (parseError) {
+    } catch (error) {
       throw new Error('El JSON recibido no es válido.');
     }
 
     if (!validarEstructuraParsed(parsed)) {
-      console.error('[ERROR estructura mínima]', { parsed });
       throw new Error('El JSON recibido no tiene la estructura mínima esperada.');
     }
 
-    const rutinaBase = parsed.plan_entrenamiento?.dias_entrenamiento || parsed.rutina || {};
-    const rutinaTransformada = Object.fromEntries(
-      Object.entries(rutinaBase).map(([dia, ejercicios]) => [
-        dia,
-        {
-          nombre: dia,
-          ejercicios: Array.isArray(ejercicios)
-            ? ejercicios.map((ejercicio) => {
-                if (typeof ejercicio === 'string') {
-                  return {
-                    id: uuidv4(), nombre: ejercicio, series: 3,
-                    repeticiones: '10-12', descripcion: '', material: '', musculos: [], notas: '', descanso: ''
-                  };
-                } else if (typeof ejercicio === 'object' && ejercicio !== null) {
-                  return {
-                    id: uuidv4(),
-                    nombre: ejercicio.nombre || 'Ejercicio sin nombre',
-                    series: ejercicio.series || 3,
-                    repeticiones: ejercicio.repeticiones || '10-12',
-                    descripcion: ejercicio.descripcion || '',
-                    material: ejercicio.material || '',
-                    musculos: ejercicio.musculos || [],
-                    notas: ejercicio.notas || '',
-                    descanso: ejercicio.descanso || '',
-                  };
-                }
-                return { id: uuidv4(), nombre: 'Ejercicio desconocido', series: 0, repeticiones: '', descripcion: '', material: '', musculos: [], notas: '', descanso: '' };
-              })
-            : [],
-          duracion: Array.isArray(ejercicios) ? ejercicios.length * 10 : 0,
-          intensidad: 'media',
-          calorias: Array.isArray(ejercicios) ? ejercicios.length * 50 : 0,
-        },
-      ])
+    const diasEntrenamiento =
+      parsed.plan_entrenamiento?.dias_entrenamiento || parsed.rutina || {};
+
+    const todosLosDias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+    const diasGenerados = typedEntries(diasEntrenamiento);
+    const diasSeleccionados = distribuirDias(todosLosDias, diasGenerados.length);
+
+    const rutinaDistribuida = Object.fromEntries(
+      todosLosDias.map(dia => {
+        const entrada = diasSeleccionados.includes(dia) ? diasGenerados.shift() : undefined;
+        const ejercicios = Array.isArray(entrada?.[1]) ? entrada[1] : [];
+
+        return [
+          dia,
+          {
+            nombre: dia,
+            ejercicios: ejercicios.map(ejercicio => ({
+              id: uuidv4(),
+              nombre: typeof ejercicio === 'string' ? ejercicio : ejercicio.nombre,
+              series: 3,
+              repeticiones: '10-12',
+              descripcion: '',
+              material: '',
+              musculos: [],
+              notas: '',
+              descanso: ''
+            })),
+            duracion: ejercicios.length * 10,
+            intensidad: 'media',
+            calorias: ejercicios.length * 50
+          }
+        ];
+      })
     );
 
     const transformedPlan = {
-      rutina: rutinaTransformada,
-      progresion: parsed.plan_entrenamiento?.progresion || parsed.progresion || 'Progresión no proporcionada.',
-      consideraciones: parsed.plan_entrenamiento?.consideraciones || parsed.consideraciones || 'Consideraciones no proporcionadas.',
+      rutina: rutinaDistribuida,
+      progresion:
+        parsed.plan_entrenamiento?.progresion ||
+        parsed.progresion ||
+        'Progresión no proporcionada.',
+      consideraciones:
+        parsed.plan_entrenamiento?.consideraciones ||
+        parsed.consideraciones ||
+        'Consideraciones no proporcionadas.',
     };
 
-    if (!validatePlan(transformedPlan)) {
-      console.error('[ERROR validación]', transformedPlan);
+    const isValid = validatePlan(transformedPlan);
+    if (!isValid) {
       throw new Error('El plan transformado no tiene la estructura esperada.');
     }
 
@@ -147,11 +152,38 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       altura,
       sexo,
       objetivo,
-      actividadFisica
+      actividadFisica,
     } = req.body;
 
-    if (!entrenamiento || !edad || !peso || !altura || !sexo || !objetivo || !actividadFisica) {
-      return res.status(400).json({ message: 'Faltan campos requeridos en el cuerpo de la petición.' });
+    const camposRequeridos = {
+      entrenamiento: 'Configuración de entrenamiento',
+      edad: 'Edad',
+      peso: 'Peso',
+      altura: 'Altura',
+      sexo: 'Sexo',
+      objetivo: 'Objetivo',
+      actividadFisica: 'Actividad física',
+    };
+
+    const camposFaltantes = Object.entries(camposRequeridos)
+      .filter(([key]) => !req.body[key])
+      .map(([, label]) => label);
+
+    if (camposFaltantes.length > 0) {
+      return res.status(400).json({
+        message: 'Faltan campos requeridos',
+        campos: camposFaltantes,
+      });
+    }
+
+    if (
+      typeof edad !== 'number' ||
+      typeof peso !== 'number' ||
+      typeof altura !== 'number'
+    ) {
+      return res.status(400).json({
+        message: 'Los campos edad, peso y altura deben ser números',
+      });
     }
 
     const result = await generateTraining({
@@ -166,7 +198,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       restricciones: [],
       alimentosNoDeseados: [],
       intensidadTrabajo: '',
-      numeroComidas: 0
+      numeroComidas: 0,
     });
 
     res.status(200).json(result);

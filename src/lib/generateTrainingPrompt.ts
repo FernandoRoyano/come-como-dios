@@ -15,23 +15,38 @@ export function generateTrainingPrompt(data: PlanData): string {
     throw new Error('No se proporcionaron datos de entrenamiento');
   }
 
-  // Validar propiedades de entrenamiento
   const material = entrenamiento.material || {};
-  const otrosMateriales = Array.isArray(material.otros) ? material.otros.join(', ') : 'Ninguno';
+  const listaMaterial = [
+    ...(material.pesas ? ['pesas'] : []),
+    ...(material.bandas ? ['bandas'] : []),
+    ...(material.maquinas ? ['máquinas'] : []),
+    ...(material.barras ? ['barras'] : []),
+    ...(Array.isArray(material.otros) ? material.otros : [])
+  ];
 
-  // Adaptar reglas según los días de entrenamiento
+  const materialesTexto = listaMaterial.length > 0 ? listaMaterial.join(', ') : 'ninguno';
+
   let reglasDias = '';
-  if (entrenamiento.diasEntrenamiento === 1) {
-    reglasDias = `1. Cada día normal DEBE tener entre 3 y 8 ejercicios\n2. Los días de descanso activo DEBEN tener 1-2 ejercicios\n3. El domingo NO debe tener ejercicios`;
-  } else if (entrenamiento.diasEntrenamiento === 2) {
-    reglasDias = `1. Cada día normal DEBE tener entre 4 y 8 ejercicios\n2. Los días de descanso activo DEBEN tener 2-3 ejercicios\n3. El domingo NO debe tener ejercicios`;
-  } else {
-    reglasDias = `1. Cada día normal DEBE tener EXACTAMENTE 6 ejercicios\n2. Los días de descanso activo DEBEN tener EXACTAMENTE 2-3 ejercicios\n3. El domingo NO debe tener ejercicios`;
+  switch (entrenamiento.diasEntrenamiento) {
+    case 1:
+      reglasDias = `1. Cada día normal DEBE tener entre 3 y 8 ejercicios.
+2. Los días de descanso activo DEBEN tener 1-2 ejercicios.
+3. El domingo NO debe tener ejercicios.`;
+      break;
+    case 2:
+      reglasDias = `1. Cada día normal DEBE tener entre 4 y 8 ejercicios.
+2. Los días de descanso activo DEBEN tener 2-3 ejercicios.
+3. El domingo NO debe tener ejercicios.`;
+      break;
+    default:
+      reglasDias = `1. Cada día normal DEBE tener EXACTAMENTE 6 ejercicios.
+2. Los días de descanso activo DEBEN tener EXACTAMENTE 2-3 ejercicios.
+3. El domingo NO debe tener ejercicios.`;
   }
 
-  return `IMPORTANTE: DEBES responder SOLO con un bloque JSON válido, comenzando con ###JSON_START### y terminando con ###JSON_END###.
+  return `IMPORTANTE: RESPONDE EXCLUSIVAMENTE con un bloque JSON válido, comenzando con ###JSON_START### y terminando con ###JSON_END###.
 
-Genera un plan de entrenamiento personalizado y detallado para una persona con las siguientes características:
+Genera un plan de entrenamiento personalizado para la siguiente persona:
 
 Edad: ${edad} años
 Peso: ${peso} kg
@@ -41,7 +56,42 @@ Objetivo: ${objetivo}
 Nivel de actividad física: ${actividadFisica}
 
 Configuración del entrenamiento:
-- Material disponible: ${otrosMateriales}
+- Ubicación: ${entrenamiento.ubicacion}
+- Material disponible: ${materialesTexto}
+- Nivel: ${entrenamiento.nivel}
+- Días de entrenamiento: ${entrenamiento.diasEntrenamiento}
+- Duración de la sesión: ${entrenamiento.duracionSesion} minutos
+- Objetivos específicos: ${(entrenamiento.objetivos || []).join(', ') || 'no especificados'}
+- Lesiones: ${(entrenamiento.lesiones || []).join(', ') || 'ninguna'}
+- Preferencias: ${(entrenamiento.preferencias || []).join(', ') || 'ninguna'}
 
-${reglasDias}`;
+Reglas importantes:
+${reglasDias}
+
+###JSON_START###
+{
+  "plan_entrenamiento": {
+    "usuario": {
+      "edad": ${edad},
+      "peso": ${peso},
+      "altura": ${altura},
+      "sexo": "${sexo}",
+      "objetivo": "${objetivo}",
+      "nivel_actividad": "${actividadFisica}"
+    },
+    "material_disponible": [${listaMaterial.map(m => `"${m}"`).join(', ')}],
+    "dias_entrenamiento": {
+      "lunes": [],
+      "martes": [],
+      "miercoles": [],
+      "jueves": [],
+      "viernes": [],
+      "sabado": [],
+      "domingo": []
+    },
+    "progresion": "",
+    "consideraciones": ""
+  }
+}
+###JSON_END###`;
 }

@@ -1,49 +1,15 @@
-export interface Comida {
-  nombre: string;
-  descripcion: string;
-  calorias: number;
-  proteinas: number;
-  carbohidratos: number;
-  grasas: number;
-}
-
-export interface Dia {
-  desayuno: Comida;
-  almuerzo: Comida;
-  cena: Comida;
-  snacks?: Comida[];
-}
-
-export interface Plan {
-  dias: {
-    [key: string]: Dia;
-  };
-  listaCompra: {
-    [key: string]: string[];
-  };
-  macronutrientes: {
-    calorias: number;
-    proteinas: number;
-    carbohidratos: number;
-    grasas: number;
-  };
-  restricciones?: string[];
-  objetivo?: string;
-  numeroComidas?: number;
-  comidas?: Comida[]; // Nueva propiedad para almacenar las comidas generadas
-}
+// Archivo: src/types/planEntrenamiento.ts
 
 export interface Ejercicio {
-  id: string; // Identificador único para el ejercicio
+  id: string;
   nombre: string;
   series: number;
   repeticiones: string;
-  descripcion?: string;
-  material?: string;
-  musculos?: string[];
-  notas?: string;
-  imagen?: string;
-  descanso?: string;
+  descripcion: string;
+  material: string;
+  musculos: string[];
+  notas: string;
+  descanso: string;
 }
 
 export interface DiaEntrenamiento {
@@ -64,10 +30,10 @@ export interface PlanEntrenamiento {
   rutina: {
     [key: string]: DiaEntrenamiento;
   };
-  progresion: {
+  progresion: string | {
     semanas: SemanaProgresion[];
   };
-  consideraciones: {
+  consideraciones: string | {
     calentamiento: string[];
     enfriamiento: string[];
     descanso: string;
@@ -75,27 +41,71 @@ export interface PlanEntrenamiento {
   };
 }
 
+export interface DatosEntrenamiento {
+  ubicacion: 'casa' | 'gimnasio' | null;
+  material: {
+    pesas: boolean;
+    bandas: boolean;
+    maquinas: boolean;
+    barras: boolean;
+    otros: string[];
+  };
+  nivel: string;
+  diasEntrenamiento: number;
+  duracionSesion: number;
+  objetivos: string[];
+  lesiones: string[];
+  preferencias: string[];
+}
+
+// Archivo: src/types/planNutricional.ts
+
+export interface Comida {
+  nombre: string;
+  descripcion: string;
+  calorias: number;
+  proteinas: number;
+  carbohidratos: number;
+  grasas: number;
+}
+
+export interface Dia {
+  desayuno: Comida;
+  almuerzo: Comida;
+  cena: Comida;
+  snacks?: Comida[];
+}
+
+export interface PlanNutricional {
+  dias: {
+    [key: string]: Dia;
+  };
+  listaCompra: {
+    [key: string]: string[];
+  };
+  macronutrientes: {
+    calorias: number;
+    proteinas: number;
+    carbohidratos: number;
+    grasas: number;
+  };
+  restricciones?: string[];
+  objetivo?: string;
+  numeroComidas?: number;
+  comidas?: Comida[];
+}
+
+// Archivo: src/types/plan.ts
+
+import { PlanEntrenamiento, DatosEntrenamiento } from './planEntrenamiento';
+import { PlanNutricional } from './planNutricional';
+
 export interface PlanData {
   servicios: {
     nutricion: boolean;
     entrenamiento: boolean;
   };
-  entrenamiento?: {
-    ubicacion: 'casa' | 'gimnasio' | null;
-    material: {
-      pesas: boolean;
-      bandas: boolean;
-      maquinas: boolean;
-      barras: boolean;
-      otros: string[];
-    };
-    nivel: string;
-    diasEntrenamiento: number;
-    duracionSesion: number;
-    objetivos: string[];
-    lesiones: string[];
-    preferencias: string[];
-  };
+  entrenamiento?: DatosEntrenamiento;
   edad: number;
   peso: number;
   altura: number;
@@ -106,24 +116,10 @@ export interface PlanData {
   actividadFisica: string;
   intensidadTrabajo: string;
   numeroComidas: number;
-  caloriasRecomendadas?: number; // Nueva propiedad para las calorías diarias recomendadas
+  caloriasRecomendadas?: number;
 }
 
-export interface UserData {
-  sexo: string; // Cambiado para aceptar cualquier string
-  edad: number;
-  altura: number; // en centímetros
-  actividadFisica: string; // Cambiado para aceptar cualquier string
-  objetivo: string; // Cambiado para aceptar cualquier string
-  entrenamiento?: {
-    ubicacion: string; // Cambiado para aceptar cualquier string
-    nivel: string; // Cambiado para aceptar cualquier string
-    material?: {
-      pesas?: boolean;
-      bandas?: boolean;
-      maquinas?: boolean;
-      barras?: boolean;
-      otros?: string[];
-    };
-  };
+export interface PlanCompleto {
+  nutricional?: PlanNutricional;
+  entrenamiento?: PlanEntrenamiento;
 }
