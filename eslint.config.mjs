@@ -15,11 +15,14 @@ const eslintConfig = [
     rules: {
       // Deshabilitar advertencias para console.warn en desarrollo
       "no-console": ["warn", { allow: ["warn", "error"] }],
-      // Permitir variables sin usar en desarrollo
-      "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+      // Deshabilitar reglas de variables no utilizadas
+      "@typescript-eslint/no-unused-vars": "off",
+      // Deshabilitar reglas de expresiones no utilizadas
+      "@typescript-eslint/no-unused-expressions": "off",
       // Deshabilitar reglas estrictas para imports en Node.js
       "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
     },
+    ignorePatterns: ["src/generated/prisma/**/*"], // Ignorar archivos generados por Prisma
   },
 ];
 

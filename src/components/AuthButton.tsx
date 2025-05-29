@@ -2,12 +2,34 @@
 
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import styles from './AuthButton.module.css'; // 🧩 Importa los estilos del botón
 import { FcGoogle } from 'react-icons/fc'; // 🎨 Icono de Google
 
 export default function AuthButton() {
   const { data: session, status } = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      const saveUserData = async () => {
+        try {
+          await fetch('/api/user/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: session.user?.email,
+              name: session.user?.name,
+            }),
+          });
+        } catch (error) {
+          console.error('Error saving user data:', error);
+        }
+      };
+
+      saveUserData();
+    }
+  }, [session]);
 
   if (status === 'loading') return <p>Cargando...</p>;
 

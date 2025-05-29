@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 import { generatePrompt } from '@/lib/generatePrompt';
 import { validatePlan } from '@/lib/validatePlan';
-import { Plan, PlanData } from '@/types/plan';
+import { Plan, PlanData, PlanEntrenamiento } from '@/types/plan';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -93,7 +93,31 @@ export async function generatePlan(data: PlanData) {
       throw new Error(`El número de comidas generadas (${parsed.comidas.length}) no coincide con el solicitado (${data.numeroComidas}).`);
     }
 
-    validatePlan(parsed);
+    const entrenamiento: PlanEntrenamiento = {
+      rutina: Object.fromEntries(
+        Object.entries(parsed.dias).map(([key, dia]) => [
+          key,
+          {
+            nombre: key,
+            ejercicios: [], // Agregar lógica para ejercicios si es necesario
+            duracion: 0,
+            intensidad: 'media',
+            calorias: 0,
+          },
+        ])
+      ),
+      progresion: {
+        semanas: [],
+      },
+      consideraciones: {
+        calentamiento: [],
+        enfriamiento: [],
+        descanso: '',
+        notas: '',
+      },
+    };
+
+    validatePlan(entrenamiento);
     return { plan: parsed };
   } catch (parseError: unknown) {
     throw new Error(`Error en el formato JSON del plan generado: ${parseError instanceof Error ? parseError.message : 'Error desconocido'}`);

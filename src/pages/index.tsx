@@ -214,8 +214,6 @@ export default function Home() {
     }));
   };
 
-  console.log('STATUS', status, 'SESSION', session);
-
   if (status === 'loading' && !session) {
     return (
       <div className={styles.container}>
