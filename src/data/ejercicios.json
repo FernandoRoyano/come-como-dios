@@ -1,0 +1,27 @@
+[
+  {
+    "nombre": "Sentadilla",
+    "imagen": "sentadilla.png",
+    "descripcion": "Ejercicio para piernas y glúteos."
+  },
+  {
+    "nombre": "Press de banca",
+    "imagen": "press-de-banca.png",
+    "descripcion": "Ejercicio para pectorales y tríceps."
+  },
+  {
+    "nombre": "Peso muerto",
+    "imagen": "peso-muerto.png",
+    "descripcion": "Ejercicio para espalda baja y glúteos."
+  },
+  {
+    "nombre": "Remo con barra",
+    "imagen": "remo-con-barra.png",
+    "descripcion": "Ejercicio para espalda y bíceps."
+  },
+  {
+    "nombre": "Press militar",
+    "imagen": "press-militar.png",
+    "descripcion": "Ejercicio para hombros."
+  }
+]

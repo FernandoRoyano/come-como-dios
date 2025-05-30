@@ -17,3 +17,9 @@ export function distribuirDias(diasDisponibles: string[], cantidad: number): str
 
   return seleccionados;
 }
+
+// NUEVA FUNCIÓN: distribuirDiasSeleccionados
+export function distribuirDiasSeleccionados(diasSeleccionados: string[]): string[] {
+  // Simplemente devuelve los días seleccionados por el usuario, sin modificar el orden
+  return diasSeleccionados;
+}

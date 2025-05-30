@@ -39,6 +39,12 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: PlanData) => void }) => {
 
   const [restrictionError, setRestrictionError] = useState<string | null>(null);
 
+  // Días de la semana para selección
+  const DIAS_SEMANA = [
+    'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'
+  ];
+  const [diasSeleccionados, setDiasSeleccionados] = useState<string[]>(['lunes', 'miércoles', 'viernes']);
+
   const handleServicioChange = (servicio: 'nutricion' | 'entrenamiento') => {
     setForm(prev => ({
       ...prev,
@@ -162,12 +168,21 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
     }));
   };
 
+  const handleDiaSeleccion = (dia: string) => {
+    setDiasSeleccionados(prev =>
+      prev.includes(dia)
+        ? prev.filter(d => d !== dia)
+        : [...prev, dia]
+    );
+  };
+
+  // En el handleSubmit, forzamos el tipo para permitir diasSeleccionados
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (restrictionError) {
       return;
     }
-    onSubmit(form);
+    onSubmit({ ...(form as any), diasSeleccionados });
   };
 
   return (
@@ -351,32 +366,35 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
             </div>
           </div>
 
-          <div className={styles['form-row']}>
-            <div className={styles['form-group']}>
-              <label>Nivel de experiencia:</label>
-              <select
-                value={form.entrenamiento?.nivel}
-                onChange={(e) => handleEntrenamientoChange('nivel', e.target.value)}
-              >
-                <option>Principiante</option>
-                <option>Intermedio</option>
-                <option>Avanzado</option>
-              </select>
-            </div>
+          <div className={styles['form-group']}>
+            <label>Nivel de experiencia:</label>
+            <select
+              value={form.entrenamiento?.nivel}
+              onChange={(e) => handleEntrenamientoChange('nivel', e.target.value)}
+            >
+              <option>Principiante</option>
+              <option>Intermedio</option>
+              <option>Avanzado</option>
+            </select>
+          </div>
 
-            <div className={styles['form-group']}>
-              <label>Días de entrenamiento por semana:</label>
-              <select
-                value={form.entrenamiento?.diasEntrenamiento}
-                onChange={(e) => handleEntrenamientoChange('diasEntrenamiento', Number(e.target.value))}
-              >
-                <option value={2}>2 días</option>
-                <option value={3}>3 días</option>
-                <option value={4}>4 días</option>
-                <option value={5}>5 días</option>
-                <option value={6}>6 días</option>
-              </select>
+          <div className={styles['form-group']}>
+            <label>Días de Entrenamiento (elige los días):</label>
+            <div className={styles['dias-semana-grid']}>
+              {DIAS_SEMANA.map(dia => (
+                <button
+                  type="button"
+                  key={dia}
+                  className={diasSeleccionados.includes(dia) ? styles['dia-seleccionado'] : styles['dia-no-seleccionado']}
+                  onClick={() => handleDiaSeleccion(dia)}
+                >
+                  {dia.charAt(0).toUpperCase() + dia.slice(1)}
+                </button>
+              ))}
             </div>
+            <small className={styles['help-text']}>
+              Selecciona los días concretos en los que quieres entrenar. Puedes elegir cualquier combinación de lunes a domingo.
+            </small>
           </div>
 
           <div className={styles['form-group']}>

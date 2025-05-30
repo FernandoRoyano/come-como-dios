@@ -55,9 +55,9 @@ export interface DiaEntrenamiento {
 }
 
 export interface SemanaProgresion {
-  semana: number;
-  objetivos: string[];
-  ajustes: string[];
+  semana: string; // Cambiado a string para ser compatible con la IA y el default
+  objetivo: string; // Cambiado a string para ser compatible con la IA y el default
+  detalles: string; // Cambiado a string para ser compatible con la IA y el default
 }
 
 export interface PlanEntrenamiento {

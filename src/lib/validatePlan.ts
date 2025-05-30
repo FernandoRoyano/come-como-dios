@@ -1,4 +1,4 @@
-import { PlanEntrenamiento, DiaEntrenamiento } from '@/types/plan';
+import { PlanEntrenamiento, DiaEntrenamiento, SemanaProgresion } from '@/types/plan';
 
 export function validatePlan(plan: PlanEntrenamiento): boolean {
   if (!plan || typeof plan !== 'object') return false;
@@ -39,10 +39,25 @@ export function validatePlan(plan: PlanEntrenamiento): boolean {
     return ejerciciosValidos;
   });
 
+  // Validar progresion: debe ser un objeto con un array de semanas
   const progresionOk =
-    progresion === undefined || typeof progresion === 'string';
+    progresion &&
+    typeof progresion === 'object' &&
+    Array.isArray(progresion.semanas) &&
+    progresion.semanas.every((semana: SemanaProgresion) =>
+      typeof semana.semana === 'string' &&
+      typeof semana.objetivo === 'string' &&
+      typeof semana.detalles === 'string'
+    );
+
+  // Validar consideraciones: debe ser un objeto con los campos requeridos
   const consideracionesOk =
-    consideraciones === undefined || typeof consideraciones === 'string';
+    consideraciones &&
+    typeof consideraciones === 'object' &&
+    Array.isArray(consideraciones.calentamiento) &&
+    Array.isArray(consideraciones.enfriamiento) &&
+    typeof consideraciones.descanso === 'string' &&
+    typeof consideraciones.notas === 'string';
 
   return isRutinaValida && progresionOk && consideracionesOk;
 }

@@ -1,5 +1,8 @@
 // lib/exerciseMedia.ts
 
+// Ahora los datos de ejercicios se gestionan desde src/data/ejercicios.json y la carpeta public/ejercicios
+// Este archivo queda obsoleto y puede eliminarse si no se usa en otras partes del código.
+
 export const exerciseMedia: Record<string, { type: 'image' | 'video'; url: string }> = {
     'sentadilla': {
       type: 'video',
@@ -34,4 +37,3 @@ export const exerciseMedia: Record<string, { type: 'image' | 'video'; url: strin
       url: 'https://upload.wikimedia.org/wikipedia/commons/3/32/Prancha_abdominal.jpg'
     }
   };
-  

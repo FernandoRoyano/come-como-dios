@@ -4,7 +4,7 @@ import { generateTrainingPrompt } from '@/lib/generateTrainingPrompt';
 import { PlanData, PlanEntrenamiento, SemanaProgresion } from '@/types/plan';
 import { validatePlan } from '@/lib/validatePlan';
 import { v4 as uuidv4 } from 'uuid';
-import { distribuirDias } from '@/utils/distributeTrainingDays';
+import { distribuirDias, distribuirDiasSeleccionados } from '@/utils/distributeTrainingDays';
 import { typedEntries } from '@/utils/typedEntries';
 
 const openai = new OpenAI({
@@ -38,7 +38,7 @@ function validarEstructuraParsed(parsed: ParsedPlan): boolean {
   return Boolean(diasEntrenamiento && typeof diasEntrenamiento === 'object');
 }
 
-export async function generateTraining(data: PlanData) {
+export async function generateTraining(data: PlanData & { diasSeleccionados?: string[] }) {
   const prompt = generateTrainingPrompt(data);
   try {
     const completion = await openai.chat.completions.create({
@@ -83,9 +83,12 @@ export async function generateTraining(data: PlanData) {
     const diasEntrenamiento =
       parsed.plan_entrenamiento?.dias_entrenamiento || parsed.rutina || {};
 
-    const todosLosDias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+    // Usar los días seleccionados por el usuario si existen, si no, usar todosLosDias
+    const todosLosDias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
     const diasGenerados = typedEntries(diasEntrenamiento);
-    const diasSeleccionados = distribuirDias(todosLosDias, diasGenerados.length);
+    const diasSeleccionados = data.diasSeleccionados && data.diasSeleccionados.length > 0
+      ? distribuirDiasSeleccionados(data.diasSeleccionados)
+      : distribuirDias(todosLosDias, diasGenerados.length);
 
     const rutinaDistribuida = Object.fromEntries(
       todosLosDias.map(dia => {
