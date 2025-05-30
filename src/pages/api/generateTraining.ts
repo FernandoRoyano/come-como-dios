@@ -72,8 +72,11 @@ export async function generateTraining(data: PlanData & { diasSeleccionados?: st
     let parsed: ParsedPlan;
     try {
       parsed = JSON.parse(jsonString);
-    } catch {
-      throw new Error('El JSON recibido no es válido.');
+    } catch (e) {
+      // Lanzar error con el contenido bruto para depuración
+      const error = new Error('El JSON recibido no es válido. Respuesta bruta de la IA: ' + jsonString);
+      (error as any).rawContent = jsonString;
+      throw error;
     }
 
     if (!validarEstructuraParsed(parsed)) {
@@ -247,6 +250,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.status(200).json(result);
   } catch (error: unknown) {
+    // Si el error tiene contenido bruto, inclúyelo en la respuesta
+    if (error && typeof error === 'object' && 'rawContent' in error) {
+      return res.status(500).json({
+        message: 'Error generando el plan de entrenamiento con IA.',
+        details: error instanceof Error ? error.message : 'Error desconocido',
+        rawContent: (error as any).rawContent,
+        timestamp: new Date().toISOString(),
+      });
+    }
     handleError(res, error, 'Error generando el plan de entrenamiento con IA.');
   }
 }

@@ -1,13 +1,103 @@
 [
   {
-    "nombre": "Sentadilla",
-    "imagen": "sentadilla.png",
-    "descripcion": "Ejercicio para piernas y glúteos."
+    "nombre": "Aperturas con mancuernas",
+    "imagen": "Aperturas-con-mancuernas.png",
+    "descripcion": "Ejercicio para pectorales con mancuernas."
   },
   {
-    "nombre": "Press de banca",
-    "imagen": "press-de-banca.png",
-    "descripcion": "Ejercicio para pectorales y tríceps."
+    "nombre": "Clean",
+    "imagen": "clean.png",
+    "descripcion": "Ejercicio de levantamiento olímpico para cuerpo completo."
+  },
+  {
+    "nombre": "Curl alterno con mancuerna",
+    "imagen": "curl-alterno-con-mancuerna.png",
+    "descripcion": "Ejercicio de bíceps con mancuernas."
+  },
+  {
+    "nombre": "Curl araña",
+    "imagen": "curl-arana.png",
+    "descripcion": "Ejercicio de bíceps en banco inclinado."
+  },
+  {
+    "nombre": "Curl con barra",
+    "imagen": "curl-con-barra.png",
+    "descripcion": "Ejercicio de bíceps con barra."
+  },
+  {
+    "nombre": "Curl de bíceps con barra",
+    "imagen": "curl-de-biceps-con-barra.png",
+    "descripcion": "Ejercicio de bíceps con barra."
+  },
+  {
+    "nombre": "Curl martillo",
+    "imagen": "Curl-martillo.png",
+    "descripcion": "Ejercicio de bíceps y antebrazo con mancuernas."
+  },
+  {
+    "nombre": "Elevación lateral unilateral",
+    "imagen": "elevacion-lateral-unilateral.png",
+    "descripcion": "Ejercicio de hombros con mancuerna."
+  },
+  {
+    "nombre": "Elevaciones frontales alternas",
+    "imagen": "elevaciones-frontales-alternas.png",
+    "descripcion": "Ejercicio de hombros con mancuernas."
+  },
+  {
+    "nombre": "Elevaciones frontales",
+    "imagen": "elevaciones-frontales.png",
+    "descripcion": "Ejercicio de hombros con mancuernas."
+  },
+  {
+    "nombre": "Elevaciones laterales",
+    "imagen": "elevaciones-laterales.png",
+    "descripcion": "Ejercicio de hombros con mancuernas."
+  },
+  {
+    "nombre": "Encogimientos (trapecios)",
+    "imagen": "encogimientos (trapecios).png",
+    "descripcion": "Ejercicio para trapecios."
+  },
+  {
+    "nombre": "Encogimientos",
+    "imagen": "Encogimientos.png",
+    "descripcion": "Ejercicio para trapecios."
+  },
+  {
+    "nombre": "Femoral en máquina",
+    "imagen": "femoral-en-maquina.png",
+    "descripcion": "Ejercicio para femorales en máquina."
+  },
+  {
+    "nombre": "Gemelos con mancuerna",
+    "imagen": "gemelos-con-mancuerna.png",
+    "descripcion": "Ejercicio para gemelos."
+  },
+  {
+    "nombre": "Hip Thrust",
+    "imagen": "hipthrust.png",
+    "descripcion": "Ejercicio para glúteos y cadera."
+  },
+  {
+    "nombre": "Leg extension",
+    "imagen": "leg-extension.png",
+    "descripcion": "Ejercicio para cuádriceps en máquina."
+  },
+  {
+    "nombre": "Pájaros con mancuerna",
+    "imagen": "Pajaros-con-mancuerna.png",
+    "descripcion": "Ejercicio para deltoides posteriores."
+  },
+  {
+    "nombre": "Peso muerto rumano con mancuerna",
+    "imagen": "peso-muerto-rumano-con-mancuerna.png",
+    "descripcion": "Ejercicio para femorales y glúteos."
+  },
+  {
+    "nombre": "Peso muerto rumano",
+    "imagen": "peso-muerto-rumano.png",
+    "descripcion": "Ejercicio para femorales y glúteos."
   },
   {
     "nombre": "Peso muerto",
@@ -15,13 +105,168 @@
     "descripcion": "Ejercicio para espalda baja y glúteos."
   },
   {
-    "nombre": "Remo con barra",
-    "imagen": "remo-con-barra.png",
-    "descripcion": "Ejercicio para espalda y bíceps."
+    "nombre": "Prensa en máquina 45°",
+    "imagen": "prensa-en-maquina-45.png",
+    "descripcion": "Ejercicio para piernas en prensa inclinada."
+  },
+  {
+    "nombre": "Press agarre cerrado",
+    "imagen": "press-agarre-cerrado.png",
+    "descripcion": "Ejercicio para tríceps y pectoral interno."
+  },
+  {
+    "nombre": "Press banca mancuernas",
+    "imagen": "press-banca-mancuernas.png",
+    "descripcion": "Ejercicio para pectorales con mancuernas."
+  },
+  {
+    "nombre": "Press de banca plano",
+    "imagen": "press-de-banca-plano.png",
+    "descripcion": "Ejercicio para pectorales en banco plano."
+  },
+  {
+    "nombre": "Press de banca",
+    "imagen": "press-de-banca.png",
+    "descripcion": "Ejercicio para pectorales y tríceps."
+  },
+  {
+    "nombre": "Press francés con mancuernas",
+    "imagen": "press-frances-con-mancuernas.png",
+    "descripcion": "Ejercicio de tríceps con mancuernas."
+  },
+  {
+    "nombre": "Press francés",
+    "imagen": "press-frances.png",
+    "descripcion": "Ejercicio de tríceps."
+  },
+  {
+    "nombre": "Press inclinado mancuernas",
+    "imagen": "Press-inclinado-mancuernas.png",
+    "descripcion": "Ejercicio para pectorales superiores."
+  },
+  {
+    "nombre": "Press militar chica",
+    "imagen": "press-militar-chica.png",
+    "descripcion": "Ejercicio de hombros."
+  },
+  {
+    "nombre": "Press militar con mancuernas",
+    "imagen": "press-militar-con-mancuernas.png",
+    "descripcion": "Ejercicio de hombros con mancuernas."
   },
   {
     "nombre": "Press militar",
     "imagen": "press-militar.png",
     "descripcion": "Ejercicio para hombros."
+  },
+  {
+    "nombre": "Push press",
+    "imagen": "push-press.png",
+    "descripcion": "Ejercicio de potencia para hombros y piernas."
+  },
+  {
+    "nombre": "Remo con barra",
+    "imagen": "remo-con-barra.png",
+    "descripcion": "Ejercicio para espalda y bíceps."
+  },
+  {
+    "nombre": "Remo con mancuerna",
+    "imagen": "remo-con-mancuerna.png",
+    "descripcion": "Ejercicio para espalda y bíceps."
+  },
+  {
+    "nombre": "Remo en barra T",
+    "imagen": "remo-en-barra-t.png",
+    "descripcion": "Ejercicio para espalda media."
+  },
+  {
+    "nombre": "Remo inclinado con mancuerna",
+    "imagen": "remo-inclinado-con-mancuerna.png",
+    "descripcion": "Ejercicio para espalda y bíceps."
+  },
+  {
+    "nombre": "Remo invertido prono",
+    "imagen": "remo-invertido-prono.png",
+    "descripcion": "Ejercicio para espalda y core."
+  },
+  {
+    "nombre": "Remo mancuerna mujer",
+    "imagen": "remo-mancuerna-mujer.png",
+    "descripcion": "Ejercicio para espalda y bíceps."
+  },
+  {
+    "nombre": "Sentadilla búlgara",
+    "imagen": "sentadilla-bulgara.png",
+    "descripcion": "Ejercicio unilateral para piernas y glúteos."
+  },
+  {
+    "nombre": "Sentadilla frontal con barra",
+    "imagen": "sentadilla-frontal-con-barra.png",
+    "descripcion": "Ejercicio para cuádriceps y core."
+  },
+  {
+    "nombre": "Sentadilla jaka",
+    "imagen": "sentadilla-jaka.png",
+    "descripcion": "Ejercicio de sentadilla en máquina jaka."
+  },
+  {
+    "nombre": "Sentadilla sumo con mancuerna",
+    "imagen": "sentadilla-sumo-con-mancuerna.png",
+    "descripcion": "Ejercicio para aductores y glúteos."
+  },
+  {
+    "nombre": "Sentadilla",
+    "imagen": "sentadilla.png",
+    "descripcion": "Ejercicio para piernas y glúteos."
+  },
+  {
+    "nombre": "Soleo en máquina",
+    "imagen": "soleo-en-maquina.png",
+    "descripcion": "Ejercicio para sóleo en máquina."
+  },
+  {
+    "nombre": "Thruster",
+    "imagen": "Thruster.png",
+    "descripcion": "Ejercicio combinado de sentadilla y press."
+  },
+  {
+    "nombre": "Tríceps con mancuerna chicas",
+    "imagen": "triceps-con-mancuerna-chicas.png",
+    "descripcion": "Ejercicio de tríceps con mancuerna para mujeres."
+  },
+  {
+    "nombre": "Tríceps hacia arriba chicas",
+    "imagen": "tríceps-hacia-arriba-chicas.png",
+    "descripcion": "Ejercicio de tríceps por encima de la cabeza para mujeres."
+  },
+  {
+    "nombre": "Zancadas con barra",
+    "imagen": "zancadas-con-barra.png",
+    "descripcion": "Ejercicio para piernas y glúteos."
+  },
+  {
+    "nombre": "Zancadas con disco",
+    "imagen": "zancadas-con-disco.png",
+    "descripcion": "Ejercicio para piernas y glúteos."
+  },
+  {
+    "nombre": "Zancadas con mancuernas",
+    "imagen": "zancadas-con-mancuernas.png",
+    "descripcion": "Ejercicio para piernas y glúteos."
+  },
+  {
+    "nombre": "Aductor en máquina",
+    "imagen": "aductor-en-maquina.png",
+    "descripcion": "Ejercicio para aductores en máquina."
+  },
+  {
+    "nombre": "Fondos en suelo",
+    "imagen": "fondos-en-suelo.png",
+    "descripcion": "Ejercicio de fondos usando el suelo o banco bajo."
+  },
+  {
+    "nombre": "Sentadilla sin peso",
+    "imagen": "sentadilla-sin-peso.png",
+    "descripcion": "Sentadilla con el peso corporal, sin carga adicional."
   }
 ]

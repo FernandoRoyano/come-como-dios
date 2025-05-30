@@ -339,7 +339,25 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
       {form.servicios.entrenamiento && (
         <div className={styles['entrenamiento-section']}>
           <h2>Configuración del Entrenamiento</h2>
-          
+
+          {/* Solo pedir edad, peso y altura si NO está activado nutrición */}
+          {!form.servicios.nutricion && (
+            <div className={styles['form-row']}>
+              <div className={styles['form-group']}>
+                <label>Edad:</label>
+                <input type="number" name="edad" value={form.edad} onChange={handleChange} />
+              </div>
+              <div className={styles['form-group']}>
+                <label>Peso (kg):</label>
+                <input type="number" name="peso" value={form.peso} onChange={handleChange} />
+              </div>
+              <div className={styles['form-group']}>
+                <label>Altura (cm):</label>
+                <input type="number" name="altura" value={form.altura} onChange={handleChange} />
+              </div>
+            </div>
+          )}
+
           <div className={styles['form-group']}>
             <label>¿Dónde vas a entrenar?</label>
             <div className={styles['radio-group']}>
@@ -376,25 +394,6 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
               <option>Intermedio</option>
               <option>Avanzado</option>
             </select>
-          </div>
-
-          <div className={styles['form-group']}>
-            <label>Días de Entrenamiento (elige los días):</label>
-            <div className={styles['dias-semana-grid']}>
-              {DIAS_SEMANA.map(dia => (
-                <button
-                  type="button"
-                  key={dia}
-                  className={diasSeleccionados.includes(dia) ? styles['dia-seleccionado'] : styles['dia-no-seleccionado']}
-                  onClick={() => handleDiaSeleccion(dia)}
-                >
-                  {dia.charAt(0).toUpperCase() + dia.slice(1)}
-                </button>
-              ))}
-            </div>
-            <small className={styles['help-text']}>
-              Selecciona los días concretos en los que quieres entrenar. Puedes elegir cualquier combinación de lunes a domingo.
-            </small>
           </div>
 
           <div className={styles['form-group']}>
@@ -508,6 +507,25 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
             />
             <small className={styles['help-text']}>
               Indica tus preferencias o tipos de ejercicios que te gustan o prefieres evitar.
+            </small>
+          </div>
+
+          <div className={styles['form-group']}>
+            <label>Días de Entrenamiento (elige los días):</label>
+            <div className={styles['dias-semana-grid']}>
+              {DIAS_SEMANA.map(dia => (
+                <label key={dia} className={styles['checkbox-dia']}>
+                  <input
+                    type="checkbox"
+                    checked={diasSeleccionados.includes(dia)}
+                    onChange={() => handleDiaSeleccion(dia)}
+                  />
+                  <span>{dia.charAt(0).toUpperCase() + dia.slice(1)}</span>
+                </label>
+              ))}
+            </div>
+            <small className={styles['help-text']}>
+              Selecciona los días concretos en los que quieres entrenar. Puedes elegir cualquier combinación de lunes a domingo.
             </small>
           </div>
         </div>

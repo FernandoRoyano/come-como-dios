@@ -1,0 +1,17 @@
+FOTOS EN /public/ejercicios/ QUE NO ESTÁN EN ejercicios.json:
+
+- aductor-en-maquina.png
+- fondos-en-suelo.png
+- sentadilla-sin-peso.png
+
+FOTOS EN ejercicios.json QUE NO EXISTEN EN /public/ejercicios/ (o con diferencia de mayúsculas):
+
+- Encogimientos.png
+- Pajaros-con-mancuerna.png
+- Thruster.png
+- Press-inclinado-mancuernas.png
+
+Notas:
+- Hay diferencias de mayúsculas/minúsculas en algunos nombres de archivo (ejemplo: "Thruster.png" vs "thruster.png").
+- Se recomienda unificar el uso de minúsculas y guiones para evitar errores en producción.
+- Si alguna imagen está en la carpeta pero no en el JSON, añade su entrada en ejercicios.json. Si está en el JSON pero no en la carpeta, añade la imagen correspondiente.

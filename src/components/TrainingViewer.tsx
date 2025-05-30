@@ -31,8 +31,8 @@ function obtenerImagenEjercicio(nombre: string) {
     palabras.some(palabra => normalizarNombre(e.nombre).includes(palabra))
   );
   if (ejercicio) return `/ejercicios/${ejercicio.imagen}`;
-  // 4. Sin imagen conocida
-  return null;
+  // Si no existe, devuelve un SVG gris como imagen por defecto
+  return 'data:image/svg+xml;utf8,<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="200" fill="%23f0f0f0"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23999" font-size="16">Sin imagen</text></svg>';
 }
 
 interface Props {

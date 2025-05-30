@@ -5,6 +5,8 @@ import TrainingViewer from '../components/TrainingViewer';
 import PlanViewer from '../components/PlanViewer';
 import { PlanEntrenamiento, Plan, UserData } from '../types/plan';
 
+const DIAS_SEMANA = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+
 function UserContextDisplay({ data }: { data: UserData }) {
   if (!data) return null;
 
@@ -52,6 +54,7 @@ export default function Home() {
     nutricion: false,
     entrenamiento: false,
   });
+  const [diasSeleccionados, setDiasSeleccionados] = useState<string[]>([]);
 
   // Función para generar el resumen contextual
   function getTrainingResumen(data: UserData) {
@@ -90,29 +93,33 @@ export default function Home() {
     setError(null);
     try {
       const form = e.currentTarget;
+      const getValue = (name: string) => (form as any)[name]?.value ?? '';
+      const getChecked = (name: string) => (form as any)[name]?.checked ?? false;
+      const getSplit = (name: string) => getValue(name).split(',').map((v: string) => v.trim()).filter(Boolean);
       const data = {
         entrenamiento: {
-          ubicacion: (form.ubicacion as HTMLSelectElement).value,
+          ubicacion: getValue('ubicacion'),
           material: {
-            pesas: (form.pesas as HTMLInputElement).checked,
-            bandas: (form.bandas as HTMLInputElement).checked,
-            maquinas: (form.maquinas as HTMLInputElement).checked,
-            barras: (form.barras as HTMLInputElement).checked,
-            otros: (form.otros as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+            pesas: getChecked('pesas'),
+            bandas: getChecked('bandas'),
+            maquinas: getChecked('maquinas'),
+            barras: getChecked('barras'),
+            otros: getSplit('otros'),
           },
-          nivel: (form.nivel as HTMLSelectElement).value,
-          diasEntrenamiento: Number((form.dias as HTMLSelectElement).value),
-          duracionSesion: Number((form.duracion as HTMLSelectElement).value),
-          objetivos: (form.objetivos as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
-          lesiones: (form.lesiones as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
-          preferencias: (form.preferencias as HTMLInputElement).value.split(',').map((v) => v.trim()).filter(Boolean),
+          nivel: getValue('nivel'),
+          diasEntrenamiento: 0, // ya no se usa select de días, se usa diasSeleccionados
+          duracionSesion: Number(getValue('duracion')),
+          objetivos: getSplit('objetivos'),
+          lesiones: getSplit('lesiones'),
+          preferencias: getSplit('preferencias'),
+          diasDisponibles: diasSeleccionados,
         },
-        edad: Number((form.edad as HTMLInputElement).value),
-        peso: Number((form.peso as HTMLInputElement).value),
-        altura: Number((form.altura as HTMLInputElement).value),
-        sexo: (form.sexo as HTMLSelectElement).value,
-        objetivo: (form.objetivo as HTMLSelectElement).value,
-        actividadFisica: (form.actividadFisica as HTMLSelectElement).value,
+        edad: Number(getValue('edad')),
+        peso: Number(getValue('peso')),
+        altura: Number(getValue('altura')),
+        sexo: getValue('sexo'),
+        objetivo: getValue('objetivo'),
+        actividadFisica: getValue('actividadFisica'),
         // Estos campos son requeridos por el tipo PlanData pero no por entrenamiento, así que los pasamos vacíos
         restricciones: [],
         alimentosNoDeseados: [],
@@ -214,12 +221,22 @@ export default function Home() {
     }));
   };
 
+  const handleDiaSeleccion = (dia: string) => {
+    setDiasSeleccionados(prev => {
+      if (prev.includes(dia)) {
+        return prev.filter(d => d !== dia);
+      } else {
+        return [...prev, dia];
+      }
+    });
+  };
+
   if (status === 'loading' && !session) {
     return (
       <div className={styles.container}>
         <header className={styles.header}>
           <div className={styles.headerContent}>
-            <h1 className={styles.title}>Come Como Dios</h1>
+            <h1 className={styles.title}>Come y Entrena Como Dios</h1>
             <p className={styles.subtitle}>Tu asistente personal de nutrición y entrenamiento</p>
           </div>
         </header>
@@ -248,7 +265,7 @@ export default function Home() {
       <div className={styles.container}>
         <header className={styles.header}>
           <div className={styles.headerContent}>
-            <h1 className={styles.title} style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>Come Como Dios</h1>
+            <h1 className={styles.title} style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>Come y Entrena Como Dios</h1>
             <p className={styles.subtitle} style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>Tu asistente personal de nutrición y entrenamiento</p>
           </div>
         </header>
@@ -299,7 +316,7 @@ export default function Home() {
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>Come Como Dios</h1>
+          <h1 className={styles.title}>Come y Entrena Como Dios</h1>
           <p className={styles.subtitle}>Tu asistente personal de nutrición y entrenamiento</p>
         </div>
         <button
@@ -466,16 +483,23 @@ export default function Home() {
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="dias">Días de Entrenamiento por Semana</label>
-              <select name="dias" id="dias" required>
-                <option value="">Selecciona los días</option>
-                <option value="1">1 día</option>
-                <option value="2">2 días</option>
-                <option value="3">3 días</option>
-                <option value="4">4 días</option>
-                <option value="5">5 días</option>
-                <option value="6">6 días</option>
-              </select>
+              <label>¿Cuál es tu disponibilidad para entrenar?</label>
+              <div className={styles['dias-semana-grid']}>
+                {DIAS_SEMANA.map(dia => (
+                  <div key={dia} className={styles['dia-checkbox-col']}>
+                    <span className={styles['dia-nombre']}>{dia.charAt(0).toUpperCase() + dia.slice(1)}</span>
+                    <input
+                      type="checkbox"
+                      checked={diasSeleccionados.includes(dia)}
+                      onChange={() => setDiasSeleccionados(prev => prev.includes(dia) ? prev.filter(d => d !== dia) : [...prev, dia])}
+                      className={styles['checkbox-dia-input']}
+                    />
+                  </div>
+                ))}
+              </div>
+              <small className={styles.helpText}>
+                Selecciona los días concretos en los que quieres entrenar. Puedes elegir cualquier combinación de lunes a domingo.
+              </small>
             </div>
 
             <div className={styles.formGroup}>

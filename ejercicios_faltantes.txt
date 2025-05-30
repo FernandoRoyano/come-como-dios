@@ -1,0 +1,28 @@
+FALTAN EN ejercicios.json (no hay coincidencia exacta ignorando tildes y mayúsculas):
+
+- Sentadillas
+- Fondos
+- Prensa de piernas
+- Abdominales
+- Curl femoral
+- Gemelos
+- Pull ups
+- Extensión de tríceps
+- Elevación de talones
+- Plancha
+- Abdominales oblicuos
+- Press inclinado
+- Sentadilla hack
+- Dominadas agarre cerrado
+- Flexiones diamante
+- Curl de bíceps en barra
+- Extensión de tríceps en polea
+- Press de banca inclinado
+- Peso muerto sumo
+- Fondos en paralelas
+- Extensión de tríceps con mancuerna
+- Peso muerto a una pierna
+
+Notas:
+- Algunos pueden tener variantes con nombres similares (por ejemplo, "Press inclinado mancuernas" o "Gemelos con mancuerna"), pero no hay coincidencia exacta con el nombre del prompt.
+- Se recomienda crear imágenes y entradas en ejercicios.json para estos nombres o ajustar el prompt para que use los nombres existentes.

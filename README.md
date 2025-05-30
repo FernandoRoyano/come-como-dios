@@ -1,4 +1,4 @@
-# 🧠 Come Como Dios – Planificador Nutricional IA
+# 🧠 Come y Entrena Como Dios – Planificador Nutricional IA
 
 Plataforma inteligente de nutrición personalizada que genera planes semanales completos, listas de la compra y recetas saludables adaptadas a tus objetivos físicos y estilo de vida.
 
