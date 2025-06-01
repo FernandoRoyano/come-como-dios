@@ -1,3 +1,5 @@
+import { PlanData } from '@/types/plan';
+
 export function generatePrompt(data: PlanData): string {
   const {
     edad,
