@@ -3,12 +3,14 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import styles from './dashboard.module.css';
 import { UserPlan } from '../types/user';
+import UserProfile from '../components/UserProfile';
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [plans, setPlans] = useState<UserPlan[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -19,6 +21,9 @@ export default function Dashboard() {
   useEffect(() => {
     if (session?.user) {
       fetchUserPlans();
+      fetch(`/api/user/get?email=${session.user.email}`)
+        .then(res => res.json())
+        .then(data => setUserData(data));
     }
   }, [session]);
 
@@ -77,14 +82,27 @@ export default function Dashboard() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1>Mi Panel Personal</h1>
-        <p>Bienvenido, {session?.user?.name}</p>
+        <h1>¡Hola, {userData?.name || session?.user?.name}!</h1>
+        <p>Bienvenido a tu panel personal.</p>
       </header>
 <section className={styles.userSummary}>
   <div className={styles.userCard}>
     <h2>Resumen de Usuario</h2>
-    <p><strong>Nombre:</strong> {session?.user?.name}</p>
-    <p><strong>Email:</strong> {session?.user?.email}</p>
+    <p><strong>Nombre:</strong> {userData?.name || session?.user?.name}</p>
+    <p><strong>Email:</strong> {userData?.email || session?.user?.email}</p>
+    {userData?.fechaNacimiento && (
+      <p><strong>Fecha de nacimiento:</strong> {new Date(userData.fechaNacimiento).toLocaleDateString()}</p>
+    )}
+    {userData?.estatura && (
+      <p><strong>Estatura:</strong> {userData.estatura} cm</p>
+    )}
+    {userData?.peso && (
+      <p><strong>Peso actual:</strong> {userData.peso} kg</p>
+    )}
+    {/* Puedes añadir aquí más campos personalizados */}
+    <div style={{marginTop:24}}>
+      <UserProfile />
+    </div>
   </div>
 </section>
 
@@ -112,17 +130,17 @@ export default function Dashboard() {
                       {plan.type === 'nutrition' ? '🍎 Nutrición' : '💪 Entrenamiento'}
                     </span>
                   </div>
-                  
+                  <div className={styles.planUser}>
+                    <strong>Usuario:</strong> {plan.userName || userData?.name || session?.user?.name}
+                  </div>
                   {plan.metadata.description && (
                     <p className={styles.planDescription}>{plan.metadata.description}</p>
                   )}
-                  
                   <div className={styles.planTags}>
                     {plan.metadata.tags?.map((tag) => (
                       <span key={tag} className={styles.tag}>{tag}</span>
                     ))}
                   </div>
-                  
                   <div className={styles.planActions}>
                     <button 
                       className={styles.viewButton}
@@ -151,4 +169,4 @@ export default function Dashboard() {
       </main>
     </div>
   );
-} 
+}

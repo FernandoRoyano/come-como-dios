@@ -1,5 +1,3 @@
-import { PlanData } from '@/types/plan';
-
 export function generatePrompt(data: PlanData): string {
   const {
     edad,
@@ -21,26 +19,73 @@ Peso: ${peso} kg
 Altura: ${altura} cm
 Sexo: ${sexo}
 Objetivo: ${objetivo}
-Restricciones alimentarias: ${restricciones.join(', ') || 'Ninguna'}
+Restricciones alimentarias: ${restricciones?.length ? restricciones.join(', ') : 'Ninguna'}
 Actividad física: ${actividadFisica}
 Intensidad del trabajo: ${intensidadTrabajo}
 Número de comidas diarias: ${numeroComidas}
-Alimentos no deseados: ${alimentosNoDeseados.join(', ') || 'Ninguno'}
+Alimentos no deseados: ${alimentosNoDeseados?.length ? alimentosNoDeseados.join(', ') : 'Ninguno'}
 
-IMPORTANTE: 
-- NO incluir NINGUNO de los alimentos no deseados en el plan de comidas
-- Si se mencionan alimentos no deseados, asegúrate de NO incluirlos en ninguna comida ni en la lista de compra
-- Si un ingrediente es similar a uno no deseado, también debe evitarse
+📌 EJEMPLO DE CÁLCULO ESPERADO:
 
-Genera un plan semanal detallado que incluya:
+Edad: 30, Peso: 80 kg, Altura: 180 cm, Sexo: Hombre
+TMB = (10 × 80) + (6.25 × 180) − (5 × 30) + 5 = 1775
+GET = 1775 × 1.5 (actividad moderada) = 2662.5
+Objetivo: Ganar masa muscular → 2662.5 × 1.2 = 3195 kcal
+Calorías finales = 3200 (mínimo recomendado para este perfil)
 
-1. Un menú detallado para cada día de la semana (Lunes a Domingo)
-2. Una lista de compra completa y detallada organizada por categorías
-3. Los totales de macronutrientes diarios
+🔢 CÁLCULOS QUE DEBES HACER:
 
-IMPORTANTE: La respuesta DEBE comenzar con ###JSON_START### y terminar con ###JSON_END###, y contener SOLO el JSON entre estos delimitadores.
+1. Calcular el TMB usando la fórmula Mifflin-St Jeor:
+   · Hombres: (10 × peso) + (6.25 × altura) − (5 × edad) + 5
+   · Mujeres: (10 × peso) + (6.25 × altura) − (5 × edad) − 161
 
-Ejemplo del formato JSON esperado:
+2. Multiplicar por el nivel de actividad física:
+   · Sedentario: 1.2
+   · Ligero: 1.3
+   · Moderado: 1.5
+   · Intenso: 1.7
+   · Muy intenso: 1.9
+
+3. Ajustar según el objetivo:
+   · Pérdida de grasa: aplicar un déficit del 20–25%
+   · Ganancia muscular: aplicar un superávit del 15–20%. 
+     ⚠️ Mínimo 3200 kcal si GET ≥ 2500. Si GET < 2500, usar al menos 2800 kcal.
+   · Mantenimiento: usar el GET sin ajuste
+   · Rendimiento: aplicar superávit del 10%, priorizando carbohidratos
+
+4. Calorías mínimas permitidas:
+   · Hombres: nunca menos de 1500 kcal
+   · Mujeres: nunca menos de 1200 kcal
+
+5. Calcular los macronutrientes (basado en peso corporal actual):
+   · Proteínas:
+       - Pérdida de grasa: 2.2–2.4 g/kg
+       - Ganancia muscular: 2.0–2.2 g/kg
+       - Mantenimiento: 1.6–1.8 g/kg
+       - Rendimiento: 1.8–2.0 g/kg
+   · Grasas: 0.8–1.2 g/kg
+   · Carbohidratos: el resto de las calorías restantes
+
+6. Mostrar los cálculos previos al plan, como bloque oculto o comentario, incluyendo:
+   - TMB calculado
+   - GET estimado
+   - GET ajustado según el objetivo
+   - Calorías finales (respetando mínimos)
+   - Gramos diarios de cada macronutriente
+
+7. Diseñar un menú realista para toda la semana (lunes a domingo), con alimentos simples, naturales y sin procesados.
+
+8. Excluir completamente todos los alimentos no deseados, similares o relacionados.
+
+9. Distribuir las calorías y macros en cada comida, ajustado al número de comidas.
+
+10. Generar también:
+   - Lista de compra por categorías
+   - Totales diarios de calorías y macronutrientes
+
+⚠️ Bajo ninguna circunstancia debe generarse un plan con menos calorías que el mínimo definido. Si el cálculo da menos, AJUSTAR hacia arriba.
+
+✅ FORMATO DE RESPUESTA:
 
 ###JSON_START###
 {
@@ -54,49 +99,29 @@ Ejemplo del formato JSON esperado:
         "carbohidratos": 70,
         "grasas": 10
       },
-      "almuerzo": {
-        "nombre": "Ensalada de pollo",
-        "descripcion": "150g pechuga, 100g lechuga, 50g tomate",
-        "calorias": 350,
-        "proteinas": 35,
-        "carbohidratos": 15,
-        "grasas": 12
-      },
-      "cena": {
-        "nombre": "Pescado al horno",
-        "descripcion": "200g merluza, 100g patatas, 50g zanahorias",
-        "calorias": 400,
-        "proteinas": 40,
-        "carbohidratos": 30,
-        "grasas": 15
-      }
-    }
+      ...
+    },
+    ...
   },
   "listaCompra": {
-    "verduras": ["100g lechuga", "50g tomate", "50g zanahorias"],
-    "proteinas": ["150g pechuga de pollo", "200g merluza"],
-    "carbohidratos": ["200g avena", "100g patatas"],
-    "grasas": ["300ml leche"],
-    "condimentos": ["Sal", "Pimienta"],
-    "lacteos": ["300ml leche"],
-    "frutas": ["1 plátano"]
+    "verduras": ["100g lechuga", "50g tomate"],
+    "proteinas": ["150g pechuga", "2 huevos"],
+    ...
   },
   "macronutrientes": {
-    "calorias": 1200,
-    "proteinas": 90,
-    "carbohidratos": 115,
-    "grasas": 37
+    "calorias": 2800,
+    "proteinas": 160,
+    "carbohidratos": 300,
+    "grasas": 80
   }
 }
 ###JSON_END###
 
-Asegúrate de que:
-1. Todos los nombres de propiedades y valores string estén entre comillas dobles
-2. Los números no tengan comillas
-3. El JSON sea válido y esté correctamente formateado
-4. NO incluir NINGUNO de los alimentos no deseados en el plan
-5. La lista de compra incluya TODOS los ingredientes necesarios con cantidades exactas
-6. Los macronutrientes sean números reales y positivos
-7. La respuesta DEBE comenzar con ###JSON_START### y terminar con ###JSON_END###`;
+✅ Asegúrate de:
+- No incluir comentarios fuera del bloque
+- El JSON esté bien formado y válido
+- Las calorías diarias coincidan con los menús
+- Excluir alimentos prohibidos
+- Incluir los cálculos en un bloque al principio
+`;
 }
-  

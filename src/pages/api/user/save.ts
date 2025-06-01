@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { email, name, age, weight, height } = req.body;
+    const { email, name, fechaNacimiento, estatura, peso } = req.body;
 
     if (!email || !name) {
       return res.status(400).json({ error: 'Email and name are required' });
@@ -19,12 +19,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         indexes: [{ key: { email: 1 }, unique: true }],
       });
 
+      // Actualiza o inserta el usuario, y si hay peso, añade al historial
+      const update: any = { name, fechaNacimiento, estatura };
+      if (peso) {
+        update.peso = peso;
+        update.$push = { pesoHistorial: { fecha: new Date().toISOString(), peso } };
+      }
+
       const user = await prisma.$runCommandRaw({
         update: 'User',
         updates: [
           {
             q: { email },
-            u: { $set: { name, age, weight, height } },
+            u: { $set: update },
             upsert: true,
           },
         ],

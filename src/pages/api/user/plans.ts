@@ -30,7 +30,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   switch (req.method) {
     case 'GET':
-      // Obtener planes del usuario
+      // Si hay un id, devolver solo ese plan
+      if (req.query.id) {
+        const userPlansList = getPlansFromStorage(userId);
+        const plan = userPlansList.find(p => p.id === req.query.id);
+        if (!plan) return res.status(404).json({ message: 'Plan no encontrado' });
+        return res.status(200).json({ plan });
+      }
+      // Obtener todos los planes del usuario
       const userPlansList = getPlansFromStorage(userId);
       return res.status(200).json({ plans: userPlansList });
 
@@ -39,6 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const newPlan: UserPlan = {
         id: Math.random().toString(36).substr(2, 9),
         userId,
+        userName: session.user?.name || '', // Guardar el nombre del usuario
         type: req.body.type,
         createdAt: new Date(),
         plan: req.body.plan,
@@ -64,4 +72,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
       return res.status(405).json({ message: `Método ${req.method} no permitido` });
   }
-} 
+}

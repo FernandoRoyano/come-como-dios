@@ -17,6 +17,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         filter: { email },
       });
 
+      // Extrae y calcula edad si hay fechaNacimiento
+      if (user && user.fechaNacimiento) {
+        const nacimiento = new Date(user.fechaNacimiento);
+        const hoy = new Date();
+        let edad = hoy.getFullYear() - nacimiento.getFullYear();
+        const m = hoy.getMonth() - nacimiento.getMonth();
+        if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
+          edad--;
+        }
+        user.edad = edad;
+      }
+
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }

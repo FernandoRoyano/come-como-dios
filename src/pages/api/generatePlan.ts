@@ -75,6 +75,9 @@ export async function generatePlan(data: PlanData) {
 
   const content = completion.choices[0].message?.content || '';
 
+  // LOG para depuración: muestra la respuesta completa de la IA
+  console.log('Respuesta completa de la IA:', content);
+
   // Extraer solo el bloque JSON entre los delimitadores definidos
   const start = content.indexOf('###JSON_START###');
   const end = content.indexOf('###JSON_END###');
