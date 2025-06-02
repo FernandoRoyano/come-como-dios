@@ -3,6 +3,7 @@ import { PlanEntrenamiento, Ejercicio } from '@/types/plan';
 import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import ejerciciosData from '@/data/ejercicios.json';
+import { obtenerNombreEjercicioAlias } from '@/lib/ejerciciosAlias';
 
 function normalizarNombre(nombre: string) {
   return nombre
@@ -14,7 +15,9 @@ function normalizarNombre(nombre: string) {
 }
 
 function obtenerImagenEjercicio(nombre: string) {
-  const nombreNormalizado = normalizarNombre(nombre);
+  // Aplicar alias antes de buscar
+  const nombreAlias = obtenerNombreEjercicioAlias(nombre);
+  const nombreNormalizado = normalizarNombre(nombreAlias);
   // 1. Coincidencia exacta
   let ejercicio = (ejerciciosData as Array<{nombre: string, imagen: string}>).find(e =>
     normalizarNombre(e.nombre) === nombreNormalizado
@@ -152,8 +155,33 @@ const TrainingViewer = ({ plan, resumen }: Props) => {
     );
   }, [imageErrors, handleImageError]);
 
+  // Explicación del tipo de entrenamiento
+  const explicacionEntrenamiento = (
+    <div className={styles['explicacion-entrenamiento']}>
+      <h3>¿Por qué este tipo de entrenamiento?</h3>
+      <p>
+        El plan de entrenamiento que has recibido está diseñado siguiendo las mejores prácticas y recomendaciones actuales de la ciencia del ejercicio. Se priorizan ejercicios multiarticulares y la progresión semanal, adaptando el volumen, la intensidad y la selección de ejercicios a tu nivel, objetivo y material disponible.
+      </p>
+      <p>
+        La estructura de la rutina busca equilibrar el trabajo de todos los grupos musculares, alternando días de empuje, tracción y pierna, e incluyendo ejercicios de core y movilidad. Además, se tienen en cuenta tus preferencias, posibles lesiones y el tiempo real que puedes dedicar, para que el plan sea seguro, efectivo y sostenible.
+      </p>
+      <p>
+        <strong>Recuerda:</strong> la clave está en la constancia, la técnica y la progresión. Si tienes dudas sobre algún ejercicio, consulta la descripción o pide asesoramiento profesional.
+      </p>
+    </div>
+  );
+
   return (
     <div className={styles['training-container']} id="training-plan">
+      <button
+        className={styles['pdf-button']}
+        onClick={handleDownloadPDF}
+        disabled={isPdfLoading}
+        style={{ marginBottom: '2rem' }}
+      >
+        {isPdfLoading ? 'Generando PDF...' : '📥 Descargar rutina en PDF'}
+      </button>
+      {explicacionEntrenamiento}
       {plan && plan.rutina && Object.keys(plan.rutina).length > 0 ? (
         Object.entries(plan.rutina).map(([dia, detalles]) => (
           <div key={dia} className={styles['rutina-section']}>

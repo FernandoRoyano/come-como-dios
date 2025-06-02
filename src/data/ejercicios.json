@@ -1,7 +1,7 @@
 [
   {
     "nombre": "Aperturas con mancuernas",
-    "imagen": "Aperturas-con-mancuernas.png",
+    "imagen": "aperturas-con-mancuernas.png",
     "descripcion": "Ejercicio para pectorales con mancuernas."
   },
   {
@@ -24,15 +24,16 @@
     "imagen": "curl-con-barra.png",
     "descripcion": "Ejercicio de bíceps con barra."
   },
-  {
-    "nombre": "Curl de bíceps con barra",
-    "imagen": "curl-de-biceps-con-barra.png",
-    "descripcion": "Ejercicio de bíceps con barra."
-  },
+
   {
     "nombre": "Curl martillo",
-    "imagen": "Curl-martillo.png",
+    "imagen": "curl-martillo.png",
     "descripcion": "Ejercicio de bíceps y antebrazo con mancuernas."
+  },
+  {
+    "nombre": "Dominadas",
+    "imagen": "dominadas.png",
+    "descripcion": "Ejercicio de tracción vertical para espalda y bíceps."
   },
   {
     "nombre": "Elevación lateral unilateral",
@@ -55,13 +56,8 @@
     "descripcion": "Ejercicio de hombros con mancuernas."
   },
   {
-    "nombre": "Encogimientos (trapecios)",
-    "imagen": "encogimientos (trapecios).png",
-    "descripcion": "Ejercicio para trapecios."
-  },
-  {
     "nombre": "Encogimientos",
-    "imagen": "Encogimientos.png",
+    "imagen": "encogimientos.png",
     "descripcion": "Ejercicio para trapecios."
   },
   {
@@ -86,7 +82,7 @@
   },
   {
     "nombre": "Pájaros con mancuerna",
-    "imagen": "Pajaros-con-mancuerna.png",
+    "imagen": "pajaros-con-mancuerna.png",
     "descripcion": "Ejercicio para deltoides posteriores."
   },
   {
@@ -135,13 +131,13 @@
     "descripcion": "Ejercicio de tríceps con mancuernas."
   },
   {
-    "nombre": "Press francés",
-    "imagen": "press-frances.png",
-    "descripcion": "Ejercicio de tríceps."
+    "nombre": "Press francés con barra",
+    "imagen": "press-frances-con-barra.png",
+    "descripcion": "Ejercicio de tríceps con barra."
   },
   {
     "nombre": "Press inclinado mancuernas",
-    "imagen": "Press-inclinado-mancuernas.png",
+    "imagen": "press-inclinado-mancuernas.png",
     "descripcion": "Ejercicio para pectorales superiores."
   },
   {
@@ -226,17 +222,17 @@
   },
   {
     "nombre": "Thruster",
-    "imagen": "Thruster.png",
+    "imagen": "thruster.png",
     "descripcion": "Ejercicio combinado de sentadilla y press."
   },
   {
-    "nombre": "Tríceps con mancuerna chicas",
+    "nombre": "Triceps con mancuerna chicas",
     "imagen": "triceps-con-mancuerna-chicas.png",
     "descripcion": "Ejercicio de tríceps con mancuerna para mujeres."
   },
   {
-    "nombre": "Tríceps hacia arriba chicas",
-    "imagen": "tríceps-hacia-arriba-chicas.png",
+    "nombre": "Triceps hacia arriba chicas",
+    "imagen": "triceps-hacia-arriba-chicas.png",
     "descripcion": "Ejercicio de tríceps por encima de la cabeza para mujeres."
   },
   {
@@ -268,5 +264,35 @@
     "nombre": "Sentadilla sin peso",
     "imagen": "sentadilla-sin-peso.png",
     "descripcion": "Sentadilla con el peso corporal, sin carga adicional."
+  },
+  {
+    "nombre": "Pull ups",
+    "imagen": "dominadas.png",
+    "descripcion": "Ejercicio de tracción vertical para espalda y bíceps (alias de Dominadas)."
+  },
+  {
+    "nombre": "Curl femoral",
+    "imagen": "femoral-en-maquina.png",
+    "descripcion": "Ejercicio para femorales en máquina (alias de Femoral en máquina)."
+  },
+  {
+    "nombre": "Plancha frontal",
+    "imagen": "plancha-frontal.png",
+    "descripcion": "Ejercicio isométrico para core y abdomen."
+  },
+  {
+    "nombre": "Plancha lateral",
+    "imagen": "plancha-lateral.png",
+    "descripcion": "Ejercicio isométrico para oblicuos y core."
+  },
+  {
+    "nombre": "Tríceps en polea",
+    "imagen": "triceps-en-polea.jpg",
+    "descripcion": "Ejercicio de extensión de tríceps en polea alta."
+  },
+  {
+    "nombre": "Jalón al pecho",
+    "imagen": "jalon-al-pecho.png",
+    "descripcion": "Ejercicio de tracción vertical para espalda y dorsales en polea alta."
   }
 ]

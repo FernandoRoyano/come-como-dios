@@ -23,14 +23,12 @@
   font-size: 2.5rem;
   margin: 0;
   margin-bottom: 0.5rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .header p {
   font-size: 1.2rem;
   margin: 0;
   opacity: 0.9;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .main {
@@ -51,7 +49,6 @@
   margin: 0 0 2rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid #e4e8eb;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .emptyState {
@@ -95,7 +92,6 @@
   border-radius: 0.5rem;
   padding: 1.5rem;
   transition: all 0.3s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .planCard:hover {
@@ -254,11 +250,4 @@
   margin: 0.5rem 0;
   font-size: 1.05rem;
   color: #334155;
-}
-
-/* Asegurar que todos los elementos hereden la tipografía global */
-.container,
-.header h1,
-.plansSection h2 {
-  font-family: inherit;
 }

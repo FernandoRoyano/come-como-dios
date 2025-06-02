@@ -1,3 +1,5 @@
+/* Eliminado el selector global * porque no es válido en CSS Modules. Usa solo clases locales aquí. */
+
 .container {
   min-height: 100vh;
   padding: 2rem;
@@ -530,15 +532,7 @@
   font-size: 1.2rem;
 }
 
-/* Aplicar la tipografía global */
-.title,
-.subtitle,
-.planSelector h2,
-.planSelectorSubtitle,
-.planButton h3,
-.planButton p {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+/* Elimina el bloque de selectores globales, ya que no son válidos en CSS Modules. Aplica solo clases locales aquí. */
 
 @media (max-width: 768px) {
   .container {

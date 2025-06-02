@@ -1,13 +1,24 @@
+/* Variables globales de fuente */
+:root {
+  --font-primary: 'Inter', Arial, sans-serif;
+  --font-secondary: 'Geist Mono', 'Inter', Arial, sans-serif;
+}
+
+/* Asegura la fuente global en todo el proyecto */
+html, body, #__next {
+  font-family: var(--font-primary);
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f8f9fa;
   color: #333;
 }
 
-h1, h2 {
+h1, h2, .plan-title {
   color: #1f2937;
+  font-family: var(--font-secondary);
 }
 
 form {
@@ -44,6 +55,7 @@ form button {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-family: var(--font-primary);
 }
 
 form button:hover {

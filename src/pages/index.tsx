@@ -41,6 +41,46 @@ function UserContextDisplay({ data }: { data: UserData }) {
   );
 }
 
+// Lista de ejercicios faltantes (extraída de ejercicios_faltantes.txt)
+const ejerciciosFaltantes = [
+  'Sentadillas',
+  'Fondos',
+  'Prensa de piernas',
+  'Abdominales',
+  'Curl femoral',
+  'Gemelos',
+  'Pull ups',
+  'Extensión de tríceps',
+  'Elevación de talones',
+  'Plancha',
+  'Abdominales oblicuos',
+  'Press inclinado',
+  'Sentadilla hack',
+  'Dominadas agarre cerrado',
+  'Flexiones diamante',
+  'Curl de bíceps en barra',
+  'Extensión de tríceps en polea',
+  'Press de banca inclinado',
+  'Peso muerto sumo',
+  'Fondos en paralelas',
+  'Extensión de tríceps con mancuerna',
+  'Peso muerto a una pierna',
+];
+
+function EjerciciosFaltantesAviso() {
+  return (
+    <div style={{background:'#fffbe6',border:'1px solid #ffe58f',borderRadius:8,padding:'1rem',margin:'1.5rem 0'}}>
+      <strong>Ejercicios comunes que faltan en la base de datos:</strong>
+      <ul style={{margin:'0.5rem 0 0 1.5rem',fontSize:'1rem'}}>
+        {ejerciciosFaltantes.map(ej => <li key={ej}>{ej}</li>)}
+      </ul>
+      <div style={{marginTop:'0.5rem'}}>
+        <a href="mailto:soporte@tudominio.com?subject=Sugerencia%20de%20ejercicio%20faltante" style={{color:'#faad14',textDecoration:'underline'}}>¿Quieres sugerir o reportar un ejercicio?</a>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const { data: session, status } = useSession();
   const [plan, setPlan] = useState<Plan | null>(null);

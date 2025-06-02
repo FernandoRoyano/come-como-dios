@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { PlanData } from '@/types/plan';
 
 /**
@@ -48,6 +50,15 @@ function generatePlanExampleJSON(): string {
  * Genera el prompt completo para generar un plan de entrenamiento personalizado.
  */
 export function generateTrainingPrompt(data: PlanData): string {
+  // Leer SOLO el resumen del libro
+  let libroReferencia = '';
+  try {
+    const libroPath = path.join(process.cwd(), 'src/data/libro_powerexplosive_resumido.txt');
+    libroReferencia = fs.readFileSync(libroPath, 'utf8');
+  } catch (e) {
+    libroReferencia = '';
+  }
+
   const {
     entrenamiento,
     edad,
@@ -95,38 +106,5 @@ export function generateTrainingPrompt(data: PlanData): string {
   const lesiones = (entrenamiento.lesiones || []).join(', ') || 'ninguna';
   const preferencias = (entrenamiento.preferencias || []).join(', ') || 'ninguna';
 
-  return `IMPORTANTE: RESPONDE EXCLUSIVAMENTE con un bloque JSON válido, comenzando con ###JSON_START### y terminando con ###JSON_END###.
-
-ATENCIÓN: El JSON debe cumplir TODAS estas reglas:
-- Todas las claves y strings entre comillas dobles
-- Números sin comillas
-- NO debe haber errores de sintaxis
-- Cada elemento de un objeto debe estar separado por una coma, incluyendo los días de la semana (lunes, martes, ... sábado, domingo)
-- Revisa que no falte ninguna coma entre días
-- NO incluyas comentarios, encabezados ni texto fuera del bloque JSON
-- El bloque debe ser parseable directamente con JSON.parse en JavaScript
-
-Genera un plan de entrenamiento personalizado para la siguiente persona:
-
-Edad: ${edad} años
-Peso: ${peso} kg
-Altura: ${altura} cm
-Sexo: ${sexo}
-Objetivo: ${objetivo}
-Nivel de actividad física: ${actividadFisica}
-
-Configuración del entrenamiento:
-- Ubicación: ${entrenamiento.ubicacion}
-- Material disponible: ${materialesTexto}
-- Nivel: ${entrenamiento.nivel}
-- Días de entrenamiento: ${entrenamiento.diasEntrenamiento}
-- Duración de la sesión: ${entrenamiento.duracionSesion} minutos
-- Objetivos específicos: ${objetivos}
-- Lesiones: ${lesiones}
-- Preferencias: ${preferencias}
-
-Reglas importantes:
-${reglasDias}
-
-${generatePlanExampleJSON()}`;
+  return `INSTRUCCIONES DE REFERENCIA (extraídas del libro PowerExplosive):\n${libroReferencia}\n\nIMPORTANTE: RESPONDE EXCLUSIVAMENTE con un bloque JSON válido, comenzando con ###JSON_START### y terminando con ###JSON_END###.\n\nATENCIÓN: El JSON debe cumplir TODAS estas reglas:\n- Todas las claves y strings entre comillas dobles\n- Números sin comillas\n- NO debe haber errores de sintaxis\n- Cada elemento de un objeto debe estar separado por una coma, incluyendo los días de la semana (lunes, martes, ... sábado, domingo)\n- Revisa que no falte ninguna coma entre días\n- NO incluyas comentarios, encabezados ni texto fuera del bloque JSON\n- El bloque debe ser parseable directamente con JSON.parse en JavaScript\n\nGenera un plan de entrenamiento personalizado para la siguiente persona:\n\nEdad: ${edad} años\nPeso: ${peso} kg\nAltura: ${altura} cm\nSexo: ${sexo}\nObjetivo: ${objetivo}\nNivel de actividad física: ${actividadFisica}\n\nConfiguración del entrenamiento:\n- Ubicación: ${entrenamiento.ubicacion}\n- Material disponible: ${materialesTexto}\n- Nivel: ${entrenamiento.nivel}\n- Días de entrenamiento: ${entrenamiento.diasEntrenamiento}\n- Duración de la sesión: ${entrenamiento.duracionSesion} minutos\n- Objetivos específicos: ${objetivos}\n- Lesiones: ${lesiones}\n- Preferencias: ${preferencias}\n\nReglas importantes:\n${reglasDias}\n\n${generatePlanExampleJSON()}`;
 }

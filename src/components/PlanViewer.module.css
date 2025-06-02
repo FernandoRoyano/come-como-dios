@@ -13,7 +13,6 @@
     font-weight: 700;
     margin-bottom: 2rem;
     color: #1e293b;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   
   .day-card {
@@ -29,7 +28,6 @@
     font-size: 1.5rem;
     color: #0f172a;
     margin-bottom: 1.2rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   
   .meal-item {
@@ -53,7 +51,6 @@
     font-size: 1rem;
     color: #334155;
     line-height: 1.5;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   
   .meal-item small {

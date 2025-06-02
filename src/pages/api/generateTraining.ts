@@ -6,6 +6,7 @@ import { validatePlan } from '@/lib/validatePlan';
 import { v4 as uuidv4 } from 'uuid';
 import { distribuirDias, distribuirDiasSeleccionados } from '@/utils/distributeTrainingDays';
 import { typedEntries } from '@/utils/typedEntries';
+import { obtenerParametrosEjercicio } from '@/lib/trainingParams';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || 'test-api-key',
@@ -51,6 +52,9 @@ export async function generateTraining(data: PlanData & { diasSeleccionados?: st
     const content = completion.choices[0].message?.content || '';
     const cleanContent = content.replace(/\n|\r/g, ' ').trim();
 
+    // LOG: Mostrar el contenido bruto recibido de la IA
+    console.log('[IA RAW RESPONSE]', cleanContent);
+
     const startMarker = '###JSON_START###';
     const endMarker = '###JSON_END###';
     let jsonString = '';
@@ -65,21 +69,29 @@ export async function generateTraining(data: PlanData & { diasSeleccionados?: st
       if (possibleJson) {
         jsonString = possibleJson[0];
       } else {
+        // LOG: No se pudo extraer JSON
+        console.error('[ERROR] No se pudo extraer un JSON válido del contenido:', cleanContent);
         throw new Error('No se pudo extraer un JSON válido del contenido.');
       }
     }
+
+    // LOG: Mostrar el JSON extraído antes de parsear
+    console.log('[IA JSON EXTRACTED]', jsonString);
 
     let parsed: ParsedPlan;
     try {
       parsed = JSON.parse(jsonString);
     } catch (e) {
-      // Lanzar error con el contenido bruto para depuración
+      // LOG: Error al parsear JSON
+      console.error('[ERROR] El JSON recibido no es válido. Respuesta bruta de la IA:', jsonString);
       const error = new Error('El JSON recibido no es válido. Respuesta bruta de la IA: ' + jsonString);
       (error as any).rawContent = jsonString;
       throw error;
     }
 
     if (!validarEstructuraParsed(parsed)) {
+      // LOG: Estructura mínima no válida
+      console.error('[ERROR] El JSON recibido no tiene la estructura mínima esperada:', parsed);
       throw new Error('El JSON recibido no tiene la estructura mínima esperada.');
     }
 
@@ -99,22 +111,63 @@ export async function generateTraining(data: PlanData & { diasSeleccionados?: st
         type Ejercicio = string | { nombre: string };
         const ejercicios: Ejercicio[] = Array.isArray(entrada?.[1]) ? (entrada[1] as Ejercicio[]) : [];
 
+        // Si no hay ejercicios, es un día de descanso: añadir explicación y ejercicios de movilidad
+        if (!ejercicios.length) {
+          return [
+            dia,
+            {
+              nombre: dia + ' (descanso)',
+              ejercicios: [
+                {
+                  id: uuidv4(),
+                  nombre: 'Movilidad articular general',
+                  series: 2,
+                  repeticiones: '10-15',
+                  descripcion: 'Rutina suave de movilidad para todas las articulaciones principales.',
+                  material: 'Esterilla',
+                  musculos: ['general'],
+                  notas: 'Realizar movimientos suaves y controlados.',
+                  descanso: '30s',
+                  imagen: ''
+                },
+                {
+                  id: uuidv4(),
+                  nombre: 'Estiramientos globales',
+                  series: 1,
+                  repeticiones: '10-15 min',
+                  descripcion: 'Estiramientos estáticos de cuerpo completo.',
+                  material: 'Esterilla',
+                  musculos: ['general'],
+                  notas: 'Mantener cada estiramiento 20-30 segundos.',
+                  descanso: '-',
+                  imagen: ''
+                }
+              ],
+              duracion: 20,
+              intensidad: 'muy baja',
+              calorias: 50
+            }
+          ];
+        }
+
         return [
           dia,
           {
             nombre: dia,
             ejercicios: ejercicios.map(ejercicio => {
               const nombreEjercicio = typeof ejercicio === 'string' ? ejercicio : ejercicio.nombre;
+              const params = obtenerParametrosEjercicio(nombreEjercicio);
               return {
                 id: uuidv4(),
-                nombre: nombreEjercicio,
-                series: 3,
-                repeticiones: '10-12',
+                nombre: nombreEjercicio || '',
+                series: params.series,
+                repeticiones: params.repeticiones,
                 descripcion: '',
                 material: '',
                 musculos: [],
                 notas: '',
-                descanso: ''
+                descanso: params.descanso || '',
+                imagen: ''
               };
             }),
             duracion: ejercicios.length * 10,
