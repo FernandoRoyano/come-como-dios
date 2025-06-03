@@ -75,13 +75,17 @@ Calorías finales = 3200 (mínimo recomendado para este perfil)
    - Calorías finales (respetando mínimos)
    - Gramos diarios de cada macronutriente
 
-7. Diseñar un menú realista para toda la semana (lunes a domingo), con alimentos simples, naturales y sin procesados.
+7. Diseña un menú realista para toda la semana (lunes a domingo), con alimentos simples, naturales y sin procesados.
 
-8. Excluir completamente todos los alimentos no deseados, similares o relacionados.
+8. EXIGE VARIEDAD: No repitas el mismo desayuno, comida, cena o snack en días consecutivos. Cada día debe tener menús diferentes y variados. Evita menús repetitivos o monótonos. No repitas el mismo plato principal más de una vez por semana.
 
-9. Distribuir las calorías y macros en cada comida, ajustado al número de comidas.
+9. Bajo ninguna circunstancia uses "..." ni omitas días o comidas. El JSON debe estar completo para los 7 días, con todas las comidas y snacks. Si no sabes un valor, pon 0, pero nunca uses "..." ni dejes campos incompletos.
 
-10. Generar también:
+10. Excluir completamente todos los alimentos no deseados, similares o relacionados.
+
+11. Distribuir las calorías y macros en cada comida, ajustado al número de comidas.
+
+12. Generar también:
    - Lista de compra por categorías
    - Totales diarios de calorías y macronutrientes
 
@@ -111,13 +115,19 @@ Calorías finales = 3200 (mínimo recomendado para este perfil)
     ...
   },
   "macronutrientes": {
-    "calorias": 2800,
-    "proteinas": 160,
-    "carbohidratos": 300,
-    "grasas": 80
+    "calorias": 2800, // SIEMPRE un número, nunca texto ni x
+    "proteinas": 160, // SIEMPRE un número, nunca texto ni x
+    "carbohidratos": 300, // SIEMPRE un número, nunca texto ni x
+    "grasas": 80 // SIEMPRE un número, nunca texto ni x
   }
 }
 ###JSON_END###
+
+⚠️ IMPORTANTE:
+- Todos los valores de calorías, proteínas, carbohidratos y grasas deben ser NÚMEROS (no texto, no "x", no null).
+- Si no sabes el valor exacto, pon 0.
+- El JSON debe ser válido y parseable con JSON.parse en JavaScript.
+- No incluyas ningún texto fuera del bloque JSON.
 
 ✅ Asegúrate de:
 - No incluir comentarios fuera del bloque

@@ -17,6 +17,7 @@ function UserContextDisplay({ data }: { data: UserData }) {
   const objetivo = data.objetivo || '';
   const nivel = data.entrenamiento?.nivel || '';
   const materialArr = [];
+  
 
   if (data.entrenamiento?.material) {
     if (data.entrenamiento.material.pesas) materialArr.push('pesas');
@@ -69,13 +70,13 @@ const ejerciciosFaltantes = [
 
 function EjerciciosFaltantesAviso() {
   return (
-    <div style={{background:'#fffbe6',border:'1px solid #ffe58f',borderRadius:8,padding:'1rem',margin:'1.5rem 0'}}>
+    <div className={styles.ejerciciosAviso}>
       <strong>Ejercicios comunes que faltan en la base de datos:</strong>
-      <ul style={{margin:'0.5rem 0 0 1.5rem',fontSize:'1rem'}}>
+      <ul className={styles.ejerciciosAvisoLista}>
         {ejerciciosFaltantes.map(ej => <li key={ej}>{ej}</li>)}
       </ul>
-      <div style={{marginTop:'0.5rem'}}>
-        <a href="mailto:soporte@tudominio.com?subject=Sugerencia%20de%20ejercicio%20faltante" style={{color:'#faad14',textDecoration:'underline'}}>¿Quieres sugerir o reportar un ejercicio?</a>
+      <div className={styles.ejerciciosAvisoSugerencia}>
+        <a href="mailto:soporte@tudominio.com?subject=Sugerencia%20de%20ejercicio%20faltante" className={styles.ejerciciosAvisoLink}>¿Quieres sugerir o reportar un ejercicio?</a>
       </div>
     </div>
   );
@@ -280,7 +281,7 @@ export default function Home() {
             <p className={styles.subtitle}>Tu asistente personal de nutrición y entrenamiento</p>
           </div>
         </header>
-        <main className={styles.main}>
+        <main className={styles.main + ' ' + styles.mainWide}>
           <div className={styles.loading}>
             <div className={styles.loadingSpinner}></div>
             <p>Cargando...</p>
@@ -305,46 +306,75 @@ export default function Home() {
       <div className={styles.container}>
         <header className={styles.header}>
           <div className={styles.headerContent}>
-            <h1 className={styles.title} style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>Come y Entrena Como Dios</h1>
-            <p className={styles.subtitle} style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>Tu asistente personal de nutrición y entrenamiento</p>
+            <h1 className={styles.title}>Come y Entrena Como Dios</h1>
+            <p className={styles.subtitle}>Tu asistente personal de nutrición y entrenamiento</p>
           </div>
         </header>
-        <main className={styles.main}>
-          <section className={styles.authMessage}>
-            <h2 style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>¡Bienvenido/a!</h2>
-            <p style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>
-              Descubre cómo la inteligencia artificial puede ayudarte a alcanzar tus objetivos de salud y fitness. Genera planes personalizados de nutrición y entrenamiento en segundos, adaptados a tus preferencias, necesidades y estilo de vida.
+        <main className={styles.main + ' ' + styles.mainWide}>
+          <section className={styles.marketingBlock + ' ' + styles.marketingBlockWide}>
+            {/* Título y subtítulo solo una vez, fuera del bloque de marketing */}
+            <h2 className={styles.marketingTitle}>
+              🧠 Transforma tu cuerpo con inteligencia artificial
+            </h2>
+            <p className={styles.marketingSubtitle}>
+              Planes de nutrición y entrenamiento personalizados, sin pagar a un entrenador.<br/>
+              Olvídate de las dietas genéricas o rutinas copiadas de internet.<br/>
+              Esta app usa IA avanzada para crear el plan perfecto para ti, según tus objetivos, cuerpo y estilo de vida.
             </p>
-          </section>
-          <section className={styles.features}>
-            <div className={styles.feature}>
-              <span role="img" aria-label="Nutrición">🍎</span>
-              <h3 style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>Plan Nutricional</h3>
-              <p style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>Dieta personalizada según tus objetivos, restricciones y gustos.</p>
+            <div className={styles.marketingCta}>
+              <div>🧪 <b>Empieza GRATIS</b></div>
+              <div>🔓 Accede a tu plan de muestra gratis durante 3 días</div>
+              <div>🕐 Sin compromiso, sin tarjetas</div>
+              <div>🔥 Disponible por tiempo limitado</div>
             </div>
-            <div className={styles.feature}>
-              <span role="img" aria-label="Entrenamiento">💪</span>
-              <h3 style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>Plan de Entrenamiento</h3>
-              <p style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>Rutinas adaptadas a tu nivel, material disponible y metas.</p>
+            <div className={styles.featuresUnified + ' ' + styles.featuresGrid} style={{ marginTop: '2.5rem', marginBottom: '2.5rem' }}>
+              <div className={styles.feature}>
+                <span role="img" aria-label="Nutrición">🍎</span>
+                <h3>Plan Nutricional</h3>
+                <p>Dieta personalizada según tus objetivos, restricciones y gustos.</p>
+              </div>
+              <div className={styles.feature}>
+                <span role="img" aria-label="Entrenamiento">💪</span>
+                <h3>Plan de Entrenamiento</h3>
+                <p>Rutinas adaptadas a tu nivel, material disponible y metas.</p>
+              </div>
+              <div className={styles.feature}>
+                <span role="img" aria-label="IA">🤖</span>
+                <h3>100% Personalizado</h3>
+                <p>Planes generados por IA, únicos para ti, en segundos.</p>
+              </div>
+              <div className={styles.feature}>
+                <span role="img" aria-label="Fácil">⚡</span>
+                <h3>Fácil y Rápido</h3>
+                <p>Solo responde unas preguntas y obtén tu plan al instante.</p>
+              </div>
             </div>
-            <div className={styles.feature}>
-              <span role="img" aria-label="IA">🤖</span>
-              <h3 style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>100% Personalizado</h3>
-              <p style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>Planes generados por IA, únicos para ti, en segundos.</p>
+            <div className={styles.marketingFeatures}>
+              <div>🚀 <b>¿Qué obtienes?</b></div>
+              <ul>
+                <li>✅ Un plan de comidas semanal adaptado a tus gustos y alergias</li>
+                <li>✅ Entrenamientos personalizados según tu nivel, equipo y días disponibles</li>
+                <li>✅ Lista de la compra organizada y lista para usar</li>
+                <li>✅ Calorías, macros y recomendaciones claras, sin complicaciones</li>
+              </ul>
+              <div style={{marginTop:'1.5rem'}}>🤖 <b>¿Cómo funciona?</b></div>
+              <ol>
+                <li>Rellenas un formulario con tus datos (edad, peso, objetivo, etc.)</li>
+                <li>La IA analiza todo y genera tu plan único</li>
+                <li>Recibes tu guía completa en minutos</li>
+              </ol>
             </div>
-            <div className={styles.feature}>
-              <span role="img" aria-label="Fácil">⚡</span>
-              <h3 style={{ fontFamily: 'var(--font-primary, Inter, Arial, sans-serif)' }}>Fácil y Rápido</h3>
-              <p style={{ fontFamily: 'var(--font-secondary, Inter, Arial, sans-serif)' }}>Solo responde unas preguntas y obtén tu plan al instante.</p>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2.5rem' }}>
+              <button
+                onClick={() => signIn('google')}
+                className={styles.bigCtaButton}
+              >
+                Iniciar Sesión con Google
+              </button>
             </div>
           </section>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
-            <button
-              onClick={() => signIn('google')}
-              className={styles.continueButton}
-            >
-              Iniciar Sesión con Google
-            </button>
+
           </div>
         </main>
       </div>
@@ -367,7 +397,7 @@ export default function Home() {
           Cerrar Sesión
         </button>
       </header>
-      <main className={styles.main}>
+      <main className={styles.main + ' ' + styles.mainWide}>
         {loading && (
           <div className={styles.loading}>
             <div className={styles.loadingSpinner}></div>

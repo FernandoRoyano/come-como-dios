@@ -4,6 +4,7 @@
   min-height: 100vh;
   padding: 2rem;
   background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .header {
@@ -70,6 +71,27 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem;
+  align-items: stretch;
+}
+
+@media (max-width: 1100px) {
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .featuresGrid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
 }
 
 .feature {
@@ -532,6 +554,116 @@
   font-size: 1.2rem;
 }
 
+.marketingBlock {
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 24px rgba(37,99,235,0.07);
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin: 2.5rem auto 2rem auto;
+  max-width: 600px;
+  text-align: center;
+  animation: fadeIn 0.7s cubic-bezier(.4,0,.2,1);
+}
+
+.marketingTitle {
+  font-size: 2.1rem;
+  font-weight: 900;
+  color: #1e293b;
+  margin-bottom: 1.2rem;
+  letter-spacing: -0.01em;
+  font-family: var(--font-secondary);
+}
+
+.marketingSubtitle {
+  font-size: 1.15rem;
+  color: #334155;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.marketingFeatures {
+  text-align: left;
+  margin: 0 auto 1.5rem auto;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.marketingFeatures ul,
+.marketingFeatures ol {
+  margin: 0.5rem 0 1.2rem 1.5rem;
+  padding-left: 1.2rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.marketingFeatures ul li {
+  margin-bottom: 0.3rem;
+}
+
+.marketingFeatures ol li {
+  margin-bottom: 0.3rem;
+}
+
+.marketingCta {
+  background: #e0e7ef;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin: 1.2rem 0 1.5rem 0;
+  font-size: 1.05rem;
+  color: #1e293b;
+  text-align: center;
+}
+
+.marketingFeatures .bigCtaButton {
+  display: block;
+  margin: 1.2rem auto 0 auto;
+}
+
+.bigCtaButton {
+  display: inline-block;
+  margin: 1.2rem auto 0 auto;
+  padding: 1.1rem 2.2rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(90deg, #2563eb 0%, #0ea5e9 100%);
+  border: none;
+  border-radius: 2rem;
+  box-shadow: 0 2px 12px rgba(37,99,235,0.13);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  font-family: var(--font-primary);
+}
+
+.bigCtaButton:hover {
+  background: linear-gradient(90deg, #0ea5e9 0%, #2563eb 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.ejerciciosAviso {
+  background: #fffbe6;
+  border: 1px solid #ffe58f;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+}
+
+.ejerciciosAvisoLista {
+  margin: 0.5rem 0 0 1.5rem;
+  font-size: 1rem;
+}
+
+.ejerciciosAvisoSugerencia {
+  margin-top: 0.5rem;
+}
+
+.ejerciciosAvisoLink {
+  color: #faad14;
+  text-decoration: underline;
+}
+
 /* Elimina el bloque de selectores globales, ya que no son válidos en CSS Modules. Aplica solo clases locales aquí. */
 
 @media (max-width: 768px) {
@@ -618,5 +750,56 @@
     right: 1.5rem;
     padding: 0.75rem 1.25rem;
     font-size: 0.9rem;
+  }
+
+  .marketingBlock {
+    padding: 2rem;
+    margin: 2rem auto;
+  }
+
+  .marketingTitle {
+    font-size: 1.8rem;
+  }
+
+  .marketingSubtitle {
+    font-size: 1rem;
+  }
+
+  .marketingFeatures {
+    max-width: 100%;
+  }
+
+  .bigCtaButton {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .mainWide {
+    max-width: 1500px;
+    width: 98vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .marketingBlockWide {
+    max-width: 1100px;
+    width: 100%;
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .mainWide {
+    max-width: 98vw;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .marketingBlockWide {
+    max-width: 98vw;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }

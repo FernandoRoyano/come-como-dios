@@ -43,40 +43,60 @@ const PlanViewer = ({ plan }: Props) => {
       <div id="plan-to-download" className={styles['plan-container']}>
         <h2 className={styles['plan-title']}>Plan semanal personalizado</h2>
 
-        {Object.entries(currentPlan.dias).map(([diaNombre, dia], index) => (
-          <div key={index} className={styles['day-card']}>
-            <h3>Día {index + 1}: {diaNombre}</h3>
-
-            {Object.entries(dia).map(([tipoComida, comida]) => {
-              if (typeof comida === 'object' && comida !== null && 'nombre' in comida) {
-                return (
-                  <div key={tipoComida} className={styles['meal-item']}>
-                    <strong>{comida.nombre}:</strong>
-                    <p>{comida.descripcion}</p>
+        {Object.entries(currentPlan.dias).map(([diaNombre, dia], index) => {
+          // Normaliza claves: acepta 'almuerzo' o 'comida' como comida principal
+          const desayuno = (dia as any).desayuno;
+          const almuerzo = (dia as any).almuerzo || (dia as any).comida;
+          const cena = (dia as any).cena;
+          const snacks = (dia as any).snacks;
+          const comidasMostrar = [
+            { tipo: 'Desayuno', data: desayuno },
+            { tipo: 'Almuerzo', data: almuerzo },
+            { tipo: 'Cena', data: cena }
+          ];
+          return (
+            <div key={index} className={styles['day-card']}>
+              <h3>Día {index + 1}: {diaNombre}</h3>
+              {comidasMostrar.map(({ tipo, data }) =>
+                data && data.nombre ? (
+                  <div key={tipo} className={styles['meal-item']}>
+                    <strong>{tipo}: {data.nombre}</strong>
+                    <p>{data.descripcion}</p>
                     <small>
-                      Cal: {comida.calorias} | Prot: {comida.proteinas}g | Carb: {comida.carbohidratos}g | Grasas: {comida.grasas}g
+                      Cal: {data.calorias} | Prot: {data.proteinas}g | Carb: {data.carbohidratos}g | Grasas: {data.grasas}g
                     </small>
                   </div>
-                );
-              }
-              return null;
-            })}
-
-            <div className={styles['totales-dia']}>
-              <strong>Total día:</strong>{' '}
-              {(() => {
-                const comidas = Object.values(dia).filter((comida): comida is Comida => 
-                  typeof comida === 'object' && comida !== null && 'nombre' in comida
-                );
-                const totalCalorias = comidas.reduce((acc, c) => acc + c.calorias, 0);
-                const totalProteinas = comidas.reduce((acc, c) => acc + c.proteinas, 0);
-                const totalCarbohidratos = comidas.reduce((acc, c) => acc + c.carbohidratos, 0);
-                const totalGrasas = comidas.reduce((acc, c) => acc + c.grasas, 0);
-                return `${totalCalorias} kcal | ${totalProteinas}g prot | ${totalCarbohidratos}g carb | ${totalGrasas}g grasas`;
-              })()}
+                ) : null
+              )}
+              {Array.isArray(snacks) && snacks.length > 0 && (
+                <div className={styles['meal-item']}>
+                  <strong>Snacks:</strong>
+                  <ul>
+                    {snacks.map((snack, i) => (
+                      <li key={i}>
+                        {snack.nombre} - {snack.descripcion} <br />
+                        <small>Cal: {snack.calorias} | Prot: {snack.proteinas}g | Carb: {snack.carbohidratos}g | Grasas: {snack.grasas}g</small>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <div className={styles['totales-dia']}>
+                <strong>Total día:</strong>{' '}
+                {(() => {
+                  const comidas = [desayuno, almuerzo, cena]
+                    .filter((c): c is Comida => c && typeof c === 'object' && 'nombre' in c);
+                  const snacksArr = Array.isArray(snacks) ? snacks : [];
+                  const totalCalorias = [...comidas, ...snacksArr].reduce((acc, c) => acc + (c.calorias || 0), 0);
+                  const totalProteinas = [...comidas, ...snacksArr].reduce((acc, c) => acc + (c.proteinas || 0), 0);
+                  const totalCarbohidratos = [...comidas, ...snacksArr].reduce((acc, c) => acc + (c.carbohidratos || 0), 0);
+                  const totalGrasas = [...comidas, ...snacksArr].reduce((acc, c) => acc + (c.grasas || 0), 0);
+                  return `${totalCalorias} kcal | ${totalProteinas}g prot | ${totalCarbohidratos}g carb | ${totalGrasas}g grasas`;
+                })()}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         <div className={styles['lista-compra']}>
           <h3>🛒 Lista de la compra semanal</h3>

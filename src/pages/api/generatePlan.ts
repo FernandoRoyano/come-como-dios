@@ -3,6 +3,7 @@ import OpenAI from 'openai';
 import { generatePrompt } from '@/lib/generatePrompt';
 import { validatePlan } from '@/lib/validatePlan';
 import { Plan, PlanData, PlanEntrenamiento } from '@/types/plan';
+import { calcularMacrosDeDescripcion } from '@/lib/foodDataCentral';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -88,43 +89,152 @@ export async function generatePlan(data: PlanData) {
 
   const jsonString = content.slice(start + 17, end).trim();
 
-  try {
-    const parsed = JSON.parse(jsonString) as Plan;
-
-    // Validar que el número de comidas generadas coincida con el solicitado
-    if (parsed.comidas && parsed.comidas.length !== data.numeroComidas) {
-      throw new Error(`El número de comidas generadas (${parsed.comidas.length}) no coincide con el solicitado (${data.numeroComidas}).`);
-    }
-
-    const entrenamiento: PlanEntrenamiento = {
-      rutina: Object.fromEntries(
-        Object.entries(parsed.dias).map(([key]) => [
-          key,
-          {
-            nombre: key,
-            ejercicios: [], // Agregar lógica para ejercicios si es necesario
-            duracion: 0,
-            intensidad: 'media',
-            calorias: 0,
-          },
-        ])
-      ),
-      progresion: {
-        semanas: [],
-      },
-      consideraciones: {
-        calentamiento: [],
-        enfriamiento: [],
-        descanso: '',
-        notas: '',
-      },
-    };
-
-    validatePlan(entrenamiento);
-    return { plan: parsed };
-  } catch (parseError: unknown) {
-    throw new Error(`Error en el formato JSON del plan generado: ${parseError instanceof Error ? parseError.message : 'Error desconocido'}`);
+  // Limpieza básica del JSON generado por la IA antes de parsear
+  function limpiarJsonIA(json: string): string {
+    // Elimina comentarios tipo // y /* */
+    let limpio = json.replace(/\/\/.*$/gm, '');
+    limpio = limpio.replace(/\/\*[\s\S]*?\*\//g, '');
+    // Elimina comas finales antes de llaves/corchetes de cierre
+    limpio = limpio.replace(/,\s*([}\]])/g, '$1');
+    // Elimina saltos de línea innecesarios
+    limpio = limpio.replace(/\r?\n/g, ' ');
+    // Elimina valores tipo "x", null, o vacíos por 0 en macros
+    limpio = limpio.replace(/(:\s*)("x"|null|''|""|undefined)/g, '$10');
+    // Elimina dobles comillas seguidas
+    limpio = limpio.replace(/"{2,}/g, '"');
+    return limpio.trim();
   }
+
+  let parsed: Plan;
+  try {
+    parsed = JSON.parse(jsonString) as Plan;
+  } catch (parseError1) {
+    // Fallback: intenta limpiar el JSON antes de parsear
+    try {
+      const limpio = limpiarJsonIA(jsonString);
+      parsed = JSON.parse(limpio) as Plan;
+      console.warn('[IA WARNING] El JSON de la IA fue limpiado automáticamente antes de parsear.');
+    } catch (parseError2) {
+      // Fallback: intenta reemplazar comillas simples por dobles y limpiar
+      try {
+        const fixedJson = jsonString.replace(/'/g, '"');
+        const limpio = limpiarJsonIA(fixedJson);
+        parsed = JSON.parse(limpio) as Plan;
+        console.warn('[IA WARNING] El JSON de la IA fue limpiado y corregido de comillas simples.');
+      } catch (parseError3) {
+        // Log completo para depuración
+        console.error('[IA ERROR] JSON inválido recibido de la IA:', jsonString);
+        throw new Error(`Error en el formato JSON del plan generado: ${parseError1 instanceof Error ? parseError1.message : 'Error desconocido'}\nJSON bruto recibido:\n${jsonString}`);
+      }
+    }
+  }
+
+  // Validación de tipos para macronutrientes (robusta: fuerza a 0 si no es número)
+  if (parsed.macronutrientes) {
+    const m = parsed.macronutrientes;
+    m.calorias = typeof m.calorias === 'number' && isFinite(m.calorias) ? m.calorias : 0;
+    m.proteinas = typeof m.proteinas === 'number' && isFinite(m.proteinas) ? m.proteinas : 0;
+    m.carbohidratos = typeof m.carbohidratos === 'number' && isFinite(m.carbohidratos) ? m.carbohidratos : 0;
+    m.grasas = typeof m.grasas === 'number' && isFinite(m.grasas) ? m.grasas : 0;
+  }
+
+  // Validación robusta de estructura
+  // 1. Comidas debe ser array o null
+  if (parsed.comidas && !Array.isArray(parsed.comidas)) {
+    console.warn('[IA WARNING] El campo "comidas" no es un array. Valor recibido:', parsed.comidas);
+    parsed.comidas = [];
+  }
+  // 2. Dias debe ser objeto
+  if (!parsed.dias || typeof parsed.dias !== 'object' || Array.isArray(parsed.dias)) {
+    console.warn('[IA WARNING] El campo "dias" no es un objeto. Valor recibido:', parsed.dias);
+    parsed.dias = {};
+  }
+
+  // Validar que el número de comidas generadas coincida con el solicitado
+  if (parsed.comidas && parsed.comidas.length !== data.numeroComidas) {
+    throw new Error(`El número de comidas generadas (${parsed.comidas.length}) no coincide con el solicitado (${data.numeroComidas}).`);
+  }
+
+  // Recalcular calorías y macros de cada comida usando FoodData Central
+  // Recopilar ingredientes no encontrados
+  let ingredientesNoEncontrados: string[] = [];
+  if (parsed.dias) {
+    for (const diaKey of Object.keys(parsed.dias)) {
+      const dia = parsed.dias[diaKey];
+      // Claves válidas de comida
+      const comidaKeys = ['desayuno', 'almuerzo', 'cena'];
+      for (const comidaKey of comidaKeys) {
+        const comida = (dia as any)[comidaKey];
+        if (comida && typeof comida === 'object') {
+          let macros: ReturnType<typeof calcularMacrosDeDescripcion> = { calorias: 0, proteinas: 0, carbohidratos: 0, grasas: 0, detalles: [], noEncontrados: [] };
+          if (typeof comida.descripcion === 'string' && comida.descripcion.trim().length > 0) {
+            macros = calcularMacrosDeDescripcion(comida.descripcion);
+            if (macros.noEncontrados && macros.noEncontrados.length > 0) {
+              ingredientesNoEncontrados.push(...macros.noEncontrados);
+            }
+          }
+          comida.calorias = Math.round(macros.calorias);
+          comida.proteinas = Math.round(macros.proteinas);
+          comida.carbohidratos = Math.round(macros.carbohidratos);
+          comida.grasas = Math.round(macros.grasas);
+        } else if (comida !== undefined) {
+          console.warn(`[IA WARNING] La comida '${comidaKey}' del día '${diaKey}' no es un objeto válido. Valor recibido:`, comida);
+        }
+      }
+      // Snacks (opcional, puede ser array)
+      if (Array.isArray((dia as any).snacks)) {
+        for (const snack of (dia as any).snacks) {
+          if (snack && typeof snack === 'object') {
+            let macros: ReturnType<typeof calcularMacrosDeDescripcion> = { calorias: 0, proteinas: 0, carbohidratos: 0, grasas: 0, detalles: [], noEncontrados: [] };
+            if (typeof snack.descripcion === 'string' && snack.descripcion.trim().length > 0) {
+              macros = calcularMacrosDeDescripcion(snack.descripcion);
+              if (macros.noEncontrados && macros.noEncontrados.length > 0) {
+                ingredientesNoEncontrados.push(...macros.noEncontrados);
+              }
+            }
+            snack.calorias = Math.round(macros.calorias);
+            snack.proteinas = Math.round(macros.proteinas);
+            snack.carbohidratos = Math.round(macros.carbohidratos);
+            snack.grasas = Math.round(macros.grasas);
+          } else if (snack !== undefined) {
+            console.warn(`[IA WARNING] Un snack del día '${diaKey}' no es un objeto válido. Valor recibido:`, snack);
+          }
+        }
+      } else if ((dia as any).snacks !== undefined) {
+        console.warn(`[IA WARNING] El campo 'snacks' del día '${diaKey}' no es un array. Valor recibido:`, (dia as any).snacks);
+      }
+    }
+  }
+
+  // Eliminar duplicados y limpiar espacios
+  ingredientesNoEncontrados = Array.from(new Set(ingredientesNoEncontrados.map(i => i.trim().toLowerCase())));
+
+  const entrenamiento: PlanEntrenamiento = {
+    rutina: Object.fromEntries(
+      Object.entries(parsed.dias).map(([key]) => [
+        key,
+        {
+          nombre: key,
+          ejercicios: [], // Agregar lógica para ejercicios si es necesario
+          duracion: 0,
+          intensidad: 'media',
+          calorias: 0,
+        },
+      ])
+    ),
+    progresion: {
+      semanas: [],
+    },
+    consideraciones: {
+      calentamiento: [],
+      enfriamiento: [],
+      descanso: '',
+      notas: '',
+    },
+  };
+
+  validatePlan(entrenamiento);
+  return { plan: parsed, ingredientesNoEncontrados };
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -195,9 +305,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.status(200).json(result);
   } catch (error: unknown) {
+    console.error('Error en /api/generatePlan:', error);
     res.status(500).json({ 
       message: 'Error generando el plan con IA.', 
       details: error instanceof Error ? error.message : 'Error desconocido',
+      stack: error instanceof Error ? error.stack : undefined,
       timestamp: new Date().toISOString()
     });
   }

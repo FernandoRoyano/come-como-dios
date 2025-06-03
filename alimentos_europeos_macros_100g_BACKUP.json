@@ -1,0 +1,23 @@
+[
+  {
+    "nombre": "pollo pechuga cocida",
+    "calorias": 165,
+    "proteinas": 31,
+    "carbohidratos": 0,
+    "grasas": 3.6
+  },
+  {
+    "nombre": "arroz integral cocido",
+    "calorias": 111,
+    "proteinas": 2.6,
+    "carbohidratos": 23,
+    "grasas": 0.9
+  },
+  {
+    "nombre": "brocoli al vapor",
+    "calorias": 35,
+    "proteinas": 2.4,
+    "carbohidratos": 7.2,
+    "grasas": 0.4
+  }
+]
