@@ -182,7 +182,7 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
     if (restrictionError) {
       return;
     }
-    onSubmit({ ...(form as any), diasSeleccionados });
+    onSubmit({ ...(form as any), diasSeleccionados, tipoDieta: form.tipoDieta });
   };
 
   return (
@@ -290,26 +290,17 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
           </div>
 
           <div className={styles['form-group']}>
-            <label>Restricciones alimentarias:</label>
-            <div className={styles['checkbox-group']}>
-              {[
-                'Intolerancia al gluten',
-                'Intolerancia a la lactosa',
-                'Alergia a frutos secos',
-                'Vegetariano',
-                'Vegano',
-                'Dieta keto',
-                'Dieta mediterránea',
-                'Low carb'
-              ].map((restriccion) => (
+            <label htmlFor="restricciones" className={styles['form-label']}>Restricciones alimentarias:</label>
+            <div className={styles['checkbox-group']} id="restricciones">
+              {[ 'Intolerancia al gluten', 'Intolerancia a la lactosa', 'Alergia a frutos secos' ].map((restriccion) => (
                 <label key={restriccion} className={styles['checkbox-label']}>
+                  <span>{restriccion}</span>
                   <input
                     type="checkbox"
                     value={restriccion}
                     checked={form.restricciones.includes(restriccion)}
                     onChange={handleCheckboxChange}
                   />
-                  <span>{restriccion}</span>
                 </label>
               ))}
             </div>
@@ -320,18 +311,39 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
             )}
           </div>
 
-          <div className={styles['form-group']}>
-            <label>Alimentos que no te gustan:</label>
-            <textarea
-              name="alimentosNoDeseados"
-              value={form.alimentosNoDeseados.join(', ')}
-              onChange={handleAlimentosNoDeseadosChange}
-              placeholder="Escribe los alimentos que no te gustan separados por comas (ej: brócoli, coliflor, hígado)"
-              className={styles['textarea']}
-            />
-            <small className={styles['help-text']}>
-              Indica los alimentos o ingredientes que no te gustan o no quieres comer. Sepáralos por comas.
-            </small>
+          <div className={styles['form-row']}>
+            <div className={styles['form-group']}>
+              <label htmlFor="alimentosNoDeseados">Alimentos que no te gustan:</label>
+              <textarea
+                name="alimentosNoDeseados"
+                id="alimentosNoDeseados"
+                value={form.alimentosNoDeseados.join(', ')}
+                onChange={handleAlimentosNoDeseadosChange}
+                placeholder="Escribe los alimentos que no te gustan separados por comas (ej: brócoli, coliflor, hígado)"
+                className={styles['textarea']}
+              />
+              <small className={styles['help-text']}>
+                Indica los alimentos o ingredientes que no te gustan o no quieres comer. Sepáralos por comas.
+              </small>
+            </div>
+            <div className={styles['form-group']}>
+              <label htmlFor="tipoDieta">Tipo de dieta:</label>
+              <select
+                name="tipoDieta"
+                id="tipoDieta"
+                value={form.tipoDieta || ''}
+                onChange={e => setForm(prev => ({ ...prev, tipoDieta: e.target.value }))}
+              >
+                <option value="">Sin preferencia</option>
+                <option value="vegana">Vegana</option>
+                <option value="vegetariana">Vegetariana</option>
+                <option value="keto">Keto</option>
+                <option value="mediterranea">Mediterránea</option>
+              </select>
+              <small className={styles['help-text']}>
+                Selecciona un tipo de dieta para filtrar solo los alimentos aptos.
+              </small>
+            </div>
           </div>
         </div>
       )}
@@ -384,29 +396,31 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
             </div>
           </div>
 
-          <div className={styles['form-group']}>
-            <label>Nivel de experiencia:</label>
-            <select
-              value={form.entrenamiento?.nivel}
-              onChange={(e) => handleEntrenamientoChange('nivel', e.target.value)}
-            >
-              <option>Principiante</option>
-              <option>Intermedio</option>
-              <option>Avanzado</option>
-            </select>
-          </div>
+          <div className={styles['form-row'] + ' ' + styles['experiencia-duracion']}>
+            <div className={styles['form-group']}>
+              <label>Nivel de experiencia:</label>
+              <select
+                value={form.entrenamiento?.nivel}
+                onChange={(e) => handleEntrenamientoChange('nivel', e.target.value)}
+              >
+                <option>Principiante</option>
+                <option>Intermedio</option>
+                <option>Avanzado</option>
+              </select>
+            </div>
 
-          <div className={styles['form-group']}>
-            <label>Duración de cada sesión (minutos):</label>
-            <select
-              value={form.entrenamiento?.duracionSesion}
-              onChange={(e) => handleEntrenamientoChange('duracionSesion', Number(e.target.value))}
-            >
-              <option value={30}>30 minutos</option>
-              <option value={45}>45 minutos</option>
-              <option value={60}>60 minutos</option>
-              <option value={90}>90 minutos</option>
-            </select>
+            <div className={styles['form-group']}>
+              <label>Duración de cada sesión (minutos):</label>
+              <select
+                value={form.entrenamiento?.duracionSesion}
+                onChange={(e) => handleEntrenamientoChange('duracionSesion', Number(e.target.value))}
+              >
+                <option value={30}>30 minutos</option>
+                <option value={45}>45 minutos</option>
+                <option value={60}>60 minutos</option>
+                <option value={90}>90 minutos</option>
+              </select>
+            </div>
           </div>
 
           <div className={styles['form-group']}>

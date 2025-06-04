@@ -1,6 +1,7 @@
 // /pages/api/regenerateMeal.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
+import { calcularMacrosDeDescripcionFiltrado } from '@/lib/foodDataCentral';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
 
@@ -9,11 +10,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Método no permitido' });
   }
 
-  const { dia, comida, restricciones, objetivo, numeroComidas, caloriasTotales } = req.body;
+  const { dia, comida, restricciones, objetivo, numeroComidas, caloriasTotales, tipoDieta } = req.body;
 
   // Validación básica
   if (!dia || !comida || !objetivo || !numeroComidas || !caloriasTotales) {
     return res.status(400).json({ message: 'Faltan datos requeridos: día, comida, objetivo, número de comidas o calorías totales' });
+  }
+
+  // Detectar tipo de dieta si no viene explícito
+  let tipoDietaFinal = tipoDieta;
+  if (!tipoDietaFinal && Array.isArray(restricciones)) {
+    const lower = restricciones.map((r: string) => r.toLowerCase());
+    if (lower.includes('vegana')) tipoDietaFinal = 'vegana';
+    else if (lower.includes('vegetariana')) tipoDietaFinal = 'vegetariana';
+    else if (lower.includes('keto')) tipoDietaFinal = 'keto';
+    else if (lower.includes('mediterranea') || lower.includes('mediterránea')) tipoDietaFinal = 'mediterranea';
   }
 
   const restrStr = Array.isArray(restricciones) && restricciones.length > 0
@@ -65,6 +76,14 @@ Eres un nutricionista profesional. Crea una comida para el día "${dia}", tipo "
     const jsonString = content.slice(jsonStart, jsonEnd + 1);
 
     const parsed = JSON.parse(jsonString);
+
+    // Recalcular macros y calorías usando solo alimentos aptos
+    const macros = calcularMacrosDeDescripcionFiltrado(parsed.descripcion, { tipoDieta: tipoDietaFinal, restricciones });
+    parsed.calorias = Math.round(macros.calorias);
+    parsed.proteinas = Math.round(macros.proteinas);
+    parsed.carbohidratos = Math.round(macros.carbohidratos);
+    parsed.grasas = Math.round(macros.grasas);
+    parsed.noEncontrados = macros.noEncontrados;
 
     res.status(200).json(parsed);
   } catch (error: unknown) {

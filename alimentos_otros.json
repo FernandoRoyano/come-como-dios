@@ -1,0 +1,51 @@
+[
+  {
+    "nombre": "aceite de oliva",
+    "calorias": 884,
+    "proteinas": 0,
+    "carbohidratos": 0,
+    "grasas": 100
+  },
+  {
+    "nombre": "aguacate",
+    "calorias": 160,
+    "proteinas": 2,
+    "carbohidratos": 8.5,
+    "grasas": 15
+  },
+  {
+    "nombre": "mantequilla",
+    "calorias": 717,
+    "proteinas": 0.9,
+    "carbohidratos": 0.1,
+    "grasas": 81
+  },
+  {
+    "nombre": "almendras",
+    "calorias": 579,
+    "proteinas": 21,
+    "carbohidratos": 22,
+    "grasas": 50
+  },
+  {
+    "nombre": "nueces",
+    "calorias": 654,
+    "proteinas": 15,
+    "carbohidratos": 14,
+    "grasas": 65
+  },
+  {
+    "nombre": "miel",
+    "calorias": 304,
+    "proteinas": 0.3,
+    "carbohidratos": 82,
+    "grasas": 0
+  },
+  {
+    "nombre": "queso fresco 0%",
+    "calorias": 48,
+    "proteinas": 8.5,
+    "carbohidratos": 2.6,
+    "grasas": 0.2
+  }
+]

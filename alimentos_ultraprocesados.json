@@ -1,0 +1,50 @@
+[
+  {
+    "nombre": "pizza margarita",
+    "calorias": 250,
+    "proteinas": 11,
+    "carbohidratos": 33,
+    "grasas": 9,
+    "aptoPara": ["vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "hamburguesa de ternera",
+    "calorias": 250,
+    "proteinas": 17,
+    "carbohidratos": 10,
+    "grasas": 15,
+    "aptoPara": ["mediterranea"]
+  },
+  {
+    "nombre": "croquetas de jamón",
+    "calorias": 250,
+    "proteinas": 8,
+    "carbohidratos": 25,
+    "grasas": 12,
+    "aptoPara": ["mediterranea"]
+  },
+  {
+    "nombre": "barrita proteica (protein bar)",
+    "calorias": 350,
+    "proteinas": 30,
+    "carbohidratos": 35,
+    "grasas": 10,
+    "aptoPara": ["vegetariana", "keto", "mediterranea"]
+  },
+  {
+    "nombre": "barrita de cereales (cereal bar)",
+    "calorias": 380,
+    "proteinas": 6,
+    "carbohidratos": 70,
+    "grasas": 7,
+    "aptoPara": ["vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "granola",
+    "calorias": 471,
+    "proteinas": 10,
+    "carbohidratos": 64,
+    "grasas": 20,
+    "aptoPara": ["vegetariana", "mediterranea"]
+  }
+]

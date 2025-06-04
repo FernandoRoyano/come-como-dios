@@ -3,6 +3,7 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import styles from './index.module.css';
 import TrainingViewer from '../components/TrainingViewer';
 import PlanViewer from '../components/PlanViewer';
+import InputForm from '../components/InputForm';
 import { PlanEntrenamiento, Plan, UserData } from '../types/plan';
 
 const DIAS_SEMANA = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
@@ -407,48 +408,50 @@ export default function Home() {
 
         {error && <div className={styles.error}>{error}</div>}
 
-        {!selectedPlans.nutricion && !selectedPlans.entrenamiento && !plan && !trainingResult && (
-          <div className={styles.planSelector}>
-            <h2>¿Qué tipo de plan deseas generar?</h2>
-            <p className={styles.planSelectorSubtitle}>
-              Selecciona el tipo de plan que deseas generar. Puedes elegir uno o ambos.
-            </p>
-            <div className={styles.planButtons}>
-              <button
-                onClick={() => togglePlan('nutricion')}
-                className={`${styles.planButton} ${selectedPlans.nutricion ? styles.planButtonSelected : ''}`}
-              >
-                <span>🍎</span>
-                <h3>Plan Nutricional</h3>
-                <p>Dieta personalizada adaptada a tus objetivos</p>
-                <div className={styles.planButtonCheck}>
-                  {selectedPlans.nutricion ? '✓' : ''}
-                </div>
-              </button>
-              <button
-                onClick={() => togglePlan('entrenamiento')}
-                className={`${styles.planButton} ${selectedPlans.entrenamiento ? styles.planButtonSelected : ''}`}
-              >
-                <span>💪</span>
-                <h3>Plan de Entrenamiento</h3>
-                <p>Rutina de ejercicios personalizada</p>
-                <div className={styles.planButtonCheck}>
-                  {selectedPlans.entrenamiento ? '✓' : ''}
-                </div>
-              </button>
-              <button
-                onClick={() => setSelectedPlans({ nutricion: true, entrenamiento: true })}
-                className={`${styles.planButton} ${selectedPlans.nutricion && selectedPlans.entrenamiento ? styles.planButtonSelected : ''}`}
-              >
-                <span>🎯</span>
-                <h3>Plan Completo</h3>
-                <p>Nutrición y entrenamiento personalizados</p>
-                <div className={styles.planButtonCheck}>
-                  {selectedPlans.nutricion && selectedPlans.entrenamiento ? '✓' : ''}
-                </div>
-              </button>
-            </div>
-          </div>
+        {/* Mostrar el formulario unificado solo si no hay plan generado ni resultado de entrenamiento */}
+        {(!plan && !trainingResult) && (
+          <InputForm
+            onSubmit={async (data) => {
+              setLoading(true);
+              setError(null);
+              try {
+                // Decide endpoint según el servicio seleccionado
+                let endpoint = '/api/generatePlan';
+                if (data.servicios.entrenamiento && !data.servicios.nutricion) {
+                  endpoint = '/api/generateTraining';
+                }
+                const response = await fetch(endpoint, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(data),
+                });
+                if (!response.ok) {
+                  const errorData = await response.json().catch(() => ({}));
+                  throw new Error(errorData.message || 'Error generando el plan');
+                }
+                const result = await response.json();
+                if (data.servicios.entrenamiento && !data.servicios.nutricion) {
+                  // Corrige el tipo para userData: ubicacion y nivel nunca deben ser null/undefined
+                  const userData: UserData = {
+                    ...data,
+                    entrenamiento: {
+                      ...data.entrenamiento,
+                      ubicacion: data.entrenamiento?.ubicacion || '',
+                      nivel: data.entrenamiento?.nivel || '',
+                    }
+                  };
+                  setTrainingResult({ plan: result.plan, userData });
+                } else {
+                  if (!result.plan) throw new Error('El plan generado no tiene datos válidos.');
+                  setPlan(result.plan);
+                }
+              } catch (err) {
+                setError((err as Error).message || 'Error desconocido');
+              } finally {
+                setLoading(false);
+              }
+            }}
+          />
         )}
 
         {selectedPlans.entrenamiento && !trainingResult && (
@@ -614,106 +617,27 @@ export default function Home() {
         )}
 
         {selectedPlans.nutricion && !plan && (
-          <form onSubmit={handleNutritionSubmit} className={styles.form}>
-            <div className={styles.formHeader}>
-              <h2>Personaliza tu Plan Nutricional</h2>
-              <p>Selecciona tus preferencias para generar una dieta adaptada a ti</p>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="edad">Edad</label>
-              <input type="number" name="edad" id="edad" required min="16" max="100" />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="peso">Peso (kg)</label>
-              <input type="number" name="peso" id="peso" required min="30" max="200" />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="altura">Altura (cm)</label>
-              <input type="number" name="altura" id="altura" required min="100" max="250" />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="sexo">Sexo</label>
-              <select name="sexo" id="sexo" required>
-                <option value="">Selecciona tu sexo</option>
-                <option value="masculino">Masculino</option>
-                <option value="femenino">Femenino</option>
-              </select>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="objetivo">Objetivo Principal</label>
-              <select name="objetivo" id="objetivo" required>
-                <option value="">Selecciona tu objetivo</option>
-                <option value="perdida_grasa">Pérdida de grasa</option>
-                <option value="ganancia_musculo">Ganancia muscular</option>
-                <option value="mantenimiento">Mantenimiento</option>
-                <option value="rendimiento">Mejora de rendimiento</option>
-              </select>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="actividadFisica">Nivel de Actividad Física</label>
-              <select name="actividadFisica" id="actividadFisica" required>
-                <option value="">Selecciona tu nivel</option>
-                <option value="sedentario">Sedentario</option>
-                <option value="ligero">Ligero</option>
-                <option value="moderado">Moderado</option>
-                <option value="activo">Activo</option>
-                <option value="muy_activo">Muy Activo</option>
-              </select>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="intensidadTrabajo">Intensidad del Trabajo</label>
-              <select name="intensidadTrabajo" id="intensidadTrabajo" required>
-                <option value="">Selecciona la intensidad</option>
-                <option value="baja">Baja</option>
-                <option value="moderada">Moderada</option>
-                <option value="alta">Alta</option>
-                <option value="muy_alta">Muy Alta</option>
-              </select>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="numeroComidas">Número de Comidas Diarias</label>
-              <select name="numeroComidas" id="numeroComidas" required>
-                <option value="">Selecciona el número</option>
-                <option value="1">1 comida</option>
-                <option value="2">2 comidas</option>
-                <option value="3">3 comidas</option>
-                <option value="4">4 comidas</option>
-                <option value="5">5 comidas</option>
-                <option value="6">6 comidas</option>
-              </select>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="restricciones">Restricciones Alimentarias (separadas por comas)</label>
-              <input type="text" name="restricciones" id="restricciones" placeholder="Ej: sin gluten, sin lactosa" />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="alimentosNoDeseados">Alimentos No Deseados (separados por comas)</label>
-              <input type="text" name="alimentosNoDeseados" id="alimentosNoDeseados" placeholder="Ej: pescado, mariscos" />
-            </div>
-
-            <div className={styles.formActions}>
-              <button
-                type="button"
-                onClick={() => setSelectedPlans(prev => ({ ...prev, nutricion: false }))}
-                className={styles.backButton}
-              >
-                Volver
-              </button>
-              <button type="submit" className={styles.submitButton}>
-                Generar Plan Nutricional
-              </button>
-            </div>
-          </form>
+          <InputForm onSubmit={async (data) => {
+            setLoading(true);
+            setError(null);
+            try {
+              const response = await fetch('/api/generatePlan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+              });
+              if (!response.ok) throw new Error('Error generando el plan nutricional');
+              const result = await response.json();
+              if (!result.plan) {
+                throw new Error('El plan generado no tiene datos válidos.');
+              }
+              setPlan(result.plan);
+            } catch (err) {
+              setError((err as Error).message || 'Error desconocido');
+            } finally {
+              setLoading(false);
+            }
+          }} />
         )}
 
         {plan && (

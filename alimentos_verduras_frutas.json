@@ -1,0 +1,74 @@
+[
+  {
+    "nombre": "manzana",
+    "calorias": 52,
+    "proteinas": 0.3,
+    "carbohidratos": 14,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "brocoli al vapor",
+    "calorias": 35,
+    "proteinas": 2.4,
+    "carbohidratos": 7.2,
+    "grasas": 0.4,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "espinacas cocidas",
+    "calorias": 23,
+    "proteinas": 2.9,
+    "carbohidratos": 3.6,
+    "grasas": 0.4,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "zanahoria cocida",
+    "calorias": 35,
+    "proteinas": 0.8,
+    "carbohidratos": 8.2,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "zanahoria cruda",
+    "calorias": 41,
+    "proteinas": 0.9,
+    "carbohidratos": 10,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "cebolla",
+    "calorias": 40,
+    "proteinas": 1.1,
+    "carbohidratos": 9.3,
+    "grasas": 0.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "tomate",
+    "calorias": 18,
+    "proteinas": 0.9,
+    "carbohidratos": 3.9,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "lechuga",
+    "calorias": 15,
+    "proteinas": 1.4,
+    "carbohidratos": 2.9,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "pepino",
+    "calorias": 16,
+    "proteinas": 0.7,
+    "carbohidratos": 3.6,
+    "grasas": 0.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  }
+]

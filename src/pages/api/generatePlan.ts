@@ -155,20 +155,30 @@ export async function generatePlan(data: PlanData) {
     throw new Error(`El número de comidas generadas (${parsed.comidas.length}) no coincide con el solicitado (${data.numeroComidas}).`);
   }
 
-  // Recalcular calorías y macros de cada comida usando FoodData Central
+  // --- FILTRO DE DIETA Y RESTRICCIONES ---
+  // Detectar tipo de dieta a partir de restricciones (vegana, vegetariana, keto, mediterranea)
+  let tipoDieta: string | undefined = undefined;
+  if (Array.isArray(data.restricciones)) {
+    const lower = data.restricciones.map(r => r.toLowerCase());
+    if (lower.includes('vegana')) tipoDieta = 'vegana';
+    else if (lower.includes('vegetariana')) tipoDieta = 'vegetariana';
+    else if (lower.includes('keto')) tipoDieta = 'keto';
+    else if (lower.includes('mediterranea') || lower.includes('mediterránea')) tipoDieta = 'mediterranea';
+  }
+
+  // Recalcular calorías y macros de cada comida usando FoodData Central FILTRADA
   // Recopilar ingredientes no encontrados
   let ingredientesNoEncontrados: string[] = [];
   if (parsed.dias) {
     for (const diaKey of Object.keys(parsed.dias)) {
       const dia = parsed.dias[diaKey];
-      // Claves válidas de comida
       const comidaKeys = ['desayuno', 'almuerzo', 'cena'];
       for (const comidaKey of comidaKeys) {
         const comida = (dia as any)[comidaKey];
         if (comida && typeof comida === 'object') {
-          let macros: ReturnType<typeof calcularMacrosDeDescripcion> = { calorias: 0, proteinas: 0, carbohidratos: 0, grasas: 0, detalles: [], noEncontrados: [] };
+          let macros = { calorias: 0, proteinas: 0, carbohidratos: 0, grasas: 0, detalles: [], noEncontrados: [] };
           if (typeof comida.descripcion === 'string' && comida.descripcion.trim().length > 0) {
-            macros = calcularMacrosDeDescripcion(comida.descripcion);
+            macros = require('@/lib/foodDataCentral').calcularMacrosDeDescripcionFiltrado(comida.descripcion, { tipoDieta, restricciones: data.restricciones });
             if (macros.noEncontrados && macros.noEncontrados.length > 0) {
               ingredientesNoEncontrados.push(...macros.noEncontrados);
             }
@@ -181,13 +191,12 @@ export async function generatePlan(data: PlanData) {
           console.warn(`[IA WARNING] La comida '${comidaKey}' del día '${diaKey}' no es un objeto válido. Valor recibido:`, comida);
         }
       }
-      // Snacks (opcional, puede ser array)
       if (Array.isArray((dia as any).snacks)) {
         for (const snack of (dia as any).snacks) {
           if (snack && typeof snack === 'object') {
-            let macros: ReturnType<typeof calcularMacrosDeDescripcion> = { calorias: 0, proteinas: 0, carbohidratos: 0, grasas: 0, detalles: [], noEncontrados: [] };
+            let macros = { calorias: 0, proteinas: 0, carbohidratos: 0, grasas: 0, detalles: [], noEncontrados: [] };
             if (typeof snack.descripcion === 'string' && snack.descripcion.trim().length > 0) {
-              macros = calcularMacrosDeDescripcion(snack.descripcion);
+              macros = require('@/lib/foodDataCentral').calcularMacrosDeDescripcionFiltrado(snack.descripcion, { tipoDieta, restricciones: data.restricciones });
               if (macros.noEncontrados && macros.noEncontrados.length > 0) {
                 ingredientesNoEncontrados.push(...macros.noEncontrados);
               }

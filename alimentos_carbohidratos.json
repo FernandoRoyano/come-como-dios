@@ -1,0 +1,66 @@
+[
+  {
+    "nombre": "arroz integral cocido",
+    "calorias": 111,
+    "proteinas": 2.6,
+    "carbohidratos": 23,
+    "grasas": 0.9,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "pasta integral cocida",
+    "calorias": 124,
+    "proteinas": 5,
+    "carbohidratos": 25,
+    "grasas": 1.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "pan integral",
+    "calorias": 250,
+    "proteinas": 9,
+    "carbohidratos": 41,
+    "grasas": 3.4,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "batata asada",
+    "calorias": 90,
+    "proteinas": 2,
+    "carbohidratos": 21,
+    "grasas": 0.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "patata cocida",
+    "calorias": 87,
+    "proteinas": 2,
+    "carbohidratos": 20,
+    "grasas": 0.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "avena",
+    "calorias": 389,
+    "proteinas": 16.9,
+    "carbohidratos": 66,
+    "grasas": 6.9,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "quinoa cocida",
+    "calorias": 120,
+    "proteinas": 4.1,
+    "carbohidratos": 21,
+    "grasas": 1.9,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "pan de molde integral (whole wheat bread)",
+    "calorias": 247,
+    "proteinas": 9,
+    "carbohidratos": 41,
+    "grasas": 3.4,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "nombre": "pollo pechuga cocida",
+    "calorias": 165,
+    "proteinas": 31,
+    "carbohidratos": 0,
+    "grasas": 3.6,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "ternera estofada",
+    "calorias": 200,
+    "proteinas": 27,
+    "carbohidratos": 0,
+    "grasas": 10,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "salmon a la plancha",
+    "calorias": 206,
+    "proteinas": 22,
+    "carbohidratos": 0,
+    "grasas": 13,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "huevo cocido",
+    "calorias": 155,
+    "proteinas": 13,
+    "carbohidratos": 1.1,
+    "grasas": 11,
+    "aptoPara": ["vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "atun en conserva al natural",
+    "calorias": 116,
+    "proteinas": 26,
+    "carbohidratos": 0,
+    "grasas": 1,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "pechuga de pavo cocida",
+    "calorias": 135,
+    "proteinas": 29,
+    "carbohidratos": 0,
+    "grasas": 1,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "garbanzos cocidos",
+    "calorias": 164,
+    "proteinas": 9,
+    "carbohidratos": 27,
+    "grasas": 2.6,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "lentejas cocidas",
+    "calorias": 116,
+    "proteinas": 9,
+    "carbohidratos": 20,
+    "grasas": 0.4,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "quinoa cocida",
+    "calorias": 120,
+    "proteinas": 4.1,
+    "carbohidratos": 21,
+    "grasas": 1.9,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "proteína en polvo (whey protein)",
+    "calorias": 400,
+    "proteinas": 80,
+    "carbohidratos": 8,
+    "grasas": 7,
+    "aptoPara": ["vegetariana", "keto", "mediterranea"]
+  }
+]

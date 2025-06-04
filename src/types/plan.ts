@@ -107,6 +107,7 @@ export interface PlanData {
   intensidadTrabajo: string;
   numeroComidas: number;
   caloriasRecomendadas?: number;
+  tipoDieta?: string; // Añadido para permitir filtrado explícito
 }
 
 export interface UserData {

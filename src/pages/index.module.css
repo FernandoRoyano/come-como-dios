@@ -300,6 +300,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/*
 .planSelector {
   text-align: center;
   padding: 2rem;
@@ -319,99 +320,7 @@
   color: #666;
   margin-bottom: 2rem;
 }
-
-.planButtons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.planButton {
-  position: relative;
-  background: white;
-  border: 2px solid #e4e8eb;
-  border-radius: 1rem;
-  padding: 2rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: left;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-height: 200px;
-}
-
-.planButton:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-  border-color: #3498db;
-}
-
-.planButtonSelected {
-  border-color: #3498db;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-}
-
-.planButton span {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  display: block;
-}
-
-.planButton h3 {
-  font-size: 1.5rem;
-  color: #2c3e50;
-  margin: 0 0 0.5rem;
-}
-
-.planButton p {
-  color: #666;
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.planButtonCheck {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 28px;
-  height: 28px;
-  background: #3498db;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-.continueButton {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 0.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.continueButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.continueButton:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
+*/
 
 .planContainer {
   background: white;
