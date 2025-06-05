@@ -88,11 +88,17 @@ export function calcularMacrosDeDescripcion(descripcion: string): {
     let alimento = data.find(item => item.nombre?.toLowerCase().includes(ingrediente));
     if (!alimento) {
       const nombres = data.map(item => item.nombre?.toLowerCase() || '');
-      if (typeof ingrediente === 'string' && Array.isArray(nombres) && nombres.every(n => typeof n === 'string')) {
+      // Validación robusta antes de fuzzy match
+      const ingredienteValido = typeof ingrediente === 'string' && ingrediente.trim().length > 0;
+      const nombresValidos = Array.isArray(nombres) && nombres.length > 0 && nombres.every(n => typeof n === 'string' && n.trim().length > 0);
+      if (ingredienteValido && nombresValidos) {
         const { bestMatch } = stringSimilarity.findBestMatch(ingrediente, nombres);
         if (bestMatch.rating > 0.4) {
           alimento = data[nombres.indexOf(bestMatch.target)];
         }
+      } else {
+        // Log de error detallado para depuración
+        console.error('[findBestMatch] Argumentos inválidos:', { ingrediente, nombres });
       }
     }
     // Ajustar por unidad
@@ -197,11 +203,17 @@ export function calcularMacrosDeDescripcionFiltrado(descripcion: string, filtros
     let alimento = data.find(item => item.nombre?.toLowerCase().includes(ingrediente));
     if (!alimento) {
       const nombres = data.map(item => item.nombre?.toLowerCase() || '');
-      if (typeof ingrediente === 'string' && Array.isArray(nombres) && nombres.every(n => typeof n === 'string')) {
+      // Validación robusta antes de fuzzy match
+      const ingredienteValido = typeof ingrediente === 'string' && ingrediente.trim().length > 0;
+      const nombresValidos = Array.isArray(nombres) && nombres.length > 0 && nombres.every(n => typeof n === 'string' && n.trim().length > 0);
+      if (ingredienteValido && nombresValidos) {
         const { bestMatch } = stringSimilarity.findBestMatch(ingrediente, nombres);
         if (bestMatch.rating > 0.4) {
           alimento = data[nombres.indexOf(bestMatch.target)];
         }
+      } else {
+        // Log de error detallado para depuración
+        console.error('[findBestMatch] Argumentos inválidos:', { ingrediente, nombres });
       }
     }
     // Ajustar por unidad
