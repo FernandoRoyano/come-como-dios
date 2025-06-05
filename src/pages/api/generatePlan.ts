@@ -89,19 +89,33 @@ export async function generatePlan(data: PlanData) {
 
   const jsonString = content.slice(start + 17, end).trim();
 
-  // Limpieza básica del JSON generado por la IA antes de parsear
+  // Limpieza avanzada del JSON generado por la IA antes de parsear
   function limpiarJsonIA(json: string): string {
+    let limpio = json;
     // Elimina comentarios tipo // y /* */
-    let limpio = json.replace(/\/\/.*$/gm, '');
+    limpio = limpio.replace(/\/\/.*$/gm, '');
     limpio = limpio.replace(/\/\*[\s\S]*?\*\//g, '');
+    // Elimina líneas o fragmentos con solo '...' o similares
+    limpio = limpio.replace(/^\s*\.\.\..*$/gm, '');
+    limpio = limpio.replace(/\.\.\./g, '');
     // Elimina comas finales antes de llaves/corchetes de cierre
     limpio = limpio.replace(/,\s*([}\]])/g, '$1');
     // Elimina saltos de línea innecesarios
     limpio = limpio.replace(/\r?\n/g, ' ');
-    // Elimina valores tipo "x", null, o vacíos por 0 en macros
-    limpio = limpio.replace(/(:\s*)("x"|null|''|""|undefined)/g, '$10');
+    // Reemplaza comillas simples por dobles
+    limpio = limpio.replace(/'/g, '"');
+    // Fuerza comillas dobles en todas las claves (solo fuera de strings)
+    limpio = limpio.replace(/([,{\s])(\w+)(\s*):/g, '$1"$2"$3:');
     // Elimina dobles comillas seguidas
     limpio = limpio.replace(/"{2,}/g, '"');
+    // Elimina valores tipo "x", null, o vacíos por 0 en macros
+    limpio = limpio.replace(/(:\s*)("x"|null|''|""|undefined)/g, '$10');
+    // Elimina cualquier texto antes/después del primer y último corchete
+    const firstBrace = limpio.indexOf('{');
+    const lastBrace = limpio.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace !== -1) {
+      limpio = limpio.slice(firstBrace, lastBrace + 1);
+    }
     return limpio.trim();
   }
 
