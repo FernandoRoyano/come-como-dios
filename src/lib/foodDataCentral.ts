@@ -88,9 +88,11 @@ export function calcularMacrosDeDescripcion(descripcion: string): {
     let alimento = data.find(item => item.nombre?.toLowerCase().includes(ingrediente));
     if (!alimento) {
       const nombres = data.map(item => item.nombre?.toLowerCase() || '');
-      const { bestMatch } = stringSimilarity.findBestMatch(ingrediente, nombres);
-      if (bestMatch.rating > 0.4) {
-        alimento = data[nombres.indexOf(bestMatch.target)];
+      if (typeof ingrediente === 'string' && Array.isArray(nombres) && nombres.every(n => typeof n === 'string')) {
+        const { bestMatch } = stringSimilarity.findBestMatch(ingrediente, nombres);
+        if (bestMatch.rating > 0.4) {
+          alimento = data[nombres.indexOf(bestMatch.target)];
+        }
       }
     }
     // Ajustar por unidad
@@ -195,9 +197,11 @@ export function calcularMacrosDeDescripcionFiltrado(descripcion: string, filtros
     let alimento = data.find(item => item.nombre?.toLowerCase().includes(ingrediente));
     if (!alimento) {
       const nombres = data.map(item => item.nombre?.toLowerCase() || '');
-      const { bestMatch } = stringSimilarity.findBestMatch(ingrediente, nombres);
-      if (bestMatch.rating > 0.4) {
-        alimento = data[nombres.indexOf(bestMatch.target)];
+      if (typeof ingrediente === 'string' && Array.isArray(nombres) && nombres.every(n => typeof n === 'string')) {
+        const { bestMatch } = stringSimilarity.findBestMatch(ingrediente, nombres);
+        if (bestMatch.rating > 0.4) {
+          alimento = data[nombres.indexOf(bestMatch.target)];
+        }
       }
     }
     // Ajustar por unidad
