@@ -47,5 +47,75 @@
     "proteinas": 8.5,
     "carbohidratos": 2.6,
     "grasas": 0.2
+  },
+  {
+    "nombre": "semillas de chía",
+    "calorias": 486,
+    "proteinas": 16.5,
+    "carbohidratos": 42.1,
+    "grasas": 30.7
+  },
+  {
+    "nombre": "semillas de lino",
+    "calorias": 534,
+    "proteinas": 18.3,
+    "carbohidratos": 28.9,
+    "grasas": 42.2
+  },
+  {
+    "nombre": "pistachos",
+    "calorias": 562,
+    "proteinas": 20,
+    "carbohidratos": 28,
+    "grasas": 45
+  },
+  {
+    "nombre": "anacardos",
+    "calorias": 553,
+    "proteinas": 18,
+    "carbohidratos": 30,
+    "grasas": 44
+  },
+  {
+    "nombre": "aceitunas",
+    "calorias": 115,
+    "proteinas": 0.8,
+    "carbohidratos": 6.3,
+    "grasas": 10.7
+  },
+  {
+    "nombre": "coco rallado",
+    "calorias": 660,
+    "proteinas": 6.9,
+    "carbohidratos": 23.7,
+    "grasas": 64.5
+  },
+  {
+    "nombre": "crema de cacahuete",
+    "calorias": 588,
+    "proteinas": 25,
+    "carbohidratos": 20,
+    "grasas": 50
+  },
+  {
+    "nombre": "yogur natural",
+    "calorias": 61,
+    "proteinas": 3.5,
+    "carbohidratos": 4.7,
+    "grasas": 3.3
+  },
+  {
+    "nombre": "queso curado",
+    "calorias": 400,
+    "proteinas": 25,
+    "carbohidratos": 2,
+    "grasas": 33
+  },
+  {
+    "nombre": "nata para cocinar",
+    "calorias": 195,
+    "proteinas": 2,
+    "carbohidratos": 3,
+    "grasas": 20
   }
 ]

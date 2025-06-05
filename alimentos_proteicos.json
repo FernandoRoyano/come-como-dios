@@ -78,5 +78,85 @@
     "carbohidratos": 8,
     "grasas": 7,
     "aptoPara": ["vegetariana", "keto", "mediterranea"]
+  },
+  {
+    "nombre": "tofu firme",
+    "calorias": 76,
+    "proteinas": 8,
+    "carbohidratos": 1.9,
+    "grasas": 4.8,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "tempeh",
+    "calorias": 192,
+    "proteinas": 20,
+    "carbohidratos": 7.6,
+    "grasas": 11,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "bacalao al vapor",
+    "calorias": 82,
+    "proteinas": 18,
+    "carbohidratos": 0,
+    "grasas": 0.7,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "gambas cocidas",
+    "calorias": 99,
+    "proteinas": 24,
+    "carbohidratos": 0.2,
+    "grasas": 0.3,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "yogur griego natural",
+    "calorias": 59,
+    "proteinas": 10,
+    "carbohidratos": 3.6,
+    "grasas": 0.4,
+    "aptoPara": ["vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "claras de huevo",
+    "calorias": 52,
+    "proteinas": 11,
+    "carbohidratos": 0.7,
+    "grasas": 0.2,
+    "aptoPara": ["vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "seitán",
+    "calorias": 143,
+    "proteinas": 28,
+    "carbohidratos": 5.2,
+    "grasas": 1.9,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "edamame cocido",
+    "calorias": 121,
+    "proteinas": 11.9,
+    "carbohidratos": 8.9,
+    "grasas": 5.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "caballa a la plancha",
+    "calorias": 205,
+    "proteinas": 19,
+    "carbohidratos": 0,
+    "grasas": 14,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "queso cottage",
+    "calorias": 98,
+    "proteinas": 11,
+    "carbohidratos": 3.4,
+    "grasas": 4.3,
+    "aptoPara": ["vegetariana", "mediterranea", "keto"]
   }
 ]

@@ -46,5 +46,53 @@
     "carbohidratos": 64,
     "grasas": 20,
     "aptoPara": ["vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "galletas tipo María",
+    "calorias": 430,
+    "proteinas": 7,
+    "carbohidratos": 78,
+    "grasas": 10,
+    "aptoPara": ["vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "donut glaseado",
+    "calorias": 452,
+    "proteinas": 4.9,
+    "carbohidratos": 51,
+    "grasas": 25,
+    "aptoPara": ["vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "patatas fritas de bolsa",
+    "calorias": 536,
+    "proteinas": 6.6,
+    "carbohidratos": 53,
+    "grasas": 34,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "cereales de desayuno azucarados",
+    "calorias": 389,
+    "proteinas": 7,
+    "carbohidratos": 85,
+    "grasas": 2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "croissant",
+    "calorias": 406,
+    "proteinas": 8,
+    "carbohidratos": 45,
+    "grasas": 21,
+    "aptoPara": ["vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "helado de vainilla",
+    "calorias": 207,
+    "proteinas": 3.5,
+    "carbohidratos": 24,
+    "grasas": 11,
+    "aptoPara": ["vegetariana", "mediterranea"]
   }
 ]

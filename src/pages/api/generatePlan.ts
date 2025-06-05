@@ -83,11 +83,19 @@ export async function generatePlan(data: PlanData) {
   const start = content.indexOf('###JSON_START###');
   const end = content.indexOf('###JSON_END###');
 
-  if (start === -1 || end === -1) {
-    throw new Error('No se encontraron los delimitadores de JSON esperados.');
+  let jsonString = '';
+  if (start !== -1 && end !== -1) {
+    jsonString = content.slice(start + 17, end).trim();
+  } else {
+    // Fallback: intenta extraer el primer bloque JSON válido del texto
+    const possibleJson = content.match(/\{[\s\S]*\}/);
+    if (possibleJson) {
+      jsonString = possibleJson[0];
+      console.warn('[IA WARNING] No se encontraron delimitadores, se extrajo el primer bloque JSON del texto.');
+    } else {
+      throw new Error('No se encontraron los delimitadores de JSON esperados ni un bloque JSON válido en la respuesta.');
+    }
   }
-
-  const jsonString = content.slice(start + 17, end).trim();
 
   // Limpieza avanzada del JSON generado por la IA antes de parsear
   function limpiarJsonIA(json: string): string {

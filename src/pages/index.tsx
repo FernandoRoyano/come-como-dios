@@ -456,28 +456,33 @@ export default function Home() {
               setLoading(true);
               setError(null);
               try {
-                // Decide endpoint según el servicio seleccionado
-                let endpoint = '/api/generatePlan';
-                if (data.servicios.entrenamiento && !data.servicios.nutricion) {
-                  endpoint = '/api/generateTraining';
-                }
-                const response = await fetch(endpoint, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(data),
-                });
-                if (!response.ok) {
-                  const errorData = await response.json().catch(() => ({}));
-                  // Mostrar detalles y stack si existen
-                  let errorMsg = errorData.message || 'Error generando el plan';
-                  if (errorData.details) errorMsg += `\nDetalles: ${errorData.details}`;
-                  if (errorData.stack) errorMsg += `\nStack: ${errorData.stack}`;
-                  throw new Error(errorMsg);
-                }
-                const result = await response.json();
-                if (data.servicios.entrenamiento && !data.servicios.nutricion) {
+                // Si el usuario selecciona ambos planes, lanzar ambas peticiones en paralelo
+                if (data.servicios.nutricion && data.servicios.entrenamiento) {
+                  const [resNutri, resTrain] = await Promise.all([
+                    fetch('/api/generatePlan', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ ...data, servicios: { nutricion: true, entrenamiento: false } }),
+                    }),
+                    fetch('/api/generateTraining', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ ...data, servicios: { nutricion: false, entrenamiento: true } }),
+                    })
+                  ]);
+                  if (!resNutri.ok || !resTrain.ok) {
+                    const errorDataNutri = await resNutri.json().catch(() => ({}));
+                    const errorDataTrain = await resTrain.json().catch(() => ({}));
+                    let errorMsg = '';
+                    if (!resNutri.ok) errorMsg += errorDataNutri.message || 'Error generando el plan nutricional';
+                    if (!resTrain.ok) errorMsg += '\n' + (errorDataTrain.message || 'Error generando el plan de entrenamiento');
+                    throw new Error(errorMsg);
+                  }
+                  const resultNutri = await resNutri.json();
+                  const resultTrain = await resTrain.json();
+                  setPlan(resultNutri.plan);
                   // Corrige el tipo para userData: ubicacion y nivel nunca deben ser null/undefined
-                  const userData: UserData = {
+                  const userData = {
                     ...data,
                     entrenamiento: {
                       ...data.entrenamiento,
@@ -485,10 +490,41 @@ export default function Home() {
                       nivel: data.entrenamiento?.nivel || '',
                     }
                   };
-                  setTrainingResult({ plan: result.plan, userData });
+                  setTrainingResult({ plan: resultTrain.plan, userData });
                 } else {
-                  if (!result.plan) throw new Error('El plan generado no tiene datos válidos.');
-                  setPlan(result.plan);
+                  // Decide endpoint según el servicio seleccionado
+                  let endpoint = '/api/generatePlan';
+                  if (data.servicios.entrenamiento && !data.servicios.nutricion) {
+                    endpoint = '/api/generateTraining';
+                  }
+                  const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                  });
+                  if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    // Mostrar detalles y stack si existen
+                    let errorMsg = errorData.message || 'Error generando el plan';
+                    if (errorData.details) errorMsg += `\nDetalles: ${errorData.details}`;
+                    if (errorData.stack) errorMsg += `\nStack: ${errorData.stack}`;
+                    throw new Error(errorMsg);
+                  }
+                  const result = await response.json();
+                  if (data.servicios.entrenamiento && !data.servicios.nutricion) {
+                    const userData = {
+                      ...data,
+                      entrenamiento: {
+                        ...data.entrenamiento,
+                        ubicacion: data.entrenamiento?.ubicacion || '',
+                        nivel: data.entrenamiento?.nivel || '',
+                      }
+                    };
+                    setTrainingResult({ plan: result.plan, userData });
+                  } else {
+                    if (!result.plan) throw new Error('El plan generado no tiene datos válidos.');
+                    setPlan(result.plan);
+                  }
                 }
               } catch (err) {
                 setError((err as Error).message || 'Error desconocido');
@@ -691,122 +727,28 @@ export default function Home() {
           }} />
         )}
 
-        {plan && (
+        {/* Mostrar ambos planes si existen */}
+        {plan && trainingResult && (
           <div className={styles.planContainer}>
-            <div className={styles.planHeader}>
-              <h2 className={styles.planTitle}>Tu Plan Nutricional</h2>
-              <div className={styles.planButtons}>
-                <button
-                  className={styles.generateOtherButton}
-                  onClick={() => setPlan(null)}
-                >
-                  Generar otro plan
-                </button>
-                <button
-                  className={styles.newPlanButton}
-                  onClick={() => {
-                    setPlan(null);
-                    setSelectedPlans({ nutricion: false, entrenamiento: false });
-                  }}
-                >
-                  Volver al inicio
-                </button>
-              </div>
-            </div>
+            <h2 className={styles.planTitle}>Tu Plan Nutricional</h2>
             <PlanViewer plan={plan} />
-
-            {/* Formulario para regenerar comidas */}
-            <form onSubmit={handleRegenerateMeal} className={styles.form}>
-              <div className={styles.formHeader}>
-                <h2>Regenerar Comida</h2>
-                <p>Selecciona las opciones para regenerar una comida específica</p>
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="dia">Día</label>
-                <select name="dia" id="dia" required>
-                  <option value="">Selecciona el día</option>
-                  <option value="lunes">Lunes</option>
-                  <option value="martes">Martes</option>
-                  <option value="miercoles">Miércoles</option>
-                  <option value="jueves">Jueves</option>
-                  <option value="viernes">Viernes</option>
-                  <option value="sabado">Sábado</option>
-                  <option value="domingo">Domingo</option>
-                </select>
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="comida">Tipo de Comida</label>
-                <select name="comida" id="comida" required>
-                  <option value="">Selecciona el tipo</option>
-                  <option value="desayuno">Desayuno</option>
-                  <option value="almuerzo">Almuerzo</option>
-                  <option value="cena">Cena</option>
-                  <option value="snack">Snack</option>
-                </select>
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="restricciones">Restricciones Alimentarias (separadas por comas)</label>
-                <input type="text" name="restricciones" id="restricciones" placeholder="Ej: sin gluten, sin lactosa" />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="objetivo">Objetivo</label>
-                <select name="objetivo" id="objetivo" required>
-                  <option value="">Selecciona el objetivo</option>
-                  <option value="perdida_grasa">Pérdida de grasa</option>
-                  <option value="ganancia_musculo">Ganancia muscular</option>
-                  <option value="mantenimiento">Mantenimiento</option>
-                </select>
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="numeroComidas">Número de Comidas Diarias</label>
-                <select name="numeroComidas" id="numeroComidas" required>
-                  <option value="">Selecciona el número</option>
-                  <option value="1">1 comida</option>
-                  <option value="2">2 comidas</option>
-                  <option value="3">3 comidas</option>
-                  <option value="4">4 comidas</option>
-                  <option value="5">5 comidas</option>
-                  <option value="6">6 comidas</option>
-                </select>
-              </div>
-
-              <div className={styles.formActions}>
-                <button type="submit" className={styles.submitButton}>
-                  Regenerar Comida
-                </button>
-              </div>
-            </form>
+            <h2 className={styles.planTitle}>Tu Plan de Entrenamiento</h2>
+            <TrainingViewer plan={trainingResult.plan} resumen={getTrainingResumen(trainingResult.userData)} />
           </div>
         )}
 
-        {trainingResult && (
+        {/* Mostrar solo nutrición si solo hay plan nutricional */}
+        {plan && !trainingResult && (
           <div className={styles.planContainer}>
-            <UserContextDisplay data={trainingResult.userData} />
-            <div className={styles.planHeader}>
-              <h2 className={styles.planTitle}>Tu Plan de Entrenamiento</h2>
-              <div className={styles.planButtons}>
-                <button
-                  className={styles.generateOtherButton}
-                  onClick={() => setTrainingResult(null)}
-                >
-                  Generar otro plan
-                </button>
-                <button
-                  className={styles.newPlanButton}
-                  onClick={() => {
-                    setTrainingResult(null);
-                    setSelectedPlans({ nutricion: false, entrenamiento: false });
-                  }}
-                >
-                  Volver al inicio
-                </button>
-              </div>
-            </div>
+            <h2 className={styles.planTitle}>Tu Plan Nutricional</h2>
+            <PlanViewer plan={plan} />
+          </div>
+        )}
+
+        {/* Mostrar solo entrenamiento si solo hay plan de entrenamiento */}
+        {trainingResult && !plan && (
+          <div className={styles.planContainer}>
+            <h2 className={styles.planTitle}>Tu Plan de Entrenamiento</h2>
             <TrainingViewer plan={trainingResult.plan} resumen={getTrainingResumen(trainingResult.userData)} />
           </div>
         )}

@@ -70,5 +70,77 @@
     "carbohidratos": 3.6,
     "grasas": 0.1,
     "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "plátano",
+    "calorias": 89,
+    "proteinas": 1.1,
+    "carbohidratos": 23,
+    "grasas": 0.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "pera",
+    "calorias": 57,
+    "proteinas": 0.4,
+    "carbohidratos": 15,
+    "grasas": 0.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "fresas",
+    "calorias": 32,
+    "proteinas": 0.7,
+    "carbohidratos": 7.7,
+    "grasas": 0.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "calabacín",
+    "calorias": 17,
+    "proteinas": 1.2,
+    "carbohidratos": 3.1,
+    "grasas": 0.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "berenjena",
+    "calorias": 25,
+    "proteinas": 1,
+    "carbohidratos": 6,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "pimiento rojo",
+    "calorias": 31,
+    "proteinas": 1,
+    "carbohidratos": 6,
+    "grasas": 0.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "uva",
+    "calorias": 69,
+    "proteinas": 0.7,
+    "carbohidratos": 18,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "kiwi",
+    "calorias": 41,
+    "proteinas": 0.8,
+    "carbohidratos": 10,
+    "grasas": 0.4,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "calabaza",
+    "calorias": 26,
+    "proteinas": 1,
+    "carbohidratos": 6.5,
+    "grasas": 0.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
   }
 ]

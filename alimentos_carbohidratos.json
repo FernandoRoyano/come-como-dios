@@ -62,5 +62,77 @@
     "carbohidratos": 41,
     "grasas": 3.4,
     "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "cuscús cocido",
+    "calorias": 112,
+    "proteinas": 3.8,
+    "carbohidratos": 23.2,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "bulgur cocido",
+    "calorias": 83,
+    "proteinas": 3.1,
+    "carbohidratos": 18.6,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "maíz dulce cocido",
+    "calorias": 96,
+    "proteinas": 3.4,
+    "carbohidratos": 21,
+    "grasas": 1.5,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "tortilla de trigo integral",
+    "calorias": 237,
+    "proteinas": 8,
+    "carbohidratos": 40,
+    "grasas": 4.5,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "arroz blanco cocido",
+    "calorias": 130,
+    "proteinas": 2.7,
+    "carbohidratos": 28,
+    "grasas": 0.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "mijo cocido",
+    "calorias": 119,
+    "proteinas": 3.5,
+    "carbohidratos": 23.7,
+    "grasas": 1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "boniato cocido",
+    "calorias": 86,
+    "proteinas": 1.6,
+    "carbohidratos": 20.1,
+    "grasas": 0.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "fideos de arroz cocidos",
+    "calorias": 108,
+    "proteinas": 1.6,
+    "carbohidratos": 24,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "arepa de maíz",
+    "calorias": 218,
+    "proteinas": 5,
+    "carbohidratos": 45,
+    "grasas": 1.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
   }
 ]
