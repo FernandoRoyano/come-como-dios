@@ -416,25 +416,38 @@ export default function Home() {
           </div>
         )}
 
-        {error && (
-          <div className={styles.error}>
-            <div>{error}</div>
-            {/* Mostrar detalles y stack si existen en el error (asumiendo que error es string, pero puede ser JSON) */}
-            {typeof error === 'object' && error !== null && (
-              <>
-                {error.details && (
-                  <pre style={{whiteSpace:'pre-wrap',color:'#b00',marginTop:8}}>{error.details}</pre>
-                )}
-                {error.stack && (
-                  <details style={{marginTop:8}}>
-                    <summary>Stacktrace</summary>
-                    <pre style={{whiteSpace:'pre-wrap',fontSize:'0.9em'}}>{error.stack}</pre>
-                  </details>
-                )}
-              </>
-            )}
-          </div>
-        )}
+        {error && (() => {
+          // Si el error es un string con detalles en formato JSON, intentar parsear
+          let details = null, stack = null, message = error;
+          if (typeof error === 'string') {
+            try {
+              // Buscar el primer '{' y el último '}' para extraer el JSON embebido
+              const first = error.indexOf('{');
+              const last = error.lastIndexOf('}');
+              if (first !== -1 && last !== -1 && last > first) {
+                const jsonStr = error.substring(first, last + 1);
+                const parsed = JSON.parse(jsonStr);
+                details = parsed.details || null;
+                stack = parsed.stack || null;
+                message = parsed.message || error;
+              }
+            } catch {}
+          }
+          return (
+            <div className={styles.error}>
+              <div>{message}</div>
+              {details && (
+                <pre style={{whiteSpace:'pre-wrap',color:'#b00',marginTop:8}}>{details}</pre>
+              )}
+              {stack && (
+                <details style={{marginTop:8}}>
+                  <summary>Stacktrace</summary>
+                  <pre style={{whiteSpace:'pre-wrap',fontSize:'0.9em'}}>{stack}</pre>
+                </details>
+              )}
+            </div>
+          );
+        })()}
 
         {/* Mostrar el formulario unificado solo si no hay plan generado ni resultado de entrenamiento */}
         {(!plan && !trainingResult) && (
