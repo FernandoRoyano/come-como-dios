@@ -177,7 +177,11 @@ export default function Home() {
       });
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Error generando el plan de entrenamiento');
+        // Mostrar detalles y stack si existen
+        let errorMsg = errorData.message || 'Error generando el plan';
+        if (errorData.details) errorMsg += `\nDetalles: ${errorData.details}`;
+        if (errorData.stack) errorMsg += `\nStack: ${errorData.stack}`;
+        throw new Error(errorMsg);
       }
       const result = await response.json();
       setTrainingResult({ plan: result.plan, userData: data });
@@ -212,7 +216,13 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error('Error generando el plan nutricional');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        let errorMsg = errorData.message || 'Error generando el plan nutricional';
+        if (errorData.details) errorMsg += `\nDetalles: ${errorData.details}`;
+        if (errorData.stack) errorMsg += `\nStack: ${errorData.stack}`;
+        throw new Error(errorMsg);
+      }
       const result = await response.json();
       if (!result.plan) {
         throw new Error('El plan generado no tiene datos válidos.');
@@ -406,7 +416,25 @@ export default function Home() {
           </div>
         )}
 
-        {error && <div className={styles.error}>{error}</div>}
+        {error && (
+          <div className={styles.error}>
+            <div>{error}</div>
+            {/* Mostrar detalles y stack si existen en el error (asumiendo que error es string, pero puede ser JSON) */}
+            {typeof error === 'object' && error !== null && (
+              <>
+                {error.details && (
+                  <pre style={{whiteSpace:'pre-wrap',color:'#b00',marginTop:8}}>{error.details}</pre>
+                )}
+                {error.stack && (
+                  <details style={{marginTop:8}}>
+                    <summary>Stacktrace</summary>
+                    <pre style={{whiteSpace:'pre-wrap',fontSize:'0.9em'}}>{error.stack}</pre>
+                  </details>
+                )}
+              </>
+            )}
+          </div>
+        )}
 
         {/* Mostrar el formulario unificado solo si no hay plan generado ni resultado de entrenamiento */}
         {(!plan && !trainingResult) && (
@@ -427,7 +455,11 @@ export default function Home() {
                 });
                 if (!response.ok) {
                   const errorData = await response.json().catch(() => ({}));
-                  throw new Error(errorData.message || 'Error generando el plan');
+                  // Mostrar detalles y stack si existen
+                  let errorMsg = errorData.message || 'Error generando el plan';
+                  if (errorData.details) errorMsg += `\nDetalles: ${errorData.details}`;
+                  if (errorData.stack) errorMsg += `\nStack: ${errorData.stack}`;
+                  throw new Error(errorMsg);
                 }
                 const result = await response.json();
                 if (data.servicios.entrenamiento && !data.servicios.nutricion) {
@@ -626,7 +658,13 @@ export default function Home() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
               });
-              if (!response.ok) throw new Error('Error generando el plan nutricional');
+              if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                let errorMsg = errorData.message || 'Error generando el plan nutricional';
+                if (errorData.details) errorMsg += `\nDetalles: ${errorData.details}`;
+                if (errorData.stack) errorMsg += `\nStack: ${errorData.stack}`;
+                throw new Error(errorMsg);
+              }
               const result = await response.json();
               if (!result.plan) {
                 throw new Error('El plan generado no tiene datos válidos.');
