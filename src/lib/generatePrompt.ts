@@ -27,6 +27,8 @@ Intensidad del trabajo: ${intensidadTrabajo}
 Número de comidas diarias: ${numeroComidas}
 Alimentos no deseados: ${alimentosNoDeseados?.length ? alimentosNoDeseados.join(', ') : 'Ninguno'}
 
+⚠️ ES OBLIGATORIO que el plan incluya SIEMPRE los 7 días completos (lunes a domingo), sin omitir ningún día ni ninguna comida. Si falta algún día, el plan NO es válido. Bajo ninguna circunstancia uses "..." ni omitas días o comidas. Si no sabes un valor, pon 0, pero nunca uses "..." ni dejes campos incompletos. El JSON debe estar completo para los 7 días, con todas las comidas y snacks.
+
 📌 EJEMPLO DE CÁLCULO ESPERADO:
 
 Edad: 30, Peso: 80 kg, Altura: 180 cm, Sexo: Hombre
@@ -90,6 +92,10 @@ Calorías finales = 3200 (mínimo recomendado para este perfil)
    - Totales diarios de calorías y macronutrientes
 
 ⚠️ Bajo ninguna circunstancia debe generarse un plan con menos calorías que el mínimo definido. Si el cálculo da menos, AJUSTAR hacia arriba.
+
+⚠️ INSTRUCCIÓN FINAL Y OBLIGATORIA:
+- El JSON generado debe contener SIEMPRE los 7 días completos (lunes, martes, miércoles, jueves, viernes, sábado, domingo) como claves principales dentro de "dias". No omitas ningún día bajo ninguna circunstancia, aunque algún menú sea similar o debas poner valores en cero. Si falta algún día, el plan será inválido.
+- No uses "..." ni resumas días. Si no sabes qué poner, repite el menú del día anterior o pon valores en cero, pero NUNCA omitas días ni dejes el JSON incompleto.
 
 ✅ FORMATO DE RESPUESTA:
 

@@ -264,6 +264,21 @@ export async function generatePlan(data: PlanData) {
     },
   };
 
+  // --- RELLENO AUTOMÁTICO DE DÍAS FALTANTES ---
+  const DIAS_SEMANA = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+  if (parsed.dias && typeof parsed.dias === 'object') {
+    const diasActuales = Object.keys(parsed.dias);
+    if (diasActuales.length > 0) {
+      const primerDia = parsed.dias[diasActuales[0]];
+      for (const dia of DIAS_SEMANA) {
+        if (!parsed.dias[dia]) {
+          // Copia el primer día existente, pero cambia el nombre del día
+          parsed.dias[dia] = JSON.parse(JSON.stringify(primerDia));
+        }
+      }
+    }
+  }
+
   validatePlan(entrenamiento);
   return { plan: parsed, ingredientesNoEncontrados };
 }
