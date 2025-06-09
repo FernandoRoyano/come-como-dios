@@ -4,9 +4,10 @@ import { Plan, Comida } from '@/types/plan';
 
 interface Props {
   plan: Plan;
+  pdfButtonRef?: React.RefObject<HTMLButtonElement | null>;
 }
 
-const PlanViewer = ({ plan }: Props) => {
+const PlanViewer = ({ plan, pdfButtonRef }: Props) => {
   const [currentPlan] = useState<Plan>(plan);
 
   const handleDownloadPDF = async () => {
@@ -36,7 +37,11 @@ const PlanViewer = ({ plan }: Props) => {
 
   return (
     <>
-      <button onClick={handleDownloadPDF} className={styles['pdf-button']}>
+      <button
+        onClick={handleDownloadPDF}
+        className={styles['pdf-button']}
+        ref={pdfButtonRef}
+      >
         📥 Descargar plan en PDF
       </button>
 

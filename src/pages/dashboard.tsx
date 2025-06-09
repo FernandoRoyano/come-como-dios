@@ -4,6 +4,12 @@ import { useState, useEffect } from 'react';
 import styles from './dashboard.module.css';
 import { UserPlan } from '../types/user';
 import UserProfile from '../components/UserProfile';
+import dynamic from 'next/dynamic';
+import { Plan, PlanEntrenamiento } from '../types/plan';
+import { useRef } from 'react';
+
+const PlanViewer = dynamic(() => import('../components/PlanViewer'), { ssr: false });
+const TrainingViewer = dynamic(() => import('../components/TrainingViewer'), { ssr: false });
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -11,6 +17,10 @@ export default function Dashboard() {
   const [plans, setPlans] = useState<UserPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState<any>(null);
+  const [modalPlan, setModalPlan] = useState<UserPlan | null>(null);
+  // Ref para el botón PDF, compatible con los hijos
+  const pdfButtonRef = useRef<HTMLButtonElement>(null);
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -41,17 +51,17 @@ export default function Dashboard() {
     }
   };
 
-  const downloadPlan = (plan: UserPlan) => {
-    const planData = JSON.stringify(plan, null, 2);
-    const blob = new Blob([planData], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${plan.metadata.title}-${plan.type}-${new Date().toISOString()}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  const downloadPlanPDF = (plan: UserPlan) => {
+    setModalPlan(plan);
+    setTimeout(() => {
+      // Espera a que el modal y el botón estén montados
+      if (pdfButtonRef.current) {
+        pdfButtonRef.current.click();
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 2500);
+        setTimeout(() => setModalPlan(null), 2000);
+      }
+    }, 600); // Un poco más de tiempo para asegurar el render
   };
 
   const deletePlan = async (planId: string) => {
@@ -115,7 +125,14 @@ export default function Dashboard() {
       <main className={styles.main}>
         <section className={styles.plansSection}>
           <h2>Mis Planes Guardados</h2>
-          
+          <div style={{display:'flex',justifyContent:'flex-end',marginBottom:'1.5rem'}}>
+            <button 
+              className={styles.createPlanButton}
+              onClick={() => router.push('/')}
+            >
+              + Crear nuevo plan
+            </button>
+          </div>
           {plans.length === 0 ? (
             <div className={styles.emptyState}>
               <p>Tu resumen está siendo creado. Vuelve más tarde para ver tus planes.</p>
@@ -131,22 +148,30 @@ export default function Dashboard() {
               {plans.map((plan) => (
                 <div key={plan.id} className={styles.planCard}>
                   <div className={styles.planHeader}>
-                    <h3>{plan.metadata.title}</h3>
-                    <span className={styles.planType}>
-                      {plan.type === 'nutrition' ? '🍎 Nutrición' : '💪 Entrenamiento'}
+                    <div style={{display:'flex',alignItems:'center',gap:'0.7rem'}}>
+                      <span style={{fontSize:'2rem'}}>{plan.type === 'nutrition' ? '🍎' : '💪'}</span>
+                      <h3>{plan.metadata.title}</h3>
+                    </div>
+                    <span className={styles.planType} style={{fontWeight:600}}>
+                      {plan.type === 'nutrition' ? 'Nutrición' : 'Entrenamiento'}
                     </span>
                   </div>
                   <div className={styles.planUser}>
                     <strong>Usuario:</strong> {plan.userName || userData?.name || session?.user?.name}
                   </div>
+                  <div style={{color:'#64748b',fontSize:'0.95rem',marginBottom:8}}>
+    <span style={{fontWeight:500}}>Guardado:</span> {plan.createdAt ? new Date(plan.createdAt).toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' }) : 'Sin fecha'}
+  </div>
                   {plan.metadata.description && (
                     <p className={styles.planDescription}>{plan.metadata.description}</p>
                   )}
-                  <div className={styles.planTags}>
-                    {plan.metadata.tags?.map((tag) => (
-                      <span key={tag} className={styles.tag}>{tag}</span>
-                    ))}
-                  </div>
+                  {plan.metadata.tags && plan.metadata.tags.length > 0 && (
+                    <div className={styles.planTags}>
+                      {plan.metadata.tags.map((tag) => (
+                        <span key={tag} className={styles.tag}>{tag}</span>
+                      ))}
+                    </div>
+                  )}
                   <div className={styles.planActions}>
                     <button 
                       className="btn btn-primary"
@@ -156,7 +181,7 @@ export default function Dashboard() {
                     </button>
                     <button 
                       className="btn btn-secondary"
-                      onClick={() => downloadPlan(plan)}
+                      onClick={() => downloadPlanPDF(plan)}
                     >
                       Descargar
                     </button>
@@ -173,6 +198,40 @@ export default function Dashboard() {
           )}
         </section>
       </main>
+      {/* Modal oculto para PDF */}
+      {modalPlan && (
+        <div style={{position:'fixed',left:-9999,top:-9999,opacity:0,pointerEvents:'none'}}>
+          {modalPlan.type === 'nutrition' ? (
+            <PlanViewer 
+              plan={typeof modalPlan.plan === 'string' ? JSON.parse(modalPlan.plan) : modalPlan.plan as Plan}
+              pdfButtonRef={pdfButtonRef}
+            />
+          ) : (
+            <TrainingViewer 
+              plan={typeof modalPlan.plan === 'string' ? JSON.parse(modalPlan.plan) : modalPlan.plan as PlanEntrenamiento}
+              pdfButtonRef={pdfButtonRef}
+            />
+          )}
+        </div>
+      )}
+      {showToast && (
+        <div style={{
+          position: 'fixed',
+          bottom: 32,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: '#22c55e',
+          color: 'white',
+          padding: '1rem 2rem',
+          borderRadius: 12,
+          fontWeight: 600,
+          fontSize: '1.1rem',
+          boxShadow: '0 4px 16px rgba(34,197,94,0.15)',
+          zIndex: 9999
+        }}>
+          ¡Descarga en PDF iniciada!
+        </div>
+      )}
     </div>
   );
 }

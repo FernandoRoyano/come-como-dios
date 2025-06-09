@@ -15,6 +15,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const collection = db.collection('user_plans');
 
   if (req.method === 'GET') {
+    // Si se pasa ?id=, devolver solo ese plan
+    if (req.query.id) {
+      const { id } = req.query;
+      if (!id || typeof id !== 'string') {
+        return res.status(400).json({ message: 'ID de plan requerido' });
+      }
+      const planRaw = await collection.findOne({ _id: new ObjectId(id), userEmail: email });
+      if (!planRaw) {
+        return res.status(404).json({ message: 'Plan no encontrado' });
+      }
+      // Transformar _id a id (string) para el frontend
+      const plan = { ...planRaw, id: planRaw._id.toString(), _id: undefined };
+      return res.status(200).json({ plan });
+    }
     // Listar planes del usuario
     const plansRaw = await collection.find({ userEmail: email }).sort({ createdAt: -1 }).toArray();
     // Transformar _id a id (string) para el frontend

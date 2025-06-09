@@ -41,9 +41,10 @@ function obtenerImagenEjercicio(nombre: string) {
 interface Props {
   plan: PlanEntrenamiento;
   resumen?: string;
+  pdfButtonRef?: React.RefObject<HTMLButtonElement | null>;
 }
 
-const TrainingViewer = ({ plan, resumen }: Props) => {
+const TrainingViewer = ({ plan, resumen, pdfButtonRef }: Props) => {
   const [html2pdf, setHtml2pdf] = useState<(() => unknown) | null>(null); // Uso unknown en vez de any para cumplir ESLint
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
   const [isPdfLoading, setIsPdfLoading] = useState<boolean>(false);
@@ -178,6 +179,7 @@ const TrainingViewer = ({ plan, resumen }: Props) => {
         onClick={handleDownloadPDF}
         disabled={isPdfLoading}
         style={{ marginBottom: '2rem' }}
+        ref={pdfButtonRef}
       >
         {isPdfLoading ? 'Generando PDF...' : '📥 Descargar rutina en PDF'}
       </button>
