@@ -177,6 +177,44 @@
   flex-wrap: wrap;
 }
 
+.planActions button {
+  min-width: 110px;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.7rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  outline: none;
+}
+
+.planActions .btn-primary {
+  background: linear-gradient(90deg, #0ea5e9 0%, #2563eb 100%);
+  color: #fff;
+}
+.planActions .btn-primary:hover {
+  background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+}
+
+.planActions .btn-secondary {
+  background: #f3f4f6;
+  color: #2563eb;
+  border: 1px solid #2563eb;
+}
+.planActions .btn-secondary:hover {
+  background: #e0e7ef;
+}
+
+.planActions .btn-danger {
+  background: linear-gradient(90deg, #ef4444 0%, #b91c1c 100%);
+  color: #fff;
+}
+.planActions .btn-danger:hover {
+  background: linear-gradient(90deg, #b91c1c 0%, #991b1b 100%);
+}
+
 .loading {
   display: flex;
   flex-direction: column;

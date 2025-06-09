@@ -1,0 +1,55 @@
+/* styles for PlanDetail page adaptados a la línea visual del Dashboard y Home */
+
+.planDetailContainer {
+  max-width: 900px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(52,152,219,0.07);
+  padding: 2.5rem 2rem 2rem 2rem;
+}
+
+.backButton {
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: #fff;
+  border: none;
+  border-radius: 0.7rem;
+  padding: 0.7rem 1.7rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(52,152,219,0.10);
+  transition: background 0.2s;
+  outline: none;
+}
+.backButton:hover, .backButton:focus {
+  background: linear-gradient(135deg, #217dbb 0%, #145a86 100%);
+}
+
+.planTitle {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #222e3a;
+  letter-spacing: -1px;
+}
+
+.planInfo {
+  margin-bottom: 2rem;
+  background: #f5f7fa;
+  border-radius: 0.7rem;
+  padding: 1.2rem 1.5rem;
+  color: #374151;
+  font-size: 1.08rem;
+  box-shadow: 0 1px 4px rgba(52,152,219,0.04);
+}
+
+.loading,
+.notFound {
+  padding: 2rem;
+  text-align: center;
+  color: #64748b;
+  font-size: 1.2rem;
+}

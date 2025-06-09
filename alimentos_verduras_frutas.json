@@ -142,5 +142,149 @@
     "carbohidratos": 6.5,
     "grasas": 0.1,
     "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "naranja",
+    "calorias": 47,
+    "proteinas": 0.9,
+    "carbohidratos": 12,
+    "grasas": 0.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "melón",
+    "calorias": 34,
+    "proteinas": 0.8,
+    "carbohidratos": 8,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "sandía",
+    "calorias": 30,
+    "proteinas": 0.6,
+    "carbohidratos": 8,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "piña",
+    "calorias": 50,
+    "proteinas": 0.5,
+    "carbohidratos": 13,
+    "grasas": 0.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "mango",
+    "calorias": 60,
+    "proteinas": 0.8,
+    "carbohidratos": 15,
+    "grasas": 0.4,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "coliflor",
+    "calorias": 25,
+    "proteinas": 1.9,
+    "carbohidratos": 5,
+    "grasas": 0.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "alcachofa cocida",
+    "calorias": 47,
+    "proteinas": 3.3,
+    "carbohidratos": 10.5,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "apio",
+    "calorias": 16,
+    "proteinas": 0.7,
+    "carbohidratos": 3,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "remolacha cocida",
+    "calorias": 44,
+    "proteinas": 1.7,
+    "carbohidratos": 10,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "judía verde cocida",
+    "calorias": 35,
+    "proteinas": 1.9,
+    "carbohidratos": 7.9,
+    "grasas": 0.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "col rizada (kale)",
+    "calorias": 49,
+    "proteinas": 4.3,
+    "carbohidratos": 8.8,
+    "grasas": 0.9,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "champiñones",
+    "calorias": 22,
+    "proteinas": 3.1,
+    "carbohidratos": 3.3,
+    "grasas": 0.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "pera conferencia",
+    "calorias": 56,
+    "proteinas": 0.4,
+    "carbohidratos": 15,
+    "grasas": 0.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "mandarina",
+    "calorias": 53,
+    "proteinas": 0.8,
+    "carbohidratos": 13,
+    "grasas": 0.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "pera asiática",
+    "calorias": 42,
+    "proteinas": 0.5,
+    "carbohidratos": 10.7,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "espárragos cocidos",
+    "calorias": 22,
+    "proteinas": 2.4,
+    "carbohidratos": 3.9,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "higo fresco",
+    "calorias": 74,
+    "proteinas": 0.8,
+    "carbohidratos": 19,
+    "grasas": 0.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "cereza",
+    "calorias": 50,
+    "proteinas": 1,
+    "carbohidratos": 12,
+    "grasas": 0.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"]
   }
 ]

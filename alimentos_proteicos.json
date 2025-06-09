@@ -158,5 +158,165 @@
     "carbohidratos": 3.4,
     "grasas": 4.3,
     "aptoPara": ["vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "pavo asado",
+    "calorias": 135,
+    "proteinas": 29,
+    "carbohidratos": 0,
+    "grasas": 1.2,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "merluza al vapor",
+    "calorias": 70,
+    "proteinas": 12,
+    "carbohidratos": 0,
+    "grasas": 2,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "soja texturizada hidratada",
+    "calorias": 108,
+    "proteinas": 18,
+    "carbohidratos": 7,
+    "grasas": 1.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "alubias blancas cocidas",
+    "calorias": 102,
+    "proteinas": 7,
+    "carbohidratos": 18,
+    "grasas": 0.5,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "queso fresco batido",
+    "calorias": 47,
+    "proteinas": 8.5,
+    "carbohidratos": 3.5,
+    "grasas": 0.2,
+    "aptoPara": ["vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "bacón de pavo",
+    "calorias": 120,
+    "proteinas": 20,
+    "carbohidratos": 1,
+    "grasas": 4,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "requesón",
+    "calorias": 98,
+    "proteinas": 11,
+    "carbohidratos": 3.4,
+    "grasas": 4.3,
+    "aptoPara": ["vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "hígado de ternera",
+    "calorias": 135,
+    "proteinas": 20.4,
+    "carbohidratos": 3.9,
+    "grasas": 3.6,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "sardinas en aceite",
+    "calorias": 208,
+    "proteinas": 25,
+    "carbohidratos": 0,
+    "grasas": 12,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "almejas cocidas",
+    "calorias": 74,
+    "proteinas": 12,
+    "carbohidratos": 2.6,
+    "grasas": 0.8,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "judías pintas cocidas",
+    "calorias": 127,
+    "proteinas": 8.7,
+    "carbohidratos": 22.8,
+    "grasas": 0.5,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "queso ricotta",
+    "calorias": 174,
+    "proteinas": 11,
+    "carbohidratos": 3.5,
+    "grasas": 13,
+    "aptoPara": ["vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "hummus",
+    "calorias": 166,
+    "proteinas": 7.9,
+    "carbohidratos": 14.3,
+    "grasas": 9.6,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "langostinos cocidos",
+    "calorias": 99,
+    "proteinas": 21,
+    "carbohidratos": 0.2,
+    "grasas": 0.7,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "queso feta",
+    "calorias": 264,
+    "proteinas": 14,
+    "carbohidratos": 4,
+    "grasas": 21,
+    "aptoPara": ["vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "lomo embuchado",
+    "calorias": 330,
+    "proteinas": 50,
+    "carbohidratos": 1.5,
+    "grasas": 13,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "soja cocida",
+    "calorias": 141,
+    "proteinas": 12.4,
+    "carbohidratos": 9.9,
+    "grasas": 6.4,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
+  },
+  {
+    "nombre": "bacalao ahumado",
+    "calorias": 105,
+    "proteinas": 23,
+    "carbohidratos": 0,
+    "grasas": 0.8,
+    "aptoPara": ["mediterranea", "keto"]
+  },
+  {
+    "nombre": "queso parmesano",
+    "calorias": 431,
+    "proteinas": 38,
+    "carbohidratos": 4.1,
+    "grasas": 29,
+    "aptoPara": ["vegetariana", "mediterranea", "keto"]
+  },
+  {
+    "nombre": "altramuces cocidos",
+    "calorias": 119,
+    "proteinas": 16.4,
+    "carbohidratos": 9.9,
+    "grasas": 2.9,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"]
   }
 ]

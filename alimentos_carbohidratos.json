@@ -151,5 +151,176 @@
     "grasas": 1.2,
     "aptoPara": ["vegana", "vegetariana", "mediterranea"],
     "numeroComidas": 1
+  },
+  {
+    "nombre": "trigo sarraceno cocido",
+    "calorias": 92,
+    "proteinas": 3.4,
+    "carbohidratos": 19.9,
+    "grasas": 0.6,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "farro cocido",
+    "calorias": 125,
+    "proteinas": 4.2,
+    "carbohidratos": 26,
+    "grasas": 0.7,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "sémola cocida",
+    "calorias": 123,
+    "proteinas": 3.8,
+    "carbohidratos": 25.2,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "arroz basmati cocido",
+    "calorias": 121,
+    "proteinas": 3.5,
+    "carbohidratos": 25.2,
+    "grasas": 0.4,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "espelta cocida",
+    "calorias": 127,
+    "proteinas": 5.5,
+    "carbohidratos": 26.7,
+    "grasas": 0.8,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "tapioca cocida",
+    "calorias": 112,
+    "proteinas": 0.2,
+    "carbohidratos": 27.3,
+    "grasas": 0.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "gnocchi de patata cocidos",
+    "calorias": 140,
+    "proteinas": 3.2,
+    "carbohidratos": 30,
+    "grasas": 0.3,
+    "aptoPara": ["vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "polenta cocida",
+    "calorias": 70,
+    "proteinas": 1.7,
+    "carbohidratos": 15,
+    "grasas": 0.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "arroz jazmín cocido",
+    "calorias": 129,
+    "proteinas": 2.9,
+    "carbohidratos": 28.2,
+    "grasas": 0.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "pan de centeno",
+    "calorias": 259,
+    "proteinas": 8.5,
+    "carbohidratos": 48.3,
+    "grasas": 3.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "pan de espelta",
+    "calorias": 246,
+    "proteinas": 9.6,
+    "carbohidratos": 44.3,
+    "grasas": 2.6,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "pan de maíz",
+    "calorias": 198,
+    "proteinas": 5.4,
+    "carbohidratos": 40.7,
+    "grasas": 2.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "pan de pita integral",
+    "calorias": 275,
+    "proteinas": 9.1,
+    "carbohidratos": 55.7,
+    "grasas": 1.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "galletas de arroz",
+    "calorias": 387,
+    "proteinas": 7.5,
+    "carbohidratos": 81.5,
+    "grasas": 3.2,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "tortitas de maíz",
+    "calorias": 382,
+    "proteinas": 7.2,
+    "carbohidratos": 80.2,
+    "grasas": 3.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "sorgo cocido",
+    "calorias": 119,
+    "proteinas": 3.9,
+    "carbohidratos": 25.9,
+    "grasas": 1.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "yuca cocida",
+    "calorias": 160,
+    "proteinas": 1.4,
+    "carbohidratos": 38.1,
+    "grasas": 0.3,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea", "keto"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "macarrones cocidos",
+    "calorias": 131,
+    "proteinas": 5.2,
+    "carbohidratos": 25.1,
+    "grasas": 1.1,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
+  },
+  {
+    "nombre": "espaguetis cocidos",
+    "calorias": 158,
+    "proteinas": 5.8,
+    "carbohidratos": 30.9,
+    "grasas": 0.9,
+    "aptoPara": ["vegana", "vegetariana", "mediterranea"],
+    "numeroComidas": 1
   }
 ]

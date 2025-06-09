@@ -101,26 +101,11 @@ export default function Dashboard() {
           Cerrar Sesión
         </button>
       </header>
-<section className={styles.userSummary}>
-  <div className={styles.userCard}>
-    <h2>Resumen de Usuario</h2>
-    <p><strong>Nombre:</strong> {userData?.name || session?.user?.name}</p>
-    <p><strong>Email:</strong> {userData?.email || session?.user?.email}</p>
-    {userData?.fechaNacimiento && (
-      <p><strong>Fecha de nacimiento:</strong> {new Date(userData.fechaNacimiento).toLocaleDateString()}</p>
-    )}
-    {userData?.estatura && (
-      <p><strong>Estatura:</strong> {userData.estatura} cm</p>
-    )}
-    {userData?.peso && (
-      <p><strong>Peso actual:</strong> {userData.peso} kg</p>
-    )}
-    {/* Puedes añadir aquí más campos personalizados */}
-    <div style={{marginTop:24}}>
-      <UserProfile />
-    </div>
-  </div>
-</section>
+
+      {/* Mostramos solo el perfil de usuario, sin duplicidad */}
+      <section className={styles.userSummary}>
+        <UserProfile />
+      </section>
 
       <main className={styles.main}>
         <section className={styles.plansSection}>

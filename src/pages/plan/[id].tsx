@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { UserPlan } from '../../types/user';
 import TrainingViewer from '../../components/TrainingViewer';
 import PlanViewer from '../../components/PlanViewer';
+import styles from './PlanDetail.module.css';
 
 export default function PlanDetail() {
   const router = useRouter();
@@ -26,8 +27,8 @@ export default function PlanDetail() {
     fetchPlan();
   }, [id]);
 
-  if (loading) return <div style={{padding:'2rem',textAlign:'center'}}>Cargando plan...</div>;
-  if (!plan) return <div style={{padding:'2rem',textAlign:'center'}}>Plan no encontrado</div>;
+  if (loading) return <div className={styles.loading}>Cargando plan...</div>;
+  if (!plan) return <div className={styles.notFound}>Plan no encontrado</div>;
 
   // Parsear el plan si viene como string
   let planData = plan.plan;
@@ -38,27 +39,15 @@ export default function PlanDetail() {
   }
 
   return (
-    <div style={{maxWidth:900,margin:'2rem auto'}}>
+    <div className={styles.planDetailContainer}>
       <button
         onClick={() => router.push('/dashboard')}
-        style={{
-          marginBottom: '2rem',
-          background: 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)',
-          color: 'white',
-          border: 'none',
-          borderRadius: '0.7rem',
-          padding: '0.7rem 1.7rem',
-          fontWeight: 600,
-          fontSize: '1.1rem',
-          cursor: 'pointer',
-          boxShadow: '0 2px 8px rgba(52,152,219,0.10)',
-          transition: 'background 0.2s',
-        }}
+        className={styles.backButton}
       >
         ← Volver al Dashboard
       </button>
-      <h1 style={{textAlign:'center',marginBottom:'2rem'}}>{plan.metadata.title}</h1>
-      <div style={{marginBottom:'2rem'}}>
+      <h1 className={styles.planTitle}>{plan.metadata.title}</h1>
+      <div className={styles.planInfo}>
         <strong>Tipo:</strong> {plan.type === 'nutrition' ? 'Nutrición' : 'Entrenamiento'}<br/>
         <strong>Fecha:</strong> {new Date(plan.createdAt).toLocaleString()}
         <br/>
