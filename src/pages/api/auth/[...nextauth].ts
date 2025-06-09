@@ -2,19 +2,10 @@
 
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import type { Session, User } from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
 
-declare module 'next-auth' {
-  interface Session {
-    user: {
-      id?: string;
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-    }
-  }
-}
-
-export default NextAuth({
+export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -22,13 +13,13 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       if (session.user) {
-        session.user.id = token.sub;
+        (session.user as typeof session.user & { id?: string }).id = token.sub as string;
       }
       return session;
     },
-    async jwt({ token, account }) {
+    async jwt({ token, account }: { token: JWT; account?: any }) {
       if (account) {
         token.accessToken = account.access_token;
       }
@@ -40,4 +31,6 @@ export default NextAuth({
     error: '/',
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+export default NextAuth(authOptions);

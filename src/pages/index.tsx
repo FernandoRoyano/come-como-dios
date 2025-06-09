@@ -97,6 +97,7 @@ export default function Home() {
     entrenamiento: false,
   });
   const [diasSeleccionados, setDiasSeleccionados] = useState<string[]>([]);
+  const [saveStatus, setSaveStatus] = useState<{success?: string, error?: string}>({});
 
   // Función para generar el resumen contextual
   function getTrainingResumen(data: UserData) {
@@ -399,11 +400,19 @@ export default function Home() {
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Come y Entrena Como Dios</h1>
           <p className={styles.subtitle}>Tu asistente personal de nutrición y entrenamiento</p>
+          {session && (
+            <button
+              className={styles.dashboardButton}
+              style={{marginTop:'1rem',marginLeft:'1rem',padding:'0.7rem 1.5rem',fontWeight:600,borderRadius:'0.5rem',background:'#3498db',color:'#fff',border:'none',cursor:'pointer'}}
+              onClick={() => window.location.href = '/dashboard'}
+            >
+              🗂️ Mi Panel
+            </button>
+          )}
         </div>
         <button
           onClick={() => signOut()}
-          className={styles.continueButton}
-          style={{ marginTop: 16 }}
+          className={styles.logoutButton}
         >
           Cerrar Sesión
         </button>
@@ -734,6 +743,65 @@ export default function Home() {
             <PlanViewer plan={plan} />
             <h2 className={styles.planTitle}>Tu Plan de Entrenamiento</h2>
             <TrainingViewer plan={trainingResult.plan} resumen={getTrainingResumen(trainingResult.userData)} />
+            <div className={styles.planActions}>
+              {session ? (
+                <>
+                  <button
+                    className="btn btn-primary"
+                    onClick={async () => {
+                      setSaveStatus({});
+                      const nutritionMetadata = {
+                        title: 'Plan nutricional personalizado',
+                        description: 'Plan semanal de comidas adaptado a tus objetivos.',
+                      };
+                      const trainingMetadata = {
+                        title: 'Plan de entrenamiento personalizado',
+                        description: 'Rutina semanal de entrenamiento adaptada a tus preferencias.',
+                      };
+                      try {
+                        const resNutri = await fetch('/api/user/plans', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            metadata: nutritionMetadata,
+                            type: 'nutrition',
+                            plan: plan,
+                          })
+                        });
+                        const resTrain = await fetch('/api/user/plans', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            metadata: trainingMetadata,
+                            type: 'training',
+                            plan: trainingResult.plan,
+                          })
+                        });
+                        if (!resNutri.ok || !resTrain.ok) {
+                          const errNutri = await resNutri.json().catch(() => ({}));
+                          const errTrain = await resTrain.json().catch(() => ({}));
+                          let msg = '';
+                          if (!resNutri.ok) msg += errNutri.message || 'Error guardando plan nutricional. ';
+                          if (!resTrain.ok) msg += errTrain.message || 'Error guardando plan de entrenamiento.';
+                          throw new Error(msg);
+                        }
+                        setSaveStatus({success: '¡Ambos planes guardados en tu cuenta!'});
+                      } catch (e: any) {
+                        setSaveStatus({error: e.message || 'Error desconocido al guardar'});
+                      }
+                    }}
+                  >
+                    Guardar ambos planes en mi cuenta
+                  </button>
+                  {saveStatus.success && <div style={{color:'#22c55e',marginTop:8,fontWeight:500}}>{saveStatus.success}</div>}
+                  {saveStatus.error && <div style={{color:'#b00',marginTop:8,fontWeight:500}}>{saveStatus.error}</div>}
+                </>
+              ) : (
+                <div style={{marginTop:12, color:'#b00', fontWeight:500}}>
+                  Inicia sesión para guardar tus planes en la nube
+                </div>
+              )}
+            </div>
           </div>
         )}
 
@@ -742,6 +810,48 @@ export default function Home() {
           <div className={styles.planContainer}>
             <h2 className={styles.planTitle}>Tu Plan Nutricional</h2>
             <PlanViewer plan={plan} />
+            <div className={styles.planActions}>
+              {session ? (
+                <>
+                  <button
+                    className="btn btn-primary"
+                    onClick={async () => {
+                      setSaveStatus({});
+                      const nutritionMetadata = {
+                        title: 'Plan nutricional personalizado',
+                        description: 'Plan semanal de comidas adaptado a tus objetivos.',
+                      };
+                      try {
+                        const res = await fetch('/api/user/plans', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            metadata: nutritionMetadata,
+                            type: 'nutrition',
+                            plan: plan,
+                          })
+                        });
+                        if (!res.ok) {
+                          const err = await res.json().catch(() => ({}));
+                          throw new Error(err.message || 'Error al guardar el plan');
+                        }
+                        setSaveStatus({success: '¡Plan guardado en tu cuenta!'});
+                      } catch (e: any) {
+                        setSaveStatus({error: e.message || 'Error desconocido al guardar'});
+                      }
+                    }}
+                  >
+                    Guardar plan en mi cuenta
+                  </button>
+                  {saveStatus.success && <div style={{color:'#22c55e',marginTop:8,fontWeight:500}}>{saveStatus.success}</div>}
+                  {saveStatus.error && <div style={{color:'#b00',marginTop:8,fontWeight:500}}>{saveStatus.error}</div>}
+                </>
+              ) : (
+                <div style={{marginTop:12, color:'#b00', fontWeight:500}}>
+                  Inicia sesión para guardar tu plan en la nube
+                </div>
+              )}
+            </div>
           </div>
         )}
 
@@ -750,6 +860,44 @@ export default function Home() {
           <div className={styles.planContainer}>
             <h2 className={styles.planTitle}>Tu Plan de Entrenamiento</h2>
             <TrainingViewer plan={trainingResult.plan} resumen={getTrainingResumen(trainingResult.userData)} />
+            <div className={styles.planActions}>
+              {session ? (
+                <>
+                  <button
+                    className="btn btn-primary"
+                    onClick={async () => {
+                      setSaveStatus({});
+                      const trainingMetadata = {
+                        title: 'Plan de entrenamiento personalizado',
+                        description: 'Rutina semanal de entrenamiento adaptada a tus preferencias.',
+                      };
+                      try {
+                        const res = await fetch('/api/user/plans', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            metadata: trainingMetadata,
+                            type: 'training',
+                            plan: trainingResult.plan,
+                          })
+                        });
+                        if (!res.ok) {
+                          const err = await res.json().catch(() => ({}));
+                          throw new Error(err.message || 'Error al guardar el plan');
+                        }
+                        setSaveStatus({success: '¡Plan guardado en tu cuenta!'});
+                      } catch (e: any) {
+                        setSaveStatus({error: e.message || 'Error desconocido al guardar'});
+                      }
+                    }}
+                  >
+                    Guardar plan en mi cuenta
+                  </button>
+                  {saveStatus.success && <div style={{color:'#22c55e',marginTop:8,fontWeight:500}}>{saveStatus.success}</div>}
+                  {saveStatus.error && <div style={{color:'#b00',marginTop:8,fontWeight:500}}>{saveStatus.error}</div>}
+                </>
+              ) : null}
+            </div>
           </div>
         )}
 

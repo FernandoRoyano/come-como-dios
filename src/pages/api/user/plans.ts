@@ -1,75 +1,59 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
-import { UserPlan } from '../../../types/user';
-
-// Función para obtener planes del localStorage
-const getPlansFromStorage = (userId: string): UserPlan[] => {
-  if (typeof window === 'undefined') return [];
-  const plans = localStorage.getItem(`plans_${userId}`);
-  return plans ? JSON.parse(plans) : [];
-};
-
-// Función para guardar planes en localStorage
-const savePlansToStorage = (userId: string, plans: UserPlan[]) => {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(`plans_${userId}`, JSON.stringify(plans));
-};
+import type { NextApiRequest, NextApiResponse } from 'next';
+import clientPromise from '@/lib/mongodb';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../auth/[...nextauth]';
+import { ObjectId } from 'mongodb';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
+  if (!session || !session.user?.email) {
+    return res.status(401).json({ message: 'No autenticado' });
+  }
+  const email = session.user.email;
+  const client = await clientPromise;
+  const db = client.db();
+  const collection = db.collection('user_plans');
 
-  if (!session) {
-    return res.status(401).json({ message: 'No autorizado' });
+  if (req.method === 'GET') {
+    // Listar planes del usuario
+    const plansRaw = await collection.find({ userEmail: email }).sort({ createdAt: -1 }).toArray();
+    // Transformar _id a id (string) para el frontend
+    const plans = plansRaw.map((plan) => ({
+      ...plan,
+      id: plan._id.toString(),
+      _id: undefined, // Eliminar _id para evitar problemas de serialización
+    }));
+    return res.status(200).json({ plans });
   }
 
-  const userId = session.user?.id;
-
-  if (!userId) {
-    return res.status(400).json({ message: 'ID de usuario no encontrado' });
+  if (req.method === 'POST') {
+    // Guardar un nuevo plan
+    const plan = req.body;
+    if (!plan || !plan.metadata || !plan.type) {
+      return res.status(400).json({ message: 'Datos de plan incompletos' });
+    }
+    const doc = {
+      ...plan,
+      userEmail: email,
+      createdAt: new Date(),
+    };
+    const result = await collection.insertOne(doc);
+    return res.status(201).json({ id: result.insertedId });
   }
 
-  switch (req.method) {
-    case 'GET':
-      // Si hay un id, devolver solo ese plan
-      if (req.query.id) {
-        const userPlansList = getPlansFromStorage(userId);
-        const plan = userPlansList.find(p => p.id === req.query.id);
-        if (!plan) return res.status(404).json({ message: 'Plan no encontrado' });
-        return res.status(200).json({ plan });
-      }
-      // Obtener todos los planes del usuario
-      const userPlansList = getPlansFromStorage(userId);
-      return res.status(200).json({ plans: userPlansList });
-
-    case 'POST':
-      // Guardar un nuevo plan
-      const newPlan: UserPlan = {
-        id: Math.random().toString(36).substr(2, 9),
-        userId,
-        userName: session.user?.name || '', // Guardar el nombre del usuario
-        type: req.body.type,
-        createdAt: new Date(),
-        plan: req.body.plan,
-        metadata: req.body.metadata
-      };
-
-      const currentPlans = getPlansFromStorage(userId);
-      const updatedPlans = [...currentPlans, newPlan];
-      savePlansToStorage(userId, updatedPlans);
-      
-      return res.status(201).json({ plan: newPlan });
-
-    case 'DELETE':
-      // Eliminar un plan
-      const planId = req.query.id as string;
-      const existingPlans = getPlansFromStorage(userId);
-      const filteredPlans = existingPlans.filter(plan => plan.id !== planId);
-      savePlansToStorage(userId, filteredPlans);
-      
+  if (req.method === 'DELETE') {
+    // Eliminar un plan por id
+    const { id } = req.query;
+    if (!id || typeof id !== 'string') {
+      return res.status(400).json({ message: 'ID de plan requerido' });
+    }
+    const result = await collection.deleteOne({ _id: new ObjectId(id), userEmail: email });
+    if (result.deletedCount === 1) {
       return res.status(200).json({ message: 'Plan eliminado' });
-
-    default:
-      res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
-      return res.status(405).json({ message: `Método ${req.method} no permitido` });
+    } else {
+      return res.status(404).json({ message: 'Plan no encontrado' });
+    }
   }
+
+  return res.status(405).json({ message: 'Método no permitido' });
 }

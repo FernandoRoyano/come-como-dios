@@ -1,4 +1,4 @@
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import styles from './dashboard.module.css';
@@ -55,11 +55,11 @@ export default function Dashboard() {
   };
 
   const deletePlan = async (planId: string) => {
+    if (!window.confirm('¿Seguro que quieres eliminar este plan? Esta acción no se puede deshacer.')) return;
     try {
       const response = await fetch(`/api/user/plans?id=${planId}`, {
         method: 'DELETE',
       });
-      
       if (response.ok) {
         setPlans(plans.filter(plan => plan.id !== planId));
       }
@@ -84,6 +84,12 @@ export default function Dashboard() {
       <header className={styles.header}>
         <h1>¡Hola, {userData?.name || session?.user?.name}!</h1>
         <p>Bienvenido a tu panel personal.</p>
+        <button
+          className={styles.logoutButton}
+          onClick={() => signOut()}
+        >
+          Cerrar Sesión
+        </button>
       </header>
 <section className={styles.userSummary}>
   <div className={styles.userCard}>
@@ -112,7 +118,7 @@ export default function Dashboard() {
           
           {plans.length === 0 ? (
             <div className={styles.emptyState}>
-              <p>No tienes planes guardados aún.</p>
+              <p>Tu resumen está siendo creado. Vuelve más tarde para ver tus planes.</p>
               <button 
                 className={styles.createPlanButton}
                 onClick={() => router.push('/')}
@@ -143,19 +149,19 @@ export default function Dashboard() {
                   </div>
                   <div className={styles.planActions}>
                     <button 
-                      className={styles.viewButton}
+                      className="btn btn-primary"
                       onClick={() => router.push(`/plan/${plan.id}`)}
                     >
                       Ver Plan
                     </button>
                     <button 
-                      className={styles.downloadButton}
+                      className="btn btn-secondary"
                       onClick={() => downloadPlan(plan)}
                     >
                       Descargar
                     </button>
                     <button 
-                      className={styles.deleteButton}
+                      className="btn btn-danger"
                       onClick={() => deletePlan(plan.id)}
                     >
                       Eliminar
