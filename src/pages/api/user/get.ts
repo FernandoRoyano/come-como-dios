@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { MongoClient } from 'mongodb';
+import clientPromise from '@/lib/mongodb';
 
-const uri = process.env.MONGODB_URI!;
 const dbName = process.env.MONGODB_DB || 'nutriapp';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -14,10 +13,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Email requerido' });
   }
 
-  let client: MongoClient | null = null;
   try {
-    client = new MongoClient(uri);
-    await client.connect();
+    // Usar el pool de conexión de mongodb.ts para evitar errores en Vercel
+    const client = await clientPromise;
     const db = client.db(dbName);
     const users = db.collection('users');
     const user = await users.findOne({ email });
@@ -29,7 +27,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(200).json(userData);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener el usuario', details: (error as Error).message });
-  } finally {
-    if (client) await client.close();
   }
 }

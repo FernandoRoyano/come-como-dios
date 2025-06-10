@@ -1,4 +1,5 @@
 import { PlanData } from '@/types/plan';
+import { NOMBRES_ALIMENTOS } from './alimentosNombresIA';
 
 export function generatePrompt(data: PlanData): string {
   const {
@@ -96,6 +97,12 @@ Calorías finales = 3200 (mínimo recomendado para este perfil)
 ⚠️ INSTRUCCIÓN FINAL Y OBLIGATORIA:
 - El JSON generado debe contener SIEMPRE los 7 días completos (lunes, martes, miércoles, jueves, viernes, sábado, domingo) como claves principales dentro de "dias". No omitas ningún día bajo ninguna circunstancia, aunque algún menú sea similar o debas poner valores en cero. Si falta algún día, el plan será inválido.
 - No uses "..." ni resumas días. Si no sabes qué poner, repite el menú del día anterior o pon valores en cero, pero NUNCA omitas días ni dejes el JSON incompleto.
+
+⚠️ INSTRUCCIÓN EXTRA:
+- Usa únicamente nombres de alimentos de la siguiente lista (sin sinónimos, sin traducciones, sin inventar):
+${NOMBRES_ALIMENTOS.join(', ')}
+- Si necesitas un ingrediente que no está en la lista, ignóralo y elige otro de la lista.
+- Escribe la descripción de cada comida usando exactamente los nombres de la lista, con cantidad y unidad (g, ml, uds).
 
 ✅ FORMATO DE RESPUESTA:
 
