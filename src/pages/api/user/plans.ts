@@ -4,6 +4,8 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { ObjectId } from 'mongodb';
 
+// Forzar redeploy y refresco de caché en Vercel - 10/06/2025
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);
   if (!session || !session.user?.email) {
@@ -43,16 +45,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'POST') {
     // Guardar un nuevo plan
     const plan = req.body;
+    console.log('[API/USER/PLANS][POST] Usuario:', email);
+    console.log('[API/USER/PLANS][POST] Body recibido:', JSON.stringify(plan));
     if (!plan || !plan.metadata || !plan.type) {
+      console.warn('[API/USER/PLANS][POST] Datos de plan incompletos:', plan);
       return res.status(400).json({ message: 'Datos de plan incompletos' });
     }
-    const doc = {
-      ...plan,
-      userEmail: email,
-      createdAt: new Date(),
-    };
-    const result = await collection.insertOne(doc);
-    return res.status(201).json({ id: result.insertedId });
+    try {
+      const doc = {
+        ...plan,
+        userEmail: email,
+        createdAt: new Date(),
+      };
+      const result = await collection.insertOne(doc);
+      console.log('[API/USER/PLANS][POST] Plan guardado con id:', result.insertedId);
+      return res.status(201).json({ id: result.insertedId });
+    } catch (error) {
+      console.error('[API/USER/PLANS][POST] Error al guardar el plan:', error);
+      return res.status(500).json({ message: 'Error al guardar el plan', details: error instanceof Error ? error.message : error });
+    }
   }
 
   if (req.method === 'DELETE') {

@@ -761,6 +761,10 @@ export default function Home() {
                         description: 'Rutina semanal de entrenamiento adaptada a tus preferencias.',
                       };
                       try {
+                        console.log('[FRONT][POST] Guardando ambos planes:', {
+                          nutri: { metadata: nutritionMetadata, type: 'nutrition', plan },
+                          train: { metadata: trainingMetadata, type: 'training', plan: trainingResult.plan }
+                        });
                         const resNutri = await fetch('/api/user/plans', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
@@ -779,12 +783,19 @@ export default function Home() {
                             plan: trainingResult.plan,
                           })
                         });
+                        const resNutriText = await resNutri.text();
+                        const resTrainText = await resTrain.text();
+                        let resNutriJson = {}, resTrainJson = {};
+                        try { resNutriJson = JSON.parse(resNutriText); } catch {}
+                        try { resTrainJson = JSON.parse(resTrainText); } catch {}
+                        console.log('[FRONT][POST] Status Nutri:', resNutri.status, 'Response:', resNutriJson);
+                        console.log('[FRONT][POST] Status Train:', resTrain.status, 'Response:', resTrainJson);
+                        const msgNutri = typeof resNutriJson === 'object' && resNutriJson && 'message' in resNutriJson ? (resNutriJson as any).message : undefined;
+                        const msgTrain = typeof resTrainJson === 'object' && resTrainJson && 'message' in resTrainJson ? (resTrainJson as any).message : undefined;
                         if (!resNutri.ok || !resTrain.ok) {
-                          const errNutri = await resNutri.json().catch(() => ({}));
-                          const errTrain = await resTrain.json().catch(() => ({}));
                           let msg = '';
-                          if (!resNutri.ok) msg += errNutri.message || 'Error guardando plan nutricional. ';
-                          if (!resTrain.ok) msg += errTrain.message || 'Error guardando plan de entrenamiento.';
+                          if (!resNutri.ok) msg += msgNutri || 'Error guardando plan nutricional. ';
+                          if (!resTrain.ok) msg += msgTrain || 'Error guardando plan de entrenamiento.';
                           throw new Error(msg);
                         }
                         setSaveStatus({success: '¡Ambos planes guardados en tu cuenta!'});
@@ -824,6 +835,7 @@ export default function Home() {
                         description: 'Plan semanal de comidas adaptado a tus objetivos.',
                       };
                       try {
+                        console.log('[FRONT][POST] Guardando plan nutricional:', { metadata: nutritionMetadata, type: 'nutrition', plan });
                         const res = await fetch('/api/user/plans', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
@@ -833,9 +845,13 @@ export default function Home() {
                             plan: plan,
                           })
                         });
+                        const resText = await res.text();
+                        let resJson = {};
+                        try { resJson = JSON.parse(resText); } catch {}
+                        console.log('[FRONT][POST] Status:', res.status, 'Response:', resJson);
+                        const msg = typeof resJson === 'object' && resJson && 'message' in resJson ? (resJson as any).message : undefined;
                         if (!res.ok) {
-                          const err = await res.json().catch(() => ({}));
-                          throw new Error(err.message || 'Error al guardar el plan');
+                          throw new Error(msg || 'Error al guardar el plan');
                         }
                         setSaveStatus({success: '¡Plan guardado en tu cuenta!'});
                       } catch (e: any) {
@@ -874,6 +890,7 @@ export default function Home() {
                         description: 'Rutina semanal de entrenamiento adaptada a tus preferencias.',
                       };
                       try {
+                        console.log('[FRONT][POST] Guardando plan entrenamiento:', { metadata: trainingMetadata, type: 'training', plan: trainingResult.plan });
                         const res = await fetch('/api/user/plans', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
@@ -883,9 +900,13 @@ export default function Home() {
                             plan: trainingResult.plan,
                           })
                         });
+                        const resText = await res.text();
+                        let resJson = {};
+                        try { resJson = JSON.parse(resText); } catch {}
+                        console.log('[FRONT][POST] Status:', res.status, 'Response:', resJson);
+                        const msg = typeof resJson === 'object' && resJson && 'message' in resJson ? (resJson as any).message : undefined;
                         if (!res.ok) {
-                          const err = await res.json().catch(() => ({}));
-                          throw new Error(err.message || 'Error al guardar el plan');
+                          throw new Error(msg || 'Error al guardar el plan');
                         }
                         setSaveStatus({success: '¡Plan guardado en tu cuenta!'});
                       } catch (e: any) {
