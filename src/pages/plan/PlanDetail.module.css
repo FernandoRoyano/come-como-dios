@@ -1,5 +1,55 @@
 /* styles for PlanDetail page adaptados a la línea visual del Dashboard y Home */
 
+/* === HEADER UNIFICADO Y RESPONSIVO (hereda de los módulos principales) === */
+.header {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+  color: #fff;
+  width: 100vw;
+  max-width: 100vw;
+  box-sizing: border-box;
+  margin: 0 auto var(--space-xl) auto;
+  padding: var(--space-xl) 2rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.headerContent {
+  width: 100vw;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .header, .headerContent {
+    width: 100vw;
+    max-width: 100vw;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    box-sizing: border-box;
+  }
+}
+@media (max-width: 600px) {
+  .header, .headerContent {
+    width: 100vw;
+    max-width: 100vw;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    box-sizing: border-box;
+    border-radius: var(--radius-md);
+  }
+}
+
 .planDetailContainer {
   max-width: 900px;
   margin: 2rem auto;

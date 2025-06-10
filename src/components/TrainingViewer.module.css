@@ -1,53 +1,56 @@
+/* Modernización y migración a variables globales */
 .training-container {
   max-width: 1200px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: var(--space-lg) auto;
+  padding: var(--space-lg);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
 }
 
 .training-title {
   font-size: 2rem;
-  color: #2d3748;
+  color: var(--color-primary-dark);
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-lg);
 }
 
 .pdf-button {
   display: block;
-  margin: 0 auto 2rem;
+  margin: 0 auto var(--space-lg);
   padding: 0.75rem 1.5rem;
-  background-color: #4299e1;
-  color: white;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-lg);
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.2s;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.2s;
 }
 
 .pdf-button:hover {
-  background-color: #3182ce;
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, #145a86 100%);
 }
 
 /* Sección de rutina */
 .rutina-section {
-  margin-bottom: 3rem;
+  margin-bottom: var(--space-xl);
 }
 
 .rutina-section h3 {
-  font-size: 1.5rem;
-  color: #2d3748;
-  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+  color: var(--color-secondary);
+  margin-bottom: var(--space-md);
 }
 
 .dia-card {
-  background-color: #f7fafc;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow-xs);
 }
 
 .dia-card h4 {
@@ -317,95 +320,126 @@
   line-height: 1.5;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .training-container {
-    padding: 1rem;
-    margin: 1rem;
-  }
+/* Recuperación de estilos clásicos de visualización de rutina */
+.rutina-meta {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  color: var(--color-text-light);
+  font-size: 1rem;
+}
 
-  .training-title {
-    font-size: 1.5rem;
-  }
+.rutina-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--space-md);
+}
 
-  .ejercicios-grid {
-    grid-template-columns: 1fr;
-  }
+.rutina-table th, .rutina-table td {
+  border: 1px solid var(--color-border);
+  padding: var(--space-xs) var(--space-sm);
+  text-align: left;
+}
 
-  .consideraciones-grid {
-    grid-template-columns: 1fr;
-  }
+.rutina-table th {
+  background: var(--color-bg-alt);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
 
-  .dia-info {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+/* === HEADER UNIFICADO Y RESPONSIVO (hereda de los módulos principales) === */
+.header {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+  color: #fff;
+  width: 100vw;
+  max-width: 100vw;
+  box-sizing: border-box;
+  margin: 0 auto var(--space-xl) auto;
+  padding: var(--space-xl) 2rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 
-  .progresion-section {
-    padding: 1rem;
-  }
+.headerContent {
+  width: 100vw;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-  .semana-card {
-    padding: 1.5rem;
+@media (max-width: 900px) {
+  .header, .headerContent {
+    width: 100vw;
+    max-width: 100vw;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    box-sizing: border-box;
   }
-
-  .semana-objetivos,
-  .semana-ajustes {
-    padding: 1rem;
+}
+@media (max-width: 600px) {
+  .header, .headerContent {
+    width: 100vw;
+    max-width: 100vw;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    box-sizing: border-box;
+    border-radius: var(--radius-md);
   }
 }
 
-@media (max-width: 600px) {
+/* Responsive */
+@media (max-width: 768px) {
   .training-container {
-    padding: 0.7rem;
-    border-radius: 0.7rem;
-    margin: 0.7rem 0 1.2rem 0;
-    max-width: 100vw;
-    box-shadow: none;
+    padding: 0.5rem;
+    margin: 0.5rem;
   }
   .training-title {
     font-size: 1.1rem;
     padding: 0;
   }
-  .rutina-section, .progresion-section, .consideraciones-section {
-    padding: 0.7rem;
-    border-radius: 0.7rem;
-  }
-  .semana-card, .dia-card {
-    padding: 0.7rem;
-    border-radius: 0.7rem;
-    margin-bottom: 1rem;
+  .pdf-button {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.5rem;
+    border-radius: 0.6rem;
   }
   .ejercicios-grid, .consideraciones-grid {
     grid-template-columns: 1fr;
-    gap: 0.7rem;
+    gap: 0.5rem;
   }
   .ejercicio-card, .consideracion-card {
-    padding: 0.7rem;
-    border-radius: 0.7rem;
-    font-size: 0.95rem;
+    padding: 0.5rem;
+    border-radius: 0.6rem;
+    font-size: 0.9rem;
+  }
+  .semana-card, .dia-card {
+    padding: 0.5rem;
+    border-radius: 0.6rem;
+    margin-bottom: 0.7rem;
+  }
+  .rutina-section, .progresion-section, .consideraciones-section {
+    padding: 0.5rem;
+    border-radius: 0.6rem;
+  }
+}
+@media (max-width: 400px) {
+  .training-title {
+    font-size: 0.9rem;
   }
   .pdf-button {
-    width: 100%;
-    font-size: 1rem;
-    padding: 0.7rem 0.5rem;
-    border-radius: 0.7rem;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.2rem;
+    border-radius: 0.5rem;
   }
-}
-
-.no-ejercicios {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 2rem;
-  background-color: #f7fafc;
-  border-radius: 8px;
-  color: #4a5568;
-  font-style: italic;
-}
-
-.no-ejercicios p {
-  margin: 0;
-  font-size: 1.1rem;
 }
 
 /* Eliminar redundancias y heredar la tipografía global */

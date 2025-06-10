@@ -1,313 +1,402 @@
+/* === HEADER UNIFICADO Y RESPONSIVO (hereda de los módulos principales) === */
+.header {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+  color: #fff;
+  width: 100vw;
+  max-width: 100vw;
+  box-sizing: border-box;
+  margin: 0 auto var(--space-xl) auto;
+  padding: var(--space-xl) 2rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.headerContent {
+  width: 100vw;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .header, .headerContent {
+    width: 100vw;
+    max-width: 100vw;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    box-sizing: border-box;
+  }
+}
+@media (max-width: 600px) {
+  .header, .headerContent {
+    width: 100vw;
+    max-width: 100vw;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    box-sizing: border-box;
+    border-radius: var(--radius-md);
+  }
+}
+
+/* Modernización y migración a variables globales */
 .plan-container {
-    max-width: 1100px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: #f8fafc;
-    border-radius: 16px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+  max-width: 1100px;
+  margin: var(--space-lg) auto;
+  padding: var(--space-lg);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.plan-title {
+  font-size: 2rem;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: var(--space-lg);
+  color: var(--color-primary-dark);
+}
+
+.day-card {
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+.day-card h3 {
+  font-size: 1.2rem;
+  color: var(--color-secondary);
+  margin-bottom: var(--space-md);
+}
+
+.meal-item {
+  background: var(--color-bg-alt);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-sm);
+  border: 1px solid var(--color-border);
+}
+
+.meal-item strong {
+  display: block;
+  font-size: 1rem;
+  color: var(--color-primary-dark);
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+}
+
+.meal-item p {
+  margin: 0.25rem 0 0.5rem;
+  color: var(--color-text-light);
+}
+
+.meal-item small {
+  display: block;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 0.8rem;
+}
+
+.regen-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  background-color: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.regen-button:hover {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.totales-dia {
+  margin-top: 1.2rem;
+  background: #e0f2fe;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.lista-compra {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.lista-compra h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #0f172a;
+  text-align: center;
+  font-weight: 600;
+}
+
+.grid-compra {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.categoria-compra {
+  padding: 1rem 1.5rem;
+  background: #f1f5f9;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+}
+
+.categoria-compra strong {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.categoria-compra ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.categoria-compra li {
+  padding: 0.5rem 0.75rem;
+  background: #ffffff;
+  margin-bottom: 0.4rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  transition: background 0.2s;
+}
+
+.categoria-compra li:hover {
+  background: #f0f9ff;
+}
+
+.pdf-button {
+  display: block;
+  margin: 2rem auto 1rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+  background-color: #0ea5e9;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(14, 165, 233, 0.25);
+  transition: background 0.2s ease-in-out;
+}
+
+.pdf-button:hover {
+  background-color: #0284c7;
+}
+
+.recetas-section {
+  margin-top: 4rem;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.recetas-section h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #0f172a;
+  text-align: center;
+  font-weight: 600;
+}
+
+.recetas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.receta-card {
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 1.5rem;
+  border: 1px solid #cbd5e1;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.receta-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.receta-card h4 {
+  font-size: 1.2rem;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.receta-card p {
+  font-size: 0.95rem;
+  color: #475569;
+  margin-bottom: 0.75rem;
+}
+
+.receta-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 0.8rem;
+}
+
+.receta-link {
+  display: inline-block;
+  color: #0ea5e9;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.receta-link:hover {
+  color: #0284c7;
+  border-bottom: 1px solid #0284c7;
+}
+
+.dificultad-facil {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.dificultad-media {
+  color: #eab308;
+  font-weight: 600;
+}
+
+.dificultad-alta {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Recuperación de estilos clásicos de visualización de plan */
+.plan-meta {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  color: var(--color-text-light);
+  font-size: 1rem;
+}
+
+.plan-section {
+  margin-bottom: var(--space-lg);
+}
+
+.plan-section-title {
+  font-size: 1.2rem;
+  color: var(--color-secondary);
+  margin-bottom: var(--space-sm);
+  font-weight: 600;
+}
+
+.plan-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--space-md);
+}
+
+.plan-table th, .plan-table td {
+  border: 1px solid var(--color-border);
+  padding: var(--space-xs) var(--space-sm);
+  text-align: left;
+}
+
+.plan-table th {
+  background: var(--color-bg-alt);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .plan-container {
+    padding: 0.7rem;
+    border-radius: 0.7rem;
+    margin: 0.7rem 0 1.2rem 0;
+    max-width: 100vw;
+    box-shadow: none;
   }
-  
   .plan-title {
-    font-size: 2.4rem;
-    text-align: center;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    color: #1e293b;
-  }
-  
-  .day-card {
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 1.5rem 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-    border: 1px solid #e2e8f0;
-  }
-  
-  .day-card h3 {
-    font-size: 1.5rem;
-    color: #0f172a;
-    margin-bottom: 1.2rem;
-  }
-  
-  .meal-item {
-    background: #f8fafc;
-    padding: 1.2rem;
-    border-radius: 12px;
-    margin-bottom: 1rem;
-    border: 1px solid #e2e8f0;
-  }
-  
-  .meal-item strong {
-    display: block;
     font-size: 1.1rem;
-    color: #0f172a;
-    margin-bottom: 0.5rem;
-    font-family: inherit;
-  }
-  
-  .meal-item p {
-    margin: 0.25rem 0 0.5rem;
-    font-size: 1rem;
-    color: #334155;
-    line-height: 1.5;
-  }
-  
-  .meal-item small {
-    display: block;
-    font-size: 0.85rem;
-    color: #64748b;
-    margin-bottom: 0.8rem;
-  }
-  
-  .regen-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    background-color: #f1f5f9;
-    color: #0f172a;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s ease;
-  }
-  
-  .regen-button:hover {
-    background-color: #e2e8f0;
-    border-color: #cbd5e1;
-  }
-  
-  .totales-dia {
-    margin-top: 1.2rem;
-    background: #e0f2fe;
-    padding: 0.8rem 1rem;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: #0369a1;
-    border: 1px solid #bae6fd;
-  }
-  
-  .lista-compra {
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e2e8f0;
-  }
-  
-  .lista-compra h3 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    color: #0f172a;
-    text-align: center;
-    font-weight: 600;
-  }
-  
-  .grid-compra {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-  }
-  
-  .categoria-compra {
-    padding: 1rem 1.5rem;
-    background: #f1f5f9;
-    border-radius: 12px;
-    border: 1px solid #cbd5e1;
-  }
-  
-  .categoria-compra strong {
-    display: block;
-    margin-bottom: 0.8rem;
-    font-size: 1.1rem;
-    color: #1e293b;
-  }
-  
-  .categoria-compra ul {
-    list-style: none;
     padding: 0;
-    margin: 0;
   }
-  
-  .categoria-compra li {
-    padding: 0.5rem 0.75rem;
-    background: #ffffff;
-    margin-bottom: 0.4rem;
-    border-radius: 8px;
+  .day-card {
+    padding: 0.7rem 0.5rem;
+    border-radius: 0.7rem;
+    margin-bottom: 1rem;
+  }
+  .meal-item {
+    padding: 0.7rem;
+    border-radius: 0.7rem;
     font-size: 0.95rem;
-    color: #334155;
-    border: 1px solid #e2e8f0;
-    transition: background 0.2s;
   }
-  
-  .categoria-compra li:hover {
-    background: #f0f9ff;
+  .totales-dia {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.9rem;
+    border-radius: 0.7rem;
   }
-  
+  .lista-compra {
+    padding: 0.7rem;
+    border-radius: 0.7rem;
+  }
+  .grid-compra {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+  .categoria-compra {
+    padding: 0.7rem;
+    border-radius: 0.7rem;
+    font-size: 0.95rem;
+  }
   .pdf-button {
-    display: block;
-    margin: 2rem auto 1rem;
-    padding: 0.75rem 1.75rem;
+    width: 100%;
     font-size: 1rem;
-    background-color: #0ea5e9;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 600;
-    box-shadow: 0 4px 10px rgba(14, 165, 233, 0.25);
-    transition: background 0.2s ease-in-out;
-  }
-  
-  .pdf-button:hover {
-    background-color: #0284c7;
+    padding: 0.7rem 0.5rem;
+    border-radius: 0.7rem;
   }
   .recetas-section {
-    margin-top: 4rem;
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e2e8f0;
+    padding: 0.7rem;
+    border-radius: 0.7rem;
   }
-  
-  .recetas-section h3 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    color: #0f172a;
-    text-align: center;
-    font-weight: 600;
-  }
-  
   .recetas-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
   }
-  
   .receta-card {
-    background: #f8fafc;
-    border-radius: 14px;
-    padding: 1.5rem;
-    border: 1px solid #cbd5e1;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .receta-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-  
-  .receta-card h4 {
-    font-size: 1.2rem;
-    color: #1e293b;
-    margin-bottom: 0.5rem;
-  }
-  
-  .receta-card p {
+    padding: 0.7rem;
+    border-radius: 0.7rem;
     font-size: 0.95rem;
-    color: #475569;
-    margin-bottom: 0.75rem;
   }
-  
-  .receta-info {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-    color: #64748b;
-    margin-bottom: 0.8rem;
-  }
-  
-  .receta-link {
-    display: inline-block;
-    color: #0ea5e9;
-    font-weight: 600;
-    text-decoration: none;
-    font-size: 0.95rem;
-    border-bottom: 1px solid transparent;
-    transition: all 0.2s ease;
-  }
-  
-  .receta-link:hover {
-    color: #0284c7;
-    border-bottom: 1px solid #0284c7;
-  }
-  .dificultad-facil {
-    color: #22c55e;
-    font-weight: 600;
-  }
-  
-  .dificultad-media {
-    color: #eab308;
-    font-weight: 600;
-  }
-  
-  .dificultad-alta {
-    color: #ef4444;
-    font-weight: 600;
-  }
-  
-  @media (max-width: 600px) {
-    .plan-container {
-      padding: 0.7rem;
-      border-radius: 0.7rem;
-      margin: 0.7rem 0 1.2rem 0;
-      max-width: 100vw;
-      box-shadow: none;
-    }
-    .plan-title {
-      font-size: 1.1rem;
-      padding: 0;
-    }
-    .day-card {
-      padding: 0.7rem 0.5rem;
-      border-radius: 0.7rem;
-      margin-bottom: 1rem;
-    }
-    .meal-item {
-      padding: 0.7rem;
-      border-radius: 0.7rem;
-      font-size: 0.95rem;
-    }
-    .totales-dia {
-      padding: 0.5rem 0.7rem;
-      font-size: 0.9rem;
-      border-radius: 0.7rem;
-    }
-    .lista-compra {
-      padding: 0.7rem;
-      border-radius: 0.7rem;
-    }
-    .grid-compra {
-      grid-template-columns: 1fr;
-      gap: 0.7rem;
-    }
-    .categoria-compra {
-      padding: 0.7rem;
-      border-radius: 0.7rem;
-      font-size: 0.95rem;
-    }
-    .pdf-button {
-      width: 100%;
-      font-size: 1rem;
-      padding: 0.7rem 0.5rem;
-      border-radius: 0.7rem;
-    }
-    .recetas-section {
-      padding: 0.7rem;
-      border-radius: 0.7rem;
-    }
-    .recetas-grid {
-      grid-template-columns: 1fr;
-      gap: 0.7rem;
-    }
-    .receta-card {
-      padding: 0.7rem;
-      border-radius: 0.7rem;
-      font-size: 0.95rem;
-    }
-  }
+}

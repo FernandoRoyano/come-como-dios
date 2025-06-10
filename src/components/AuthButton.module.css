@@ -1,46 +1,60 @@
+/* Modernización y migración a variables globales */
 button.auth-button,
 .auth-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 1.1rem 0;
-    font-size: 1.15rem;
-    background: linear-gradient(to right, #0ea5e9, #2563eb) !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 16px !important;
-    cursor: pointer;
-    font-weight: 700;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25) !important;
-    transition: background 0.3s ease, transform 0.2s ease;
-    margin: 0 auto 0.75rem auto; /* Reduce el espacio inferior */
-    z-index: 10000;
-    position: relative;
-    width: 100%;
-    max-width: 480px;
-  }
-  
-  button.auth-button:active,
-  .auth-button:active {
-    filter: brightness(0.95);
-    transform: scale(0.98);
-  }
-  
-  button.auth-button:focus,
-  .auth-button:focus {
-    outline: 2px solid #2563eb;
-    outline-offset: 2px;
-  }
-  
-  button.auth-button:hover,
-  .auth-button:hover {
-    background: linear-gradient(to right, #2563eb, #1e40af) !important;
-    transform: translateY(-2px);
-  }
-  
-  .authButtons {
-    display: flex;
-    gap: 0.5rem; /* Reduce el gap entre botones */
-    justify-content: center;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: 1.1rem 0;
+  font-size: 1.15rem;
+  background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark)) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: var(--radius-xl) !important;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: var(--shadow-md) !important;
+  transition: background 0.3s ease, transform 0.2s ease;
+  margin: 0 auto var(--space-xs) auto;
+  z-index: 10000;
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+}
+
+button.auth-button:active,
+.auth-button:active {
+  filter: brightness(0.95);
+  transform: scale(0.98);
+}
+
+button.auth-button:focus,
+.auth-button:focus {
+  outline: 2px solid var(--color-primary-dark);
+  outline-offset: 2px;
+}
+
+button.auth-button:hover,
+.auth-button:hover {
+  background: linear-gradient(to right, var(--color-primary-dark), #1e40af) !important;
+  transform: translateY(-2px);
+}
+
+.authButtons {
+  display: flex;
+  gap: var(--space-xs);
+  justify-content: center;
+}
+
+/* Recuperación de estilos clásicos de botones de autenticación */
+.auth-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: var(--space-xs);
+}
+
+.auth-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+}

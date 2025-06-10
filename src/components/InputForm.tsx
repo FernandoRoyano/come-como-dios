@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './InputForm.module.css';
 import { validateRestrictions } from '@/lib/validateRestrictions';
 import { PlanData } from '@/types/plan';
@@ -38,12 +38,17 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: PlanData) => void }) => {
   });
 
   const [restrictionError, setRestrictionError] = useState<string | null>(null);
+  const [alimentosNoDeseadosTexto, setAlimentosNoDeseadosTexto] = useState('');
 
   // Días de la semana para selección
   const DIAS_SEMANA = [
     'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'
   ];
   const [diasSeleccionados, setDiasSeleccionados] = useState<string[]>(['lunes', 'miércoles', 'viernes']);
+
+  useEffect(() => {
+    setAlimentosNoDeseadosTexto(form.alimentosNoDeseados.join('\n'));
+  }, []);
 
   const handleServicioChange = (servicio: 'nutricion' | 'entrenamiento') => {
     setForm(prev => ({
@@ -79,11 +84,18 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: PlanData) => void }) => {
   };
 
   const handleAlimentosNoDeseadosChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const alimentos = e.target.value
-      .split(',')
+    setAlimentosNoDeseadosTexto(e.target.value);
+    // No parsear a array hasta blur o submit
+  };
+
+  const parsearAlimentosNoDeseados = (texto: string) =>
+    texto
+      .split(/[,;\n]/)
       .map(alimento => alimento.trim())
       .filter(alimento => alimento.length > 0);
-    setForm(prev => ({ ...prev, alimentosNoDeseados: alimentos }));
+
+  const handleAlimentosNoDeseadosBlur = () => {
+    setForm(prev => ({ ...prev, alimentosNoDeseados: parsearAlimentosNoDeseados(alimentosNoDeseadosTexto) }));
   };
 
   const handleEntrenamientoChange = (campo: string, valor: string | number | null) => {
@@ -176,13 +188,14 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
     );
   };
 
-  // En el handleSubmit, forzamos el tipo para permitir diasSeleccionados
+  // En el handleSubmit, asegúrate de parsear antes de enviar
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (restrictionError) {
       return;
     }
-    onSubmit({ ...(form as any), diasSeleccionados, tipoDieta: form.tipoDieta });
+    const alimentosNoDeseadosFinal = parsearAlimentosNoDeseados(alimentosNoDeseadosTexto);
+    onSubmit({ ...(form as any), diasSeleccionados, tipoDieta: form.tipoDieta, alimentosNoDeseados: alimentosNoDeseadosFinal });
   };
 
   return (
@@ -317,9 +330,10 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
               <textarea
                 name="alimentosNoDeseados"
                 id="alimentosNoDeseados"
-                value={form.alimentosNoDeseados.join(', ')}
+                value={alimentosNoDeseadosTexto}
                 onChange={handleAlimentosNoDeseadosChange}
-                placeholder="Escribe los alimentos que no te gustan separados por comas (ej: brócoli, coliflor, hígado)"
+                onBlur={handleAlimentosNoDeseadosBlur}
+                placeholder="Escribe los alimentos que no te gustan separados por comas, punto y coma o en líneas distintas (ej: brócoli, coliflor; hígado\no cada uno en una línea)"
                 className={styles['textarea']}
               />
               <small className={styles['help-text']}>

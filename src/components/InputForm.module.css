@@ -1,19 +1,20 @@
+/* Modernización y migración a variables globales */
 .form-wrapper {
   max-width: 1400px;
-  margin: 2rem auto;
-  padding: 2.5rem 5vw;
-  background: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  margin: var(--space-lg) auto;
+  padding: var(--space-xl) 5vw;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-xxl);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--space-lg);
 }
 
 .form-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 2.5rem 2rem;
+  gap: var(--space-lg) var(--space-md);
   width: 100%;
   justify-content: stretch;
 }
@@ -21,9 +22,9 @@
 /* Agrupa nivel de experiencia y duración en la misma fila */
 .form-row.experiencia-duracion {
   display: flex;
-  gap: 1.5rem;
+  gap: var(--space-md);
   width: 100%;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-xs);
 }
 .form-row.experiencia-duracion > .form-group {
   flex: 1 1 220px;
@@ -40,7 +41,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.15rem; /* Espacio mínimo entre elementos internos */
-  margin-bottom: 0.5rem; /* Espacio reducido entre grupos */
+  margin-bottom: var(--space-xs); /* Espacio reducido entre grupos */
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -48,56 +49,44 @@
 
 .form-group label {
   font-weight: 600;
-  font-size: 1.1rem;
-  color: #0f172a;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.15rem; /* Espacio mínimo bajo el label */
+  color: var(--color-primary-dark);
 }
 
 .form-group label::before {
   content: '';
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding: 0.8rem 1rem;
-  border-radius: 12px;
-  border: 2px solid #e2e8f0;
-  background-color: #f8fafc;
-  font-size: 1.1rem;
-  color: #0f172a;
-  transition: all 0.2s ease;
-  margin: 0;
+/* Recuperación de estilos clásicos de formularios */
+.input, .select, .textarea {
+  padding: 0.7rem 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1rem;
+  box-shadow: var(--shadow-xs);
+  transition: border 0.2s, box-shadow 0.2s;
 }
-
-.form-group textarea {
-  min-height: 100px;
-  resize: vertical;
-  font-family: inherit;
-  line-height: 1.5;
-}
-
-.form-group input:hover,
-.form-group select:hover,
-.form-group textarea:hover {
-  border-color: #94a3b8;
-  background-color: #f1f5f9;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: #0ea5e9;
+.input:focus, .select:focus, .textarea:focus {
+  border: 1.5px solid var(--color-primary);
   outline: none;
-  background-color: #fff;
-  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+  box-shadow: var(--shadow-md);
+}
+
+.button {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 0.7rem 1.7rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.2s;
+}
+.button:hover {
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, #145a86 100%);
 }
 
 .help-text {
@@ -480,4 +469,24 @@
 }
 .material-grid .material-option:last-child {
   margin-bottom: 0;
+}
+
+/* === UNIFICACIÓN DE PADDINGS Y BOX-SIZING EN FORMULARIOS Y GRIDS === */
+.form-wrapper, .form-row, .form-group, .form-group-flex1, .checkboxGroup, .material-grid, .dias-semana-grid {
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .form-wrapper, .form-row, .form-group, .form-group-flex1, .checkboxGroup, .material-grid, .dias-semana-grid {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    max-width: 100vw;
+  }
+}
+@media (max-width: 600px) {
+  .form-wrapper, .form-row, .form-group, .form-group-flex1, .checkboxGroup, .material-grid, .dias-semana-grid {
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    max-width: 100vw;
+  }
 }

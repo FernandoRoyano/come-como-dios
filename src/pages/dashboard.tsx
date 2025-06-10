@@ -92,14 +92,24 @@ export default function Dashboard() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1>¡Hola, {userData?.name || session?.user?.name}!</h1>
-        <p>Bienvenido a tu panel personal.</p>
-        <button
-          className={styles.logoutButton}
-          onClick={() => signOut()}
-        >
-          Cerrar Sesión
-        </button>
+        <div className={styles.headerContent}>
+          <h1 className={styles.headerTitle}>¡Hola, {userData?.name || session?.user?.name}!</h1>
+          <p className={styles.headerSubtitle}>Bienvenido a tu panel personal.</p>
+          <div className={styles.headerActions}>
+            <button
+              className={styles.dashboardButton}
+              onClick={() => router.push('/')}
+            >
+              Ir a la Home
+            </button>
+            <button
+              className={styles.logoutButton}
+              onClick={() => signOut()}
+            >
+              Cerrar Sesión
+            </button>
+          </div>
+        </div>
       </header>
 
       {/* Mostramos solo el perfil de usuario, sin duplicidad */}

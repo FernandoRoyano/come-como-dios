@@ -400,15 +400,6 @@ export default function Home() {
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Come y Entrena Como Dios</h1>
           <p className={styles.subtitle}>Tu asistente personal de nutrición y entrenamiento</p>
-          {session && (
-            <button
-              className={styles.dashboardButton}
-              style={{marginTop:'1rem',marginLeft:'1rem',padding:'0.7rem 1.5rem',fontWeight:600,borderRadius:'0.5rem',background:'#3498db',color:'#fff',border:'none',cursor:'pointer'}}
-              onClick={() => window.location.href = '/dashboard'}
-            >
-              🗂️ Mi Panel
-            </button>
-          )}
         </div>
         <button
           onClick={() => signOut()}
@@ -417,6 +408,17 @@ export default function Home() {
           Cerrar Sesión
         </button>
       </header>
+      {/* Botón Mi Panel fuera del header, solo si hay sesión */}
+      {session && (
+        <div style={{ display: 'flex', justifyContent: 'center', margin: '1.5rem 0 0.5rem 0' }}>
+          <button
+            className={styles.dashboardButton}
+            onClick={() => window.location.href = '/dashboard'}
+          >
+            🗂️ Mi Panel
+          </button>
+        </div>
+      )}
       <main className={styles.main + ' ' + styles.mainWide}>
         {loading && (
           <div className={styles.loading}>
