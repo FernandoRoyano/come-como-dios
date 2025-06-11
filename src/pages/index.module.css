@@ -996,3 +996,37 @@
     box-sizing: border-box;
   }
 }
+
+.menu-monetizacion {
+  width: 100%;
+  max-width: 900px;
+  margin: 2rem auto 2rem auto;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+.menu-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px #0001;
+  padding: 2rem 2.5rem;
+  min-width: 220px;
+  text-align: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.menu-card:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 6px 24px #0002;
+}
+@media (max-width: 700px) {
+  .menu-monetizacion {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .menu-card {
+    width: 100%;
+    min-width: unset;
+    padding: 1.5rem 1rem;
+  }
+}

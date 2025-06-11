@@ -301,13 +301,6 @@ export default function Home() {
 {`status: ${status}\nsession: ${JSON.stringify(session, null, 2)}`}
             </pre>
           </div>
-          <button
-            onClick={() => signIn('google')}
-            className={styles.continueButton}
-            disabled
-          >
-            Iniciar Sesión con Google
-          </button>
         </main>
       </div>
     );
@@ -376,18 +369,20 @@ export default function Home() {
                 <li>Recibes tu guía completa en minutos</li>
               </ol>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2.5rem' }}>
-              <button
-                onClick={() => signIn('google')}
-                className={styles.bigCtaButton}
-              >
-                Iniciar Sesión con Google
-              </button>
-            </div>
           </section>
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
-
-          </div>
+          {/* Menú de monetización visible antes del login, debajo del bloque de marketing */}
+          <nav className={styles['menu-monetizacion']}>
+            <div className={styles['menu-card']}>
+              <h3>Prueba gratuita</h3>
+              <p>Accede a todas las funciones básicas durante 3 días sin compromiso.</p>
+              <button className={styles.landingButton} onClick={() => signIn('google')}>Empezar gratis</button>
+            </div>
+            <div className={styles['menu-card']}>
+              <h3>Plan profesional</h3>
+              <p>Desbloquea rutinas avanzadas, soporte prioritario y más.</p>
+              <button className={styles.landingButton} onClick={() => window.location.href = '/plan-profesional'}>Ver detalles</button>
+            </div>
+          </nav>
         </main>
       </div>
     );
@@ -408,6 +403,19 @@ export default function Home() {
           Cerrar Sesión
         </button>
       </header>
+      {/* Menú de monetización visible también después del login */}
+      <nav className={styles['menu-monetizacion']}>
+        <div className={styles['menu-card']}>
+          <h3>Prueba gratuita</h3>
+          <p>¡Ya tienes acceso a todas las funciones básicas!</p>
+          <button className={styles.landingButton} disabled>Activa</button>
+        </div>
+        <div className={styles['menu-card']}>
+          <h3>Plan profesional</h3>
+          <p>Desbloquea rutinas avanzadas, soporte prioritario y más.</p>
+          <button className={styles.landingButton} onClick={() => window.location.href = '/plan-profesional'}>Ver detalles</button>
+        </div>
+      </nav>
       {/* Botón Mi Panel fuera del header, solo si hay sesión */}
       {session && (
         <div style={{ display: 'flex', justifyContent: 'center', margin: '1.5rem 0 0.5rem 0' }}>
