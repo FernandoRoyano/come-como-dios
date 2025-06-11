@@ -278,13 +278,6 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
         </button>
       )}
 
-      {/* Mostrar asesoría profesional justo debajo del botón */}
-      {asesoria && (
-        <div style={{margin: '2rem 0'}}>
-          <AsesoriaProfesional />
-        </div>
-      )}
-
       {form.servicios.nutricion && (
         <div className={styles['nutricion-section']}>
           <h2>Configuración del Plan Nutricional</h2>
