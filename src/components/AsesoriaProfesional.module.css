@@ -1,0 +1,66 @@
+.asesoriaBox {
+  background: #f7fafc;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 420px;
+  box-shadow: 0 2px 16px 0 #0001;
+  text-align: center;
+}
+.asesoriaBox h2 {
+  color: #145a86;
+  margin-bottom: 0.5rem;
+}
+.asesoriaBox p {
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+.form input, .form textarea {
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  border: 1px solid #bcd;
+  font-size: 1rem;
+}
+.form textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+.form button {
+  background: #145a86;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.form button:disabled {
+  background: #bcd;
+  cursor: not-allowed;
+}
+.exito {
+  color: #22c55e;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin: 2rem 0;
+}
+.contactoAlternativo {
+  margin-top: 1.2rem;
+  font-size: 0.97rem;
+  color: #555;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.contactoAlternativo a {
+  color: #145a86;
+  text-decoration: underline;
+  font-weight: 500;
+}

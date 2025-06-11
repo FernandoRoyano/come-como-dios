@@ -23,6 +23,17 @@ export const ALIAS_EJERCICIOS: Record<string, string> = {
   'extension de triceps en polea': 'Tríceps en polea',
   'jalón al pecho': 'Jalón al pecho',
   'jalon al pecho': 'Jalón al pecho',
+  // Nuevos alias sugeridos
+  'sentadillas': 'Sentadilla',
+  'pull ups': 'Dominadas',
+  'extensión de tríceps': 'Tríceps en polea',
+  'elevación de talones': 'Gemelos con mancuerna',
+  'dominadas agarre cerrado': 'Dominadas',
+  'flexiones diamante': 'Fondos en suelo',
+  'peso muerto sumo': 'Peso muerto', // No hay sumo, se aproxima
+  'fondos en paralelas': 'Fondos en suelo',
+  'extensión de tríceps con mancuerna': 'Tríceps en polea', // Aproximado
+  'peso muerto a una pierna': 'Peso muerto', // Aproximado
   // Puedes agregar más alias según necesidades
 };
 

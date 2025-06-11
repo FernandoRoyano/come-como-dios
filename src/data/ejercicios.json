@@ -294,5 +294,35 @@
     "nombre": "Jalón al pecho",
     "imagen": "jalon-al-pecho.png",
     "descripcion": "Ejercicio de tracción vertical para espalda y dorsales en polea alta."
+  },
+  {
+    "nombre": "Abdominales",
+    "imagen": "",
+    "descripcion": "Ejercicio clásico de flexión de tronco para el core."
+  },
+  {
+    "nombre": "Abdominales oblicuos",
+    "imagen": "",
+    "descripcion": "Ejercicio para trabajar los músculos oblicuos del abdomen."
+  },
+  {
+    "nombre": "Peso muerto sumo",
+    "imagen": "",
+    "descripcion": "Variante de peso muerto con piernas separadas y agarre estrecho."
+  },
+  {
+    "nombre": "Fondos en paralelas",
+    "imagen": "",
+    "descripcion": "Ejercicio de empuje para pectoral y tríceps en barras paralelas."
+  },
+  {
+    "nombre": "Elevación de talones",
+    "imagen": "",
+    "descripcion": "Ejercicio para gemelos, de pie elevando los talones."
+  },
+  {
+    "nombre": "Peso muerto a una pierna",
+    "imagen": "",
+    "descripcion": "Variante unilateral de peso muerto para glúteos y femorales."
   }
 ]

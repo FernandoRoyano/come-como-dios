@@ -231,13 +231,15 @@
 }
 
 .form {
-  background: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  margin: 0 auto;
-  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #f8f9fa 60%, #e0e7ef 100%);
+  padding: 2.5rem 3.5rem;
+  border-radius: 1.3rem;
+  box-shadow: 0 8px 32px rgba(52, 152, 219, 0.10), 0 1.5px 8px rgba(44,62,80,0.07);
+  max-width: 950px;
+  margin: 2.5rem auto 3.5rem auto;
+  border: 1.5px solid #dbeafe;
+  position: relative;
+  z-index: 2;
 }
 
 .form + .form {
@@ -248,131 +250,173 @@
 
 .formHeader {
   text-align: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #e4e8eb;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.7rem;
+  border-bottom: 2px solid #dbeafe;
 }
 
 .formHeader h2 {
-  font-size: 2rem;
-  color: #2c3e50;
-  margin: 0 0 0.5rem;
-  position: relative;
-  padding-left: 1rem;
-}
-
-.formHeader h2::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 70%;
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-  border-radius: 2px;
+  font-size: 2.3rem;
+  color: #145a86;
+  margin: 0 0 0.7rem;
+  font-family: var(--font-secondary, 'Montserrat', sans-serif);
+  letter-spacing: -0.01em;
 }
 
 .formHeader p {
-  color: #666;
+  color: #3b4252;
+  font-size: 1.15rem;
   margin: 0;
 }
 
 .formGroup {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
+  padding: 0.7rem 1.2rem 0.7rem 1.2rem;
+  background: #f1f5f9;
+  border-radius: 0.7rem;
+  border: 1px solid #e0e7ef;
+  box-shadow: 0 1px 4px rgba(44,62,80,0.04);
 }
 
 .formGroup label {
   display: block;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.01em;
 }
 
 .formGroup input,
 .formGroup select,
 .formGroup textarea {
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e4e8eb;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  color: #2c3e50;
-  background: #f8f9fa;
-  transition: all 0.3s ease;
+  padding: 0.6rem 1rem;
+  border: 2px solid #dbeafe;
+  border-radius: 0.6rem;
+  font-size: 1.08rem;
+  color: #1e293b;
+  background: #fff;
+  transition: border 0.2s, box-shadow 0.2s;
+  margin-top: 0.1rem;
 }
 
 .formGroup input:focus,
 .formGroup select:focus,
 .formGroup textarea:focus {
   outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-}
-
-.formGroup textarea {
-  resize: vertical;
-  min-height: 100px;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
 }
 
 .checkboxGroup {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem 2.5rem;
+  margin-top: 0.3rem;
 }
 
 .checkboxGroup label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-weight: normal;
+  gap: 0.6rem;
+  font-weight: 500;
+  color: #334155;
+  font-size: 1.05rem;
   cursor: pointer;
+  background: #e0e7ef;
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.8rem;
+  transition: background 0.2s;
+}
+.checkboxGroup label:hover {
+  background: #dbeafe;
 }
 
 .checkboxGroup input[type="checkbox"] {
-  width: auto;
+  accent-color: #2563eb;
+  width: 1.1em;
+  height: 1.1em;
   margin: 0;
+}
+
+.dias-semana-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.7rem;
+  margin-top: 0.5rem;
+}
+.dia-checkbox-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #e0e7ef;
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.2rem;
+  transition: background 0.2s;
+}
+.dia-checkbox-col:hover {
+  background: #dbeafe;
+}
+.dia-nombre {
+  font-size: 1.01rem;
+  font-weight: 600;
+  color: #2563eb;
+  margin-bottom: 0.2rem;
+}
+.checkbox-dia-input {
+  accent-color: #2563eb;
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.helpText {
+  color: #64748b;
+  font-size: 0.98rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.1rem;
 }
 
 .formActions {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   justify-content: flex-end;
-  margin-top: 2rem;
+  margin-top: 2.2rem;
 }
 
 .backButton {
-  background: #e4e8eb;
-  color: #2c3e50;
+  background: #e0e7ef;
+  color: #2563eb;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
+  padding: 0.85rem 1.7rem;
+  border-radius: 0.6rem;
+  font-size: 1.08rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.2s, color 0.2s;
+  border: 1.5px solid #dbeafe;
 }
-
 .backButton:hover {
-  background: #d1d8dd;
+  background: #dbeafe;
+  color: #145a86;
 }
 
 .submitButton {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 0.85rem 2.2rem;
+  border-radius: 0.6rem;
+  font-size: 1.13rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.10);
 }
-
 .submitButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 16px rgba(37,99,235,0.13);
 }
 
 /*

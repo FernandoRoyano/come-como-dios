@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { distribuirDias, distribuirDiasSeleccionados } from '@/utils/distributeTrainingDays';
 import { typedEntries } from '@/utils/typedEntries';
 import { obtenerParametrosEjercicio } from '@/lib/trainingParams';
+import { obtenerNombreEjercicioAlias } from '@/lib/ejerciciosAlias';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || 'test-api-key',
@@ -72,10 +73,11 @@ function transformarPlanAvanzadoAPlanEntrenamiento(parsed: ParsedPlan): PlanEntr
         if (encontrado) nombreDia = encontrado.toLowerCase();
       }
       if (!nombreDia) continue;
-      const ejercicios = Array.isArray(dia.ejercicios)
+      let ejercicios = Array.isArray(dia.ejercicios)
         ? dia.ejercicios.map((ej: any) => ({
             id: uuidv4(),
-            nombre: ej.nombre || '',
+            // Normaliza y mapea el nombre usando alias
+            nombre: obtenerNombreEjercicioAlias(ej.nombre || ''),
             series: typeof ej.series === 'number' ? ej.series : 3,
             repeticiones: ej.repeticiones ? ej.repeticiones.toString() : (typeof ej.reps === 'number' ? ej.reps.toString() : '10'),
             descripcion: ej.descripcion || '',
@@ -86,6 +88,13 @@ function transformarPlanAvanzadoAPlanEntrenamiento(parsed: ParsedPlan): PlanEntr
             imagen: ''
           }))
         : [];
+      // Elimina duplicados por nombre estándar
+      const nombresUnicos = new Set<string>();
+      ejercicios = ejercicios.filter((ej: any) => {
+        if (nombresUnicos.has(ej.nombre.toLowerCase())) return false;
+        nombresUnicos.add(ej.nombre.toLowerCase());
+        return true;
+      });
       rutina[nombreDia] = {
         nombre: dia.dia || dia.nombre || '',
         ejercicios,

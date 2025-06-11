@@ -4,6 +4,7 @@ import styles from './index.module.css';
 import TrainingViewer from '../components/TrainingViewer';
 import PlanViewer from '../components/PlanViewer';
 import InputForm from '../components/InputForm';
+import AsesoriaProfesional from '../components/AsesoriaProfesional';
 import { PlanEntrenamiento, Plan, UserData } from '../types/plan';
 
 const DIAS_SEMANA = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];

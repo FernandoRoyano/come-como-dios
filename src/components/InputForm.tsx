@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import styles from './InputForm.module.css';
 import { validateRestrictions } from '@/lib/validateRestrictions';
 import { PlanData } from '@/types/plan';
+import AsesoriaProfesional from './AsesoriaProfesional';
 
 const InputForm = ({ onSubmit }: { onSubmit: (data: PlanData) => void }) => {
   const [form, setForm] = useState<PlanData>({
@@ -39,6 +40,7 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: PlanData) => void }) => {
 
   const [restrictionError, setRestrictionError] = useState<string | null>(null);
   const [alimentosNoDeseadosTexto, setAlimentosNoDeseadosTexto] = useState('');
+  const [asesoria, setAsesoria] = useState(false);
 
   // Días de la semana para selección
   const DIAS_SEMANA = [
@@ -50,14 +52,37 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: PlanData) => void }) => {
     setAlimentosNoDeseadosTexto(form.alimentosNoDeseados.join('\n'));
   }, []);
 
+  // Cambiar: handleServicioChange para lógica exclusiva con asesoría
   const handleServicioChange = (servicio: 'nutricion' | 'entrenamiento') => {
-    setForm(prev => ({
-      ...prev,
-      servicios: {
-        ...prev.servicios,
-        [servicio]: !prev.servicios[servicio]
+    setForm(prev => {
+      // Si se selecciona nutrición o entrenamiento, desactivar asesoría
+      if (asesoria) setAsesoria(false);
+      // Si se activa el servicio, asegurarse de que asesoría esté desactivada
+      return {
+        ...prev,
+        servicios: {
+          ...prev.servicios,
+          [servicio]: !prev.servicios[servicio]
+        }
+      };
+    });
+    // Si se activa el servicio, desactivar asesoría
+    if (!form.servicios[servicio] && asesoria) setAsesoria(false);
+  };
+
+  // Nuevo handler exclusivo para asesoría
+  const handleAsesoriaChange = () => {
+    setAsesoria(prev => {
+      const nuevoValor = !prev;
+      if (nuevoValor) {
+        // Si se activa asesoría, desactivar nutrición y entrenamiento
+        setForm(f => ({
+          ...f,
+          servicios: { nutricion: false, entrenamiento: false }
+        }));
       }
-    }));
+      return nuevoValor;
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -228,8 +253,37 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
               <span className={styles['servicio-description']}>Rutinas personalizadas</span>
             </div>
           </label>
+
+          <label className={`${styles['servicio-option']} ${asesoria ? styles['selected'] : ''}`}>
+            <input
+              type="checkbox"
+              checked={asesoria}
+              onChange={handleAsesoriaChange}
+            />
+            <div className={styles['servicio-content']}>
+              <span className={styles['servicio-icon']}>🧑‍⚕️</span>
+              <span className={styles['servicio-title']}>Asesoría profesional 1 a 1</span>
+              <span className={styles['servicio-description']}>Consulta directa con un profesional</span>
+            </div>
+          </label>
         </div>
       </div>
+
+      {/* Botón solo si hay algún servicio distinto de asesoría seleccionado */}
+      {(form.servicios.nutricion || form.servicios.entrenamiento) && !(
+        asesoria && !form.servicios.nutricion && !form.servicios.entrenamiento
+      ) && (
+        <button type="submit" className={styles['submit-button']}>
+          🧠 Generar plan personalizado
+        </button>
+      )}
+
+      {/* Mostrar asesoría profesional justo debajo del botón */}
+      {asesoria && (
+        <div style={{margin: '2rem 0'}}>
+          <AsesoriaProfesional />
+        </div>
+      )}
 
       {form.servicios.nutricion && (
         <div className={styles['nutricion-section']}>
@@ -559,9 +613,21 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
         </div>
       )}
 
-      <button type="submit" className={styles['submit-button']}>
-        🧠 Generar plan personalizado
-      </button>
+      {/* Botón solo si hay algún servicio distinto de asesoría seleccionado */}
+      { (form.servicios.nutricion || form.servicios.entrenamiento) && !(
+        asesoria && !form.servicios.nutricion && !form.servicios.entrenamiento
+      ) && (
+        <button type="submit" className={styles['submit-button']}>
+          🧠 Generar plan personalizado
+        </button>
+      )}
+
+      {/* Mostrar asesoría profesional justo debajo del botón */}
+      {asesoria && (
+        <div style={{margin: '2rem 0'}}>
+          <AsesoriaProfesional />
+        </div>
+      )}
     </form>
   );
 };
