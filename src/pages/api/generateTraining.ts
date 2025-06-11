@@ -30,13 +30,113 @@ interface ParsedPlan {
   rutina?: unknown;
   progresion?: unknown;
   consideraciones?: unknown;
+  // Estructura avanzada IA
+  cliente?: unknown;
+  programacion?: unknown;
+  entrenamiento?: unknown;
+  cardio?: unknown;
+  movilidad?: unknown;
+  seguimiento?: unknown;
+  nutricion?: unknown;
+  disclaimer?: unknown;
 }
 
 function validarEstructuraParsed(parsed: ParsedPlan): boolean {
   if (!parsed) return false;
-  const diasEntrenamiento =
-    parsed.plan_entrenamiento?.dias_entrenamiento || parsed.rutina;
-  return Boolean(diasEntrenamiento && typeof diasEntrenamiento === 'object');
+  // Estructura antigua
+  if (
+    parsed.plan_entrenamiento?.dias_entrenamiento || parsed.rutina
+  ) {
+    return true;
+  }
+  // Estructura avanzada
+  if (
+    parsed.entrenamiento && Array.isArray(parsed.entrenamiento)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function transformarPlanAvanzadoAPlanEntrenamiento(parsed: ParsedPlan): PlanEntrenamiento {
+  const diasSemana = [
+    'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo',
+    'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'
+  ];
+  const rutina: Record<string, any> = {};
+  if (Array.isArray(parsed.entrenamiento)) {
+    for (const dia of parsed.entrenamiento) {
+      let nombreDia = (dia.dia || dia.nombre || '').toString().toLowerCase();
+      if (!diasSemana.includes(nombreDia)) {
+        const encontrado = diasSemana.find(d => (dia.dia || dia.nombre || '').toLowerCase().includes(d.toLowerCase()));
+        if (encontrado) nombreDia = encontrado.toLowerCase();
+      }
+      if (!nombreDia) continue;
+      const ejercicios = Array.isArray(dia.ejercicios)
+        ? dia.ejercicios.map((ej: any) => ({
+            id: uuidv4(),
+            nombre: ej.nombre || '',
+            series: typeof ej.series === 'number' ? ej.series : 3,
+            repeticiones: ej.repeticiones ? ej.repeticiones.toString() : (typeof ej.reps === 'number' ? ej.reps.toString() : '10'),
+            descripcion: ej.descripcion || '',
+            material: ej.material || '',
+            musculos: Array.isArray(ej.grupo_muscular) ? ej.grupo_muscular : (ej.grupo_muscular ? [ej.grupo_muscular] : []),
+            notas: ej.notas || '',
+            descanso: ej.descanso_seg ? `${ej.descanso_seg}s` : (ej.descanso || ''),
+            imagen: ''
+          }))
+        : [];
+      rutina[nombreDia] = {
+        nombre: dia.dia || dia.nombre || '',
+        ejercicios,
+        duracion: typeof dia.duracion === 'number' ? dia.duracion : ejercicios.length * 10,
+        intensidad: dia.intensidad || 'media',
+        calorias: typeof dia.calorias === 'number' ? dia.calorias : ejercicios.length * 50
+      };
+    }
+  }
+  // Progresión
+  let progresion: { semanas: SemanaProgresion[] } = { semanas: [] };
+  if (parsed.programacion && typeof parsed.programacion === 'object' && 'tipo_progresion' in (parsed.programacion as any)) {
+    const prog = parsed.programacion as any;
+    progresion = {
+      semanas: [
+        {
+          semana: '1',
+          objetivo: typeof prog.tipo_progresion === 'string' ? prog.tipo_progresion : '',
+          detalles: JSON.stringify(prog)
+        }
+      ]
+    };
+  } else if (parsed.progresion && typeof parsed.progresion === 'object' && Array.isArray((parsed.progresion as any).semanas)) {
+    progresion = parsed.progresion as { semanas: SemanaProgresion[] };
+  }
+  // Consideraciones
+  let consideraciones: { calentamiento: string[]; enfriamiento: string[]; descanso: string; notas: string } = {
+    calentamiento: [], enfriamiento: [], descanso: '', notas: ''
+  };
+  if (parsed.movilidad && typeof parsed.movilidad === 'object') {
+    const mov = parsed.movilidad as any;
+    consideraciones.calentamiento = [
+      mov.tipo ? String(mov.tipo) : '',
+      ...(Array.isArray(mov.zonas_prioritarias) ? mov.zonas_prioritarias : [])
+    ].filter(Boolean);
+    consideraciones.enfriamiento = [];
+  }
+  if (parsed.cardio && typeof parsed.cardio === 'object') {
+    consideraciones.notas += `Cardio: ${JSON.stringify(parsed.cardio)}\n`;
+  }
+  if (parsed.disclaimer) {
+    consideraciones.notas += `\n${parsed.disclaimer}`;
+  }
+  if (parsed.consideraciones && typeof parsed.consideraciones === 'object') {
+    consideraciones = { ...consideraciones, ...(parsed.consideraciones as any) };
+  }
+  return {
+    rutina,
+    progresion,
+    consideraciones
+  };
 }
 
 export async function generateTraining(data: PlanData & { diasSeleccionados?: string[] }) {
@@ -95,137 +195,134 @@ export async function generateTraining(data: PlanData & { diasSeleccionados?: st
       throw new Error('El JSON recibido no tiene la estructura mínima esperada.');
     }
 
-    const diasEntrenamiento =
-      parsed.plan_entrenamiento?.dias_entrenamiento || parsed.rutina || {};
-
-    // Usar los días seleccionados por el usuario si existen, si no, usar todosLosDias
-    const todosLosDias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
-    const diasGenerados = typedEntries(diasEntrenamiento);
-    const diasSeleccionados = data.diasSeleccionados && data.diasSeleccionados.length > 0
-      ? distribuirDiasSeleccionados(data.diasSeleccionados)
-      : distribuirDias(todosLosDias, diasGenerados.length);
-
-    const rutinaDistribuida = Object.fromEntries(
-      todosLosDias.map(dia => {
-        const entrada = diasSeleccionados.includes(dia) ? diasGenerados.shift() : undefined;
-        type Ejercicio = string | { nombre: string };
-        const ejercicios: Ejercicio[] = Array.isArray(entrada?.[1]) ? (entrada[1] as Ejercicio[]) : [];
-
-        // Si no hay ejercicios, es un día de descanso: añadir explicación y ejercicios de movilidad
-        if (!ejercicios.length) {
+    // --- Transformación según estructura ---
+    let transformedPlan: PlanEntrenamiento;
+    if (parsed.entrenamiento && Array.isArray(parsed.entrenamiento)) {
+      // Estructura avanzada IA
+      transformedPlan = transformarPlanAvanzadoAPlanEntrenamiento(parsed);
+    } else {
+      // Estructura antigua (compatibilidad)
+      const diasEntrenamiento =
+        parsed.plan_entrenamiento?.dias_entrenamiento || parsed.rutina || {};
+      const todosLosDias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+      const diasGenerados = typedEntries(diasEntrenamiento);
+      const diasSeleccionados = data.diasSeleccionados && data.diasSeleccionados.length > 0
+        ? distribuirDiasSeleccionados(data.diasSeleccionados)
+        : distribuirDias(todosLosDias, diasGenerados.length);
+      const rutinaDistribuida = Object.fromEntries(
+        todosLosDias.map(dia => {
+          const entrada = diasSeleccionados.includes(dia) ? diasGenerados.shift() : undefined;
+          type Ejercicio = string | { nombre: string };
+          const ejercicios: Ejercicio[] = Array.isArray(entrada?.[1]) ? (entrada[1] as Ejercicio[]) : [];
+          if (!ejercicios.length) {
+            return [
+              dia,
+              {
+                nombre: dia + ' (descanso)',
+                ejercicios: [
+                  {
+                    id: uuidv4(),
+                    nombre: 'Movilidad articular general',
+                    series: 2,
+                    repeticiones: '10-15',
+                    descripcion: 'Rutina suave de movilidad para todas las articulaciones principales.',
+                    material: 'Esterilla',
+                    musculos: ['general'],
+                    notas: 'Realizar movimientos suaves y controlados.',
+                    descanso: '30s',
+                    imagen: ''
+                  },
+                  {
+                    id: uuidv4(),
+                    nombre: 'Estiramientos globales',
+                    series: 1,
+                    repeticiones: '10-15 min',
+                    descripcion: 'Estiramientos estáticos de cuerpo completo.',
+                    material: 'Esterilla',
+                    musculos: ['general'],
+                    notas: 'Mantener cada estiramiento 20-30 segundos.',
+                    descanso: '-',
+                    imagen: ''
+                  }
+                ],
+                duracion: 20,
+                intensidad: 'muy baja',
+                calorias: 50
+              }
+            ];
+          }
           return [
             dia,
             {
-              nombre: dia + ' (descanso)',
-              ejercicios: [
-                {
+              nombre: dia,
+              ejercicios: ejercicios.map(ejercicio => {
+                const nombreEjercicio = typeof ejercicio === 'string' ? ejercicio : ejercicio.nombre;
+                const params = obtenerParametrosEjercicio(nombreEjercicio);
+                return {
                   id: uuidv4(),
-                  nombre: 'Movilidad articular general',
-                  series: 2,
-                  repeticiones: '10-15',
-                  descripcion: 'Rutina suave de movilidad para todas las articulaciones principales.',
-                  material: 'Esterilla',
-                  musculos: ['general'],
-                  notas: 'Realizar movimientos suaves y controlados.',
-                  descanso: '30s',
+                  nombre: nombreEjercicio || '',
+                  series: params.series,
+                  repeticiones: params.repeticiones,
+                  descripcion: '',
+                  material: '',
+                  musculos: [],
+                  notas: '',
+                  descanso: params.descanso || '',
                   imagen: ''
-                },
-                {
-                  id: uuidv4(),
-                  nombre: 'Estiramientos globales',
-                  series: 1,
-                  repeticiones: '10-15 min',
-                  descripcion: 'Estiramientos estáticos de cuerpo completo.',
-                  material: 'Esterilla',
-                  musculos: ['general'],
-                  notas: 'Mantener cada estiramiento 20-30 segundos.',
-                  descanso: '-',
-                  imagen: ''
-                }
-              ],
-              duracion: 20,
-              intensidad: 'muy baja',
-              calorias: 50
+                };
+              }),
+              duracion: ejercicios.length * 10,
+              intensidad: 'media',
+              calorias: ejercicios.length * 50
             }
           ];
+        })
+      );
+      const progresionPorDefecto: { semanas: SemanaProgresion[] } = {
+        semanas: Array(4).fill({
+          semana: '',
+          objetivo: '',
+          detalles: ''
+        })
+      };
+      const consideracionesPorDefecto: { calentamiento: string[]; enfriamiento: string[]; descanso: string; notas: string } = {
+        calentamiento: [],
+        enfriamiento: [],
+        descanso: '',
+        notas: ''
+      };
+      const progresionValida: { semanas: SemanaProgresion[] } = (() => {
+        const progresion = parsed.plan_entrenamiento?.progresion;
+        if (
+          progresion &&
+          typeof progresion === 'object' &&
+          'semanas' in progresion &&
+          Array.isArray((progresion as { semanas: unknown }).semanas)
+        ) {
+          return progresion as { semanas: SemanaProgresion[] };
         }
-
-        return [
-          dia,
-          {
-            nombre: dia,
-            ejercicios: ejercicios.map(ejercicio => {
-              const nombreEjercicio = typeof ejercicio === 'string' ? ejercicio : ejercicio.nombre;
-              const params = obtenerParametrosEjercicio(nombreEjercicio);
-              return {
-                id: uuidv4(),
-                nombre: nombreEjercicio || '',
-                series: params.series,
-                repeticiones: params.repeticiones,
-                descripcion: '',
-                material: '',
-                musculos: [],
-                notas: '',
-                descanso: params.descanso || '',
-                imagen: ''
-              };
-            }),
-            duracion: ejercicios.length * 10,
-            intensidad: 'media',
-            calorias: ejercicios.length * 50
-          }
-        ];
-      })
-    );
-
-    const progresionPorDefecto: { semanas: SemanaProgresion[] } = {
-      semanas: Array(4).fill({
-        semana: '',
-        objetivo: '',
-        detalles: ''
-      })
-    };
-
-    const consideracionesPorDefecto: { calentamiento: string[]; enfriamiento: string[]; descanso: string; notas: string } = {
-      calentamiento: [],
-      enfriamiento: [],
-      descanso: '',
-      notas: ''
-    };
-
-    const progresionValida: { semanas: SemanaProgresion[] } = (() => {
-      const progresion = parsed.plan_entrenamiento?.progresion;
-      if (
-        progresion &&
-        typeof progresion === 'object' &&
-        'semanas' in progresion &&
-        Array.isArray((progresion as { semanas: unknown }).semanas)
-      ) {
-        return progresion as { semanas: SemanaProgresion[] };
-      }
-      return progresionPorDefecto;
-    })();
-
-    const consideracionesValidas: { calentamiento: string[]; enfriamiento: string[]; descanso: string; notas: string } = (() => {
-      const consideraciones = parsed.plan_entrenamiento?.consideraciones;
-      if (
-        consideraciones &&
-        typeof consideraciones === 'object' &&
-        'calentamiento' in consideraciones &&
-        'enfriamiento' in consideraciones &&
-        'descanso' in consideraciones &&
-        'notas' in consideraciones
-      ) {
-        return consideraciones as { calentamiento: string[]; enfriamiento: string[]; descanso: string; notas: string };
-      }
-      return consideracionesPorDefecto;
-    })();
-
-    const transformedPlan: PlanEntrenamiento = {
-      rutina: rutinaDistribuida,
-      progresion: progresionValida,
-      consideraciones: consideracionesValidas
-    };
+        return progresionPorDefecto;
+      })();
+      const consideracionesValidas: { calentamiento: string[]; enfriamiento: string[]; descanso: string; notas: string } = (() => {
+        const consideraciones = parsed.plan_entrenamiento?.consideraciones;
+        if (
+          consideraciones &&
+          typeof consideraciones === 'object' &&
+          'calentamiento' in consideraciones &&
+          'enfriamiento' in consideraciones &&
+          'descanso' in consideraciones &&
+          'notas' in consideraciones
+        ) {
+          return consideraciones as { calentamiento: string[]; enfriamiento: string[]; descanso: string; notas: string };
+        }
+        return consideracionesPorDefecto;
+      })();
+      transformedPlan = {
+        rutina: rutinaDistribuida,
+        progresion: progresionValida,
+        consideraciones: consideracionesValidas
+      };
+    }
 
     const isValid = validatePlan(transformedPlan);
     if (!isValid) {
