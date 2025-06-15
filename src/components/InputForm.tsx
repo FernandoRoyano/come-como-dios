@@ -64,7 +64,7 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: PlanData) => void }) => {
       entrenamiento: false
     },
     entrenamiento: {
-      ubicacion: null,
+      ubicacion: 'Gimnasio',
       material: {
         pesas: false,
         bandas: false,
@@ -602,8 +602,8 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
                   <input
                     type="radio"
                     name="ubicacion"
-                    value="casa"
-                    checked={form.entrenamiento?.ubicacion === 'casa'}
+                    value="Casa"
+                    checked={form.entrenamiento?.ubicacion === 'Casa'}
                     onChange={(e) => handleEntrenamientoChange('ubicacion', e.target.value)}
                   />
                   <span>🏠 En casa</span>
@@ -612,11 +612,21 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
                   <input
                     type="radio"
                     name="ubicacion"
-                    value="gimnasio"
-                    checked={form.entrenamiento?.ubicacion === 'gimnasio'}
+                    value="Gimnasio"
+                    checked={form.entrenamiento?.ubicacion === 'Gimnasio'}
                     onChange={(e) => handleEntrenamientoChange('ubicacion', e.target.value)}
                   />
                   <span>💪 En gimnasio</span>
+                </label>
+                <label className={styles['radio-option']}>
+                  <input
+                    type="radio"
+                    name="ubicacion"
+                    value="Exterior"
+                    checked={form.entrenamiento?.ubicacion === 'Exterior'}
+                    onChange={(e) => handleEntrenamientoChange('ubicacion', e.target.value)}
+                  />
+                  <span>🌳 Al aire libre</span>
                 </label>
               </div>
             </div>

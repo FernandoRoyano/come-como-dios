@@ -81,7 +81,7 @@ export interface PlanData {
     entrenamiento: boolean;
   };
   entrenamiento?: {
-    ubicacion: 'casa' | 'gimnasio' | null;
+    ubicacion: 'Casa' | 'Gimnasio' | 'Exterior';
     material: {
       pesas: boolean;
       bandas: boolean;

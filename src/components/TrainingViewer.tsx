@@ -51,8 +51,9 @@ const TrainingViewer = ({ plan, resumen, pdfButtonRef }: Props) => {
 
   useEffect(() => {
     let mounted = true;
-    
+
     const loadHtml2pdf = async () => {
+      if (typeof window === 'undefined') return; // Solo en cliente
       try {
         const moduleHtml2Pdf = await import('html2pdf.js');
         if (mounted) {

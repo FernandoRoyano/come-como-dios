@@ -4,6 +4,9 @@ import styles from './index.module.css';
 import TrainingViewer from '../components/TrainingViewer';
 import PlanViewer from '../components/PlanViewer';
 import InputForm from '../components/InputForm';
+import InputFormNutricion from '../components/InputFormNutricion';
+import InputFormEntrenamiento from '../components/InputFormEntrenamiento';
+import AsesoriaProfesional from '../components/AsesoriaProfesional';
 import { PlanEntrenamiento, Plan, UserData } from '../types/plan';
 
 const DIAS_SEMANA = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
@@ -98,6 +101,8 @@ export default function Home() {
   });
   const [diasSeleccionados, setDiasSeleccionados] = useState<string[]>([]);
   const [saveStatus, setSaveStatus] = useState<{success?: string, error?: string}>({});
+  // Estado único para el selector visual
+  const [servicioSeleccionado, setServicioSeleccionado] = useState<null | 'nutricion' | 'entrenamiento' | 'asesoria'>(null);
 
   // Función para generar el resumen contextual
   function getTrainingResumen(data: UserData) {
@@ -434,12 +439,16 @@ export default function Home() {
           <h1 className={styles.title}>Come y Entrena Como Dios</h1>
           <p className={styles.subtitle}>Tu asistente personal de nutrición y entrenamiento</p>
         </div>
-        <button
-          onClick={() => signOut()}
-          className={styles.logoutButton}
-        >
-          Cerrar Sesión
-        </button>
+        {session && (
+          <div className={styles.headerButtonsGroup}>
+             <button
+              onClick={() => signOut()}
+              className={styles.logoutButton}
+            >
+              Cerrar Sesión
+            </button>
+          </div>
+        )}
       </header>
       {/* Tabs de monetización también después del login */}
       <MonetizationTabs isLoggedIn={true} />
@@ -495,92 +504,125 @@ export default function Home() {
           );
         })()}
 
-        {/* Mostrar el formulario unificado solo si no hay plan generado ni resultado de entrenamiento */}
-        {(!plan && !trainingResult) && (
-          <InputForm
+        {/* Selector de servicios siempre visible */}
+        {!plan && !trainingResult && (
+          <div className={styles.serviciosSelector} style={{ display: 'flex', gap: 16, marginBottom: 32 }}>
+            <button
+              className={servicioSeleccionado === 'nutricion' ? styles.selected : ''}
+              onClick={() => setServicioSeleccionado('nutricion')}
+            >🥗 Plan Nutricional</button>
+            <button
+              className={servicioSeleccionado === 'entrenamiento' ? styles.selected : ''}
+              onClick={() => setServicioSeleccionado('entrenamiento')}
+            >💪 Entrenamiento</button>
+            <button
+              className={servicioSeleccionado === 'asesoria' ? styles.selected : ''}
+              onClick={() => setServicioSeleccionado('asesoria')}
+            >🧑‍⚕️ Asesoría profesional</button>
+          </div>
+        )}
+        {/* Renderiza el formulario correspondiente */}
+        {!plan && !trainingResult && servicioSeleccionado === 'nutricion' && (
+          <InputFormNutricion
             onSubmit={async (data) => {
               setLoading(true);
               setError(null);
               try {
-                // Si el usuario selecciona ambos planes, lanzar ambas peticiones en paralelo
-                if (data.servicios.nutricion && data.servicios.entrenamiento) {
-                  const [resNutri, resTrain] = await Promise.all([
-                    fetch('/api/generatePlan', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ ...data, servicios: { nutricion: true, entrenamiento: false } }),
-                    }),
-                    fetch('/api/generateTraining', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ ...data, servicios: { nutricion: false, entrenamiento: true } }),
-                    })
-                  ]);
-                  if (!resNutri.ok || !resTrain.ok) {
-                    const errorDataNutri = await resNutri.json().catch(() => ({}));
-                    const errorDataTrain = await resTrain.json().catch(() => ({}));
-                    let errorMsg = '';
-                    if (!resNutri.ok) errorMsg += errorDataNutri.message || 'Error generando el plan nutricional';
-                    if (!resTrain.ok) errorMsg += '\n' + (errorDataTrain.message || 'Error generando el plan de entrenamiento');
-                    throw new Error(errorMsg);
-                  }
-                  const resultNutri = await resNutri.json();
-                  const resultTrain = await resTrain.json();
-                  setPlan(resultNutri.plan);
-                  // Corrige el tipo para userData: ubicacion y nivel nunca deben ser null/undefined
-                  const userData = {
-                    ...data,
-                    entrenamiento: {
-                      ...data.entrenamiento,
-                      ubicacion: data.entrenamiento?.ubicacion || '',
-                      nivel: data.entrenamiento?.nivel || '',
-                    }
-                  };
-                  setTrainingResult({ plan: resultTrain.plan, userData });
-                } else {
-                  // Decide endpoint según el servicio seleccionado
-                  let endpoint = '/api/generatePlan';
-                  if (data.servicios.entrenamiento && !data.servicios.nutricion) {
-                    endpoint = '/api/generateTraining';
-                  }
-                  const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data),
-                  });
-                  if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    // Mostrar detalles y stack si existen
-                    let errorMsg = errorData.message || 'Error generando el plan';
-                    if (errorData.details) errorMsg += `\nDetalles: ${errorData.details}`;
-                    if (errorData.stack) errorMsg += `\nStack: ${errorData.stack}`;
-                    throw new Error(errorMsg);
-                  }
-                  const result = await response.json();
-                  if (data.servicios.entrenamiento && !data.servicios.nutricion) {
-                    const userData = {
-                      ...data,
-                      entrenamiento: {
-                        ...data.entrenamiento,
-                        ubicacion: data.entrenamiento?.ubicacion || '',
-                        nivel: data.entrenamiento?.nivel || '',
-                      }
-                    };
-                    setTrainingResult({ plan: result.plan, userData });
-                  } else {
-                    if (!result.plan) throw new Error('El plan generado no tiene datos válidos.');
-                    setPlan(result.plan);
-                  }
-                }
+                // Solo los campos requeridos y en el formato correcto
+                const payload = {
+                  edad: data.edad,
+                  peso: data.peso,
+                  altura: data.altura,
+                  sexo: data.sexo,
+                  objetivo: data.objetivo,
+                  actividadFisica: data.actividadFisica,
+                  intensidadTrabajo: data.intensidadTrabajo,
+                  numeroComidas: data.numeroComidas,
+                  restricciones: Array.isArray(data.restricciones) ? data.restricciones : [],
+                  alimentosNoDeseados: Array.isArray(data.alimentosNoDeseados) ? data.alimentosNoDeseados : [],
+                };
+                const response = await fetch('/api/generatePlan', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(payload),
+                });
+                if (!response.ok) throw new Error('Error generando el plan nutricional');
+                const result = await response.json();
+                setPlan(result.plan);
               } catch (err) {
                 setError((err as Error).message || 'Error desconocido');
               } finally {
                 setLoading(false);
               }
             }}
+            onBack={() => setServicioSeleccionado(null)}
           />
         )}
-
+        {!plan && !trainingResult && servicioSeleccionado === 'entrenamiento' && (
+          <InputFormEntrenamiento
+            onSubmit={async (data) => {
+              setLoading(true);
+              setError(null);
+              try {
+                // Solo los campos requeridos y en el formato correcto
+                const payload = {
+                  entrenamiento: data.entrenamiento,
+                  edad: data.edad,
+                  peso: data.peso,
+                  altura: data.altura,
+                  sexo: data.sexo,
+                  objetivo: data.objetivo,
+                  actividadFisica: data.actividadFisica,
+                };
+                // Log para depuración
+                console.log('[DEBUG][generateTraining] Payload enviado:', payload);
+                // Validación básica antes de enviar
+                const camposFaltantes = Object.entries(payload).filter(([k, v]) => v === undefined || v === null || (typeof v === 'string' && v.trim() === ''));
+                if (camposFaltantes.length > 0) {
+                  setError('Faltan campos requeridos: ' + camposFaltantes.map(([k]) => k).join(', '));
+                  setLoading(false);
+                  return;
+                }
+                const entrenamientoKeys = ['ubicacion', 'material', 'nivel', 'diasEntrenamiento', 'duracionSesion', 'objetivos', 'lesiones', 'preferencias'];
+                const entrenamiento = payload.entrenamiento!;
+                const entrenamientoFaltantes = !entrenamiento
+                  ? entrenamientoKeys
+                  : entrenamientoKeys.filter((k) => {
+                      const value = (entrenamiento as any)[k];
+                      return (
+                        value === undefined ||
+                        value === null ||
+                        (typeof value === 'string' && value.trim() === '')
+                      );
+                    });
+                if (entrenamientoFaltantes.length > 0) {
+                  setError('Faltan campos en entrenamiento: ' + entrenamientoFaltantes.join(', '));
+                  setLoading(false);
+                  return;
+                }
+                const response = await fetch('/api/generateTraining', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(payload),
+                });
+                if (!response.ok) throw new Error('Error generando el plan de entrenamiento');
+                const result = await response.json();
+                setTrainingResult({ plan: result.plan, userData: payload });
+              } catch (err) {
+                setError((err as Error).message || 'Error desconocido');
+              } finally {
+                setLoading(false);
+              }
+            }}
+            onBack={() => setServicioSeleccionado(null)}
+          />
+        )}
+        {!plan && !trainingResult && servicioSeleccionado === 'asesoria' && (
+          <div>
+            <AsesoriaProfesional />
+            <button type="button" onClick={() => setServicioSeleccionado(null)} className={styles['wizard-back']} style={{marginTop:16}}>Volver al selector</button>
+          </div>
+        )}
         {/* Mostrar ambos planes si existen */}
         {plan && trainingResult && (
           <div className={styles.planContainer}>
