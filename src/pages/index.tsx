@@ -284,6 +284,56 @@ export default function Home() {
     });
   };
 
+  // --- NUEVO: Componente de Tabs para Monetización ---
+  function MonetizationTabs({ isLoggedIn }: { isLoggedIn: boolean }) {
+    const [activeTab, setActiveTab] = useState<'free' | 'pro'>('free');
+    return (
+      <div className={styles['tabs-monetizacion']}>
+        <div className={styles['tabs-header']}>
+          <button
+            className={activeTab === 'free' ? styles['tab-active'] : styles['tab']}
+            onClick={() => setActiveTab('free')}
+            type="button"
+          >
+            Prueba gratuita
+          </button>
+          <button
+            className={activeTab === 'pro' ? styles['tab-active'] : styles['tab']}
+            onClick={() => setActiveTab('pro')}
+            type="button"
+          >
+            Plan profesional
+          </button>
+        </div>
+        <div className={styles['tab-content']}>
+          {activeTab === 'free' && (
+            <div className={styles['menu-card']}>
+              <h3>Prueba gratuita</h3>
+              {isLoggedIn ? (
+                <>
+                  <p>¡Ya tienes acceso a todas las funciones básicas!</p>
+                  <button className={styles.landingButton} disabled>Activa</button>
+                </>
+              ) : (
+                <>
+                  <p>Accede a todas las funciones básicas durante 3 días sin compromiso.</p>
+                  <button className={styles.landingButton} onClick={() => signIn('google')}>Empezar gratis</button>
+                </>
+              )}
+            </div>
+          )}
+          {activeTab === 'pro' && (
+            <div className={styles['menu-card']}>
+              <h3>Plan profesional</h3>
+              <p>Desbloquea rutinas avanzadas, soporte prioritario y más.</p>
+              <button className={styles.landingButton} onClick={() => window.location.href = '/plan-profesional'}>Ver detalles</button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   if (status === 'loading' && !session) {
     return (
       <div className={styles.container}>
@@ -370,25 +420,13 @@ export default function Home() {
               </ol>
             </div>
           </section>
-          {/* Menú de monetización visible antes del login, debajo del bloque de marketing */}
-          <nav className={styles['menu-monetizacion']}>
-            <div className={styles['menu-card']}>
-              <h3>Prueba gratuita</h3>
-              <p>Accede a todas las funciones básicas durante 3 días sin compromiso.</p>
-              <button className={styles.landingButton} onClick={() => signIn('google')}>Empezar gratis</button>
-            </div>
-            <div className={styles['menu-card']}>
-              <h3>Plan profesional</h3>
-              <p>Desbloquea rutinas avanzadas, soporte prioritario y más.</p>
-              <button className={styles.landingButton} onClick={() => window.location.href = '/plan-profesional'}>Ver detalles</button>
-            </div>
-          </nav>
+          {/* Tabs de monetización en vez de menú de tarjetas */}
+          <MonetizationTabs isLoggedIn={false} />
         </main>
       </div>
     );
   }
   
-
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -403,19 +441,8 @@ export default function Home() {
           Cerrar Sesión
         </button>
       </header>
-      {/* Menú de monetización visible también después del login */}
-      <nav className={styles['menu-monetizacion']}>
-        <div className={styles['menu-card']}>
-          <h3>Prueba gratuita</h3>
-          <p>¡Ya tienes acceso a todas las funciones básicas!</p>
-          <button className={styles.landingButton} disabled>Activa</button>
-        </div>
-        <div className={styles['menu-card']}>
-          <h3>Plan profesional</h3>
-          <p>Desbloquea rutinas avanzadas, soporte prioritario y más.</p>
-          <button className={styles.landingButton} onClick={() => window.location.href = '/plan-profesional'}>Ver detalles</button>
-        </div>
-      </nav>
+      {/* Tabs de monetización también después del login */}
+      <MonetizationTabs isLoggedIn={true} />
       {/* Botón Mi Panel fuera del header, solo si hay sesión */}
       {session && (
         <div style={{ display: 'flex', justifyContent: 'center', margin: '1.5rem 0 0.5rem 0' }}>
