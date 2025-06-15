@@ -4,6 +4,59 @@ import { validateRestrictions } from '@/lib/validateRestrictions';
 import { PlanData } from '@/types/plan';
 import AsesoriaProfesional from './AsesoriaProfesional';
 
+const pasosNutricion = [
+  'sexo',
+  'edad',
+  'peso',
+  'altura',
+  'objetivo',
+  'actividadFisica',
+  'intensidadTrabajo',
+  'numeroComidas',
+  'restricciones',
+  'alimentosNoDeseados',
+  'tipoDieta',
+];
+const pasosEntrenamiento = [
+  'sexo',
+  'edad',
+  'peso',
+  'altura',
+  'ubicacion',
+  'nivel',
+  'duracionSesion',
+  'objetivosEntrenamiento',
+  'material',
+  'otrosMateriales',
+  'lesiones',
+  'preferencias',
+  'diasEntrenamiento',
+];
+
+const etiquetas = {
+  sexo: '¿Cuál es tu sexo?',
+  edad: '¿Cuál es tu edad?',
+  peso: '¿Cuál es tu peso (kg)?',
+  altura: '¿Cuál es tu altura (cm)?',
+  objetivo: '¿Cuál es tu objetivo principal?',
+  actividadFisica: '¿Nivel de actividad física?',
+  intensidadTrabajo: '¿Intensidad del trabajo diario?',
+  numeroComidas: '¿Cuántas comidas diarias prefieres?',
+  restricciones: '¿Tienes restricciones alimentarias?',
+  alimentosNoDeseados: '¿Alimentos que no te gustan?',
+  tipoDieta: '¿Tipo de dieta preferida?',
+  entrenamiento: 'Configura tu entrenamiento',
+};
+
+const opciones = {
+  sexo: ['Hombre', 'Mujer'],
+  objetivo: ['Perder grasa', 'Ganar masa muscular', 'Mantener peso'],
+  actividadFisica: ['Sedentario', 'Ligero', 'Moderado', 'Intenso'],
+  intensidadTrabajo: ['Leve', 'Moderada', 'Vigorosa'],
+  numeroComidas: [2, 3, 4],
+  tipoDieta: ['', 'vegana', 'vegetariana', 'keto', 'mediterranea'],
+};
+
 const InputForm = ({ onSubmit }: { onSubmit: (data: PlanData) => void }) => {
   const [form, setForm] = useState<PlanData>({
     servicios: {
@@ -41,6 +94,64 @@ const InputForm = ({ onSubmit }: { onSubmit: (data: PlanData) => void }) => {
   const [restrictionError, setRestrictionError] = useState<string | null>(null);
   const [alimentosNoDeseadosTexto, setAlimentosNoDeseadosTexto] = useState('');
   const [asesoria, setAsesoria] = useState(false);
+  const [paso, setPaso] = useState(0);
+  const [servicioSeleccionado, setServicioSeleccionado] = useState<'nutricion' | 'entrenamiento' | 'asesoria' | null>(null);
+
+  // --- NUEVO: Selector de servicio siempre visible arriba ---
+  const renderSelectorServicios = () => (
+    <div className={styles['servicios-section']}>
+      <h2>¿Qué servicio necesitas?</h2>
+      <div className={styles['servicios-grid']}>
+        <label className={`${styles['servicio-option']} ${servicioSeleccionado === 'nutricion' ? styles['selected'] : ''}`}>
+          <input
+            type="radio"
+            name="servicio"
+            style={{ display: 'none' }}
+            checked={servicioSeleccionado === 'nutricion'}
+            onChange={() => setServicioSeleccionado('nutricion')}
+          />
+          <div className={styles['servicio-content']} onClick={() => setServicioSeleccionado('nutricion')}>
+            <span className={styles['servicio-icon']}>🥗</span>
+            <span className={styles['servicio-title']}>Plan Nutricional</span>
+            <span className={styles['servicio-description']}>Diseño de dieta personalizada</span>
+          </div>
+        </label>
+        <label className={`${styles['servicio-option']} ${servicioSeleccionado === 'entrenamiento' ? styles['selected'] : ''}`}>
+          <input
+            type="radio"
+            name="servicio"
+            style={{ display: 'none' }}
+            checked={servicioSeleccionado === 'entrenamiento'}
+            onChange={() => setServicioSeleccionado('entrenamiento')}
+          />
+          <div className={styles['servicio-content']} onClick={() => setServicioSeleccionado('entrenamiento')}>
+            <span className={styles['servicio-icon']}>💪</span>
+            <span className={styles['servicio-title']}>Plan de Entrenamiento</span>
+            <span className={styles['servicio-description']}>Rutinas personalizadas</span>
+          </div>
+        </label>
+        <label className={`${styles['servicio-option']} ${servicioSeleccionado === 'asesoria' ? styles['selected'] : ''}`}>
+          <input
+            type="radio"
+            name="servicio"
+            style={{ display: 'none' }}
+            checked={servicioSeleccionado === 'asesoria'}
+            onChange={() => setServicioSeleccionado('asesoria')}
+          />
+          <div className={styles['servicio-content']} onClick={() => setServicioSeleccionado('asesoria')}>
+            <span className={styles['servicio-icon']}>🧑‍⚕️</span>
+            <span className={styles['servicio-title']}>Asesoría profesional 1 a 1</span>
+            <span className={styles['servicio-description']}>Consulta directa con un profesional</span>
+          </div>
+        </label>
+      </div>
+    </div>
+  );
+
+  // --- NUEVO: Selector de pasos según servicio ---
+  let pasosWizard: string[] = [];
+  if (servicioSeleccionado === 'nutricion') pasosWizard = pasosNutricion;
+  if (servicioSeleccionado === 'entrenamiento') pasosWizard = pasosEntrenamiento;
 
   // Días de la semana para selección
   const DIAS_SEMANA = [
@@ -223,135 +334,172 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
     onSubmit({ ...(form as any), diasSeleccionados, tipoDieta: form.tipoDieta, alimentosNoDeseados: alimentosNoDeseadosFinal });
   };
 
-  return (
-    <form onSubmit={handleSubmit} className={styles['form-wrapper']}>
-      <div className={styles['servicios-section']}>
-        <h2>¿Qué servicio necesitas?</h2>
-        <div className={styles['servicios-grid']}>
-          <label className={`${styles['servicio-option']} ${form.servicios.nutricion ? styles['selected'] : ''}`}>
-            <input
-              type="checkbox"
-              checked={form.servicios.nutricion}
-              onChange={() => handleServicioChange('nutricion')}
-            />
-            <div className={styles['servicio-content']}>
-              <span className={styles['servicio-icon']}>🥗</span>
-              <span className={styles['servicio-title']}>Plan Nutricional</span>
-              <span className={styles['servicio-description']}>Diseño de dieta personalizada</span>
-            </div>
-          </label>
-
-          <label className={`${styles['servicio-option']} ${form.servicios.entrenamiento ? styles['selected'] : ''}`}>
-            <input
-              type="checkbox"
-              checked={form.servicios.entrenamiento}
-              onChange={() => handleServicioChange('entrenamiento')}
-            />
-            <div className={styles['servicio-content']}>
-              <span className={styles['servicio-icon']}>💪</span>
-              <span className={styles['servicio-title']}>Plan de Entrenamiento</span>
-              <span className={styles['servicio-description']}>Rutinas personalizadas</span>
-            </div>
-          </label>
-
-          <label className={`${styles['servicio-option']} ${asesoria ? styles['selected'] : ''}`}>
-            <input
-              type="checkbox"
-              checked={asesoria}
-              onChange={handleAsesoriaChange}
-            />
-            <div className={styles['servicio-content']}>
-              <span className={styles['servicio-icon']}>🧑‍⚕️</span>
-              <span className={styles['servicio-title']}>Asesoría profesional 1 a 1</span>
-              <span className={styles['servicio-description']}>Consulta directa con un profesional</span>
-            </div>
-          </label>
+  // --- NUEVO: Renderizado paso a paso (wizard) ---
+  function renderPaso() {
+    if (servicioSeleccionado === 'asesoria') {
+      return (
+        <div className={styles['wizard-step']}>
+          <AsesoriaProfesional />
         </div>
-      </div>
-
-      {/* Botón solo si hay algún servicio distinto de asesoría seleccionado */}
-      {(form.servicios.nutricion || form.servicios.entrenamiento) && !(
-        asesoria && !form.servicios.nutricion && !form.servicios.entrenamiento
-      ) && (
-        <button type="submit" className={styles['submit-button']}>
-          🧠 Generar plan personalizado
-        </button>
-      )}
-
-      {form.servicios.nutricion && (
-        <div className={styles['nutricion-section']}>
-          <h2>Configuración del Plan Nutricional</h2>
-          <div className={styles['form-row']}>
-            <div className={styles['form-group']}>
-              <label>Edad:</label>
-              <input type="number" name="edad" value={form.edad} onChange={handleChange} />
-            </div>
-
-            <div className={styles['form-group']}>
-              <label>Sexo:</label>
-              <select name="sexo" value={form.sexo} onChange={handleChange}>
-                <option>Hombre</option>
-                <option>Mujer</option>
-              </select>
+      );
+    }
+    const actual = pasosWizard[paso];
+    switch (actual) {
+      case 'sexo':
+        return (
+          <div className={styles['wizard-step']}>
+            <label className={styles['wizard-label']}>{etiquetas.sexo}</label>
+            <div className={styles['wizard-options']}>
+              {opciones.sexo.map((op) => (
+                <button
+                  key={op}
+                  type="button"
+                  className={form.sexo === op ? styles['wizard-btn-active'] : styles['wizard-btn']}
+                  onClick={() => { setForm(f => ({ ...f, sexo: op })); setPaso(paso + 1); }}
+                >
+                  {op}
+                </button>
+              ))}
             </div>
           </div>
-
-          <div className={styles['form-row']}>
-            <div className={styles['form-group']}>
-              <label>Peso (kg):</label>
-              <input type="number" name="peso" value={form.peso} onChange={handleChange} />
-            </div>
-
-            <div className={styles['form-group']}>
-              <label>Altura (cm):</label>
-              <input type="number" name="altura" value={form.altura} onChange={handleChange} />
-            </div>
-          </div>
-
-          <div className={styles['form-row']}>
-            <div className={styles['form-group']}>
-              <label>Objetivo:</label>
-              <select name="objetivo" value={form.objetivo} onChange={handleChange}>
-                <option>Perder grasa</option>
-                <option>Ganar masa muscular</option>
-                <option>Mantener peso</option>
-              </select>
-            </div>
-
-            <div className={styles['form-group']}>
-              <label>Número de comidas diarias:</label>
-              <select name="numeroComidas" value={form.numeroComidas} onChange={handleChange}>
-                <option value={2}>2 (comida y cena)</option>
-                <option value={3}>3 (desayuno, comida y cena)</option>
-                <option value={4}>4 (añade snack)</option>
-              </select>
+        );
+      case 'edad':
+        return (
+          <div className={styles['wizard-step']}>
+            <label className={styles['wizard-label']}>{etiquetas.edad}</label>
+            <input
+              type="number"
+              className={styles['wizard-input']}
+              value={form.edad}
+              min={10}
+              max={100}
+              onChange={e => setForm(f => ({ ...f, edad: Number(e.target.value) }))}
+              onKeyDown={e => e.key === 'Enter' && setPaso(paso + 1)}
+              autoFocus
+            />
+            <div className={styles['wizard-nav']}>
+              {paso > 0 && <button type="button" onClick={() => setPaso(paso - 1)} className={styles['wizard-back']}>Atrás</button>}
+              <button type="button" onClick={() => setPaso(paso + 1)} className={styles['wizard-next']}>Siguiente</button>
             </div>
           </div>
-
-          <div className={styles['form-row']}>
-            <div className={styles['form-group']}>
-              <label>Nivel de actividad física:</label>
-              <select name="actividadFisica" value={form.actividadFisica} onChange={handleChange}>
-                <option>Sedentario</option>
-                <option>Ligero</option>
-                <option>Moderado</option>
-                <option>Intenso</option>
-              </select>
-            </div>
-
-            <div className={styles['form-group']}>
-              <label>Intensidad del trabajo diario:</label>
-              <select name="intensidadTrabajo" value={form.intensidadTrabajo} onChange={handleChange}>
-                <option>Leve</option>
-                <option>Moderada</option>
-                <option>Vigorosa</option>
-              </select>
+        );
+      case 'peso':
+        return (
+          <div className={styles['wizard-step']}>
+            <label className={styles['wizard-label']}>{etiquetas.peso}</label>
+            <input
+              type="number"
+              className={styles['wizard-input']}
+              value={form.peso}
+              min={30}
+              max={250}
+              onChange={e => setForm(f => ({ ...f, peso: Number(e.target.value) }))}
+              onKeyDown={e => e.key === 'Enter' && setPaso(paso + 1)}
+              autoFocus
+            />
+            <div className={styles['wizard-nav']}>
+              <button type="button" onClick={() => setPaso(paso - 1)} className={styles['wizard-back']}>Atrás</button>
+              <button type="button" onClick={() => setPaso(paso + 1)} className={styles['wizard-next']}>Siguiente</button>
             </div>
           </div>
-
-          <div className={styles['form-group']}>
-            <label htmlFor="restricciones" className={styles['form-label']}>Restricciones alimentarias:</label>
-            <div className={styles['checkbox-group']} id="restricciones">
+        );
+      case 'altura':
+        return (
+          <div className={styles['wizard-step']}>
+            <label className={styles['wizard-label']}>{etiquetas.altura}</label>
+            <input
+              type="number"
+              className={styles['wizard-input']}
+              value={form.altura}
+              min={120}
+              max={230}
+              onChange={e => setForm(f => ({ ...f, altura: Number(e.target.value) }))}
+              onKeyDown={e => e.key === 'Enter' && setPaso(paso + 1)}
+              autoFocus
+            />
+            <div className={styles['wizard-nav']}>
+              <button type="button" onClick={() => setPaso(paso - 1)} className={styles['wizard-back']}>Atrás</button>
+              <button type="button" onClick={() => setPaso(paso + 1)} className={styles['wizard-next']}>Siguiente</button>
+            </div>
+          </div>
+        );
+      case 'objetivo':
+        return (
+          <div className={styles['wizard-step']}>
+            <label className={styles['wizard-label']}>{etiquetas.objetivo}</label>
+            <div className={styles['wizard-options']}>
+              {opciones.objetivo.map((op) => (
+                <button
+                  key={op}
+                  type="button"
+                  className={form.objetivo === op ? styles['wizard-btn-active'] : styles['wizard-btn']}
+                  onClick={() => { setForm(f => ({ ...f, objetivo: op })); setPaso(paso + 1); }}
+                >
+                  {op}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      case 'actividadFisica':
+        return (
+          <div className={styles['wizard-step']}>
+            <label className={styles['wizard-label']}>{etiquetas.actividadFisica}</label>
+            <div className={styles['wizard-options']}>
+              {opciones.actividadFisica.map((op) => (
+                <button
+                  key={op}
+                  type="button"
+                  className={form.actividadFisica === op ? styles['wizard-btn-active'] : styles['wizard-btn']}
+                  onClick={() => { setForm(f => ({ ...f, actividadFisica: op })); setPaso(paso + 1); }}
+                >
+                  {op}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      case 'intensidadTrabajo':
+        return (
+          <div className={styles['wizard-step']}>
+            <label className={styles['wizard-label']}>{etiquetas.intensidadTrabajo}</label>
+            <div className={styles['wizard-options']}>
+              {opciones.intensidadTrabajo.map((op) => (
+                <button
+                  key={op}
+                  type="button"
+                  className={form.intensidadTrabajo === op ? styles['wizard-btn-active'] : styles['wizard-btn']}
+                  onClick={() => { setForm(f => ({ ...f, intensidadTrabajo: op })); setPaso(paso + 1); }}
+                >
+                  {op}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      case 'numeroComidas':
+        return (
+          <div className={styles['wizard-step']}>
+            <label className={styles['wizard-label']}>{etiquetas.numeroComidas}</label>
+            <div className={styles['wizard-options']}>
+              {opciones.numeroComidas.map((op) => (
+                <button
+                  key={op}
+                  type="button"
+                  className={form.numeroComidas === op ? styles['wizard-btn-active'] : styles['wizard-btn']}
+                  onClick={() => { setForm(f => ({ ...f, numeroComidas: op })); setPaso(paso + 1); }}
+                >
+                  {op}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      case 'restricciones':
+        return (
+          <div className={styles['wizard-step']}>
+            <label className={styles['wizard-label']}>{etiquetas.restricciones}</label>
+            <div className={styles['checkbox-group']}>
               {[ 'Intolerancia al gluten', 'Intolerancia a la lactosa', 'Alergia a frutos secos' ].map((restriccion) => (
                 <label key={restriccion} className={styles['checkbox-label']}>
                   <span>{restriccion}</span>
@@ -369,259 +517,286 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
                 ⚠️ {restrictionError}
               </div>
             )}
-          </div>
-
-          <div className={styles['form-row']}>
-            <div className={styles['form-group']}>
-              <label htmlFor="alimentosNoDeseados">Alimentos que no te gustan:</label>
-              <textarea
-                name="alimentosNoDeseados"
-                id="alimentosNoDeseados"
-                value={alimentosNoDeseadosTexto}
-                onChange={handleAlimentosNoDeseadosChange}
-                onBlur={handleAlimentosNoDeseadosBlur}
-                placeholder="Escribe los alimentos que no te gustan separados por comas, punto y coma o en líneas distintas (ej: brócoli, coliflor; hígado\no cada uno en una línea)"
-                className={styles['textarea']}
-              />
-              <small className={styles['help-text']}>
-                Indica los alimentos o ingredientes que no te gustan o no quieres comer. Sepáralos por comas.
-              </small>
-            </div>
-            <div className={styles['form-group']}>
-              <label htmlFor="tipoDieta">Tipo de dieta:</label>
-              <select
-                name="tipoDieta"
-                id="tipoDieta"
-                value={form.tipoDieta || ''}
-                onChange={e => setForm(prev => ({ ...prev, tipoDieta: e.target.value }))}
-              >
-                <option value="">Sin preferencia</option>
-                <option value="vegana">Vegana</option>
-                <option value="vegetariana">Vegetariana</option>
-                <option value="keto">Keto</option>
-                <option value="mediterranea">Mediterránea</option>
-              </select>
-              <small className={styles['help-text']}>
-                Selecciona un tipo de dieta para filtrar solo los alimentos aptos.
-              </small>
+            <div className={styles['wizard-nav']}>
+              <button type="button" onClick={() => setPaso(paso - 1)} className={styles['wizard-back']}>Atrás</button>
+              <button type="button" onClick={() => setPaso(paso + 1)} className={styles['wizard-next']}>Siguiente</button>
             </div>
           </div>
-        </div>
-      )}
-
-      {form.servicios.entrenamiento && (
-        <div className={styles['entrenamiento-section']}>
-          <h2>Configuración del Entrenamiento</h2>
-
-          {/* Solo pedir edad, peso y altura si NO está activado nutrición */}
-          {!form.servicios.nutricion && (
-            <div className={styles['form-row']}>
-              <div className={styles['form-group']}>
-                <label>Edad:</label>
-                <input type="number" name="edad" value={form.edad} onChange={handleChange} />
-              </div>
-              <div className={styles['form-group']}>
-                <label>Peso (kg):</label>
-                <input type="number" name="peso" value={form.peso} onChange={handleChange} />
-              </div>
-              <div className={styles['form-group']}>
-                <label>Altura (cm):</label>
-                <input type="number" name="altura" value={form.altura} onChange={handleChange} />
-              </div>
-            </div>
-          )}
-
-          <div className={styles['form-group']}>
-            <label>¿Dónde vas a entrenar?</label>
-            <div className={styles['radio-group']}>
-              <label className={styles['radio-option']}>
-                <input
-                  type="radio"
-                  name="ubicacion"
-                  value="casa"
-                  checked={form.entrenamiento?.ubicacion === 'casa'}
-                  onChange={(e) => handleEntrenamientoChange('ubicacion', e.target.value)}
-                />
-                <span>🏠 En casa</span>
-              </label>
-              <label className={styles['radio-option']}>
-                <input
-                  type="radio"
-                  name="ubicacion"
-                  value="gimnasio"
-                  checked={form.entrenamiento?.ubicacion === 'gimnasio'}
-                  onChange={(e) => handleEntrenamientoChange('ubicacion', e.target.value)}
-                />
-                <span>💪 En gimnasio</span>
-              </label>
-            </div>
-          </div>
-
-          <div className={styles['form-row'] + ' ' + styles['experiencia-duracion']}>
-            <div className={styles['form-group']}>
-              <label>Nivel de experiencia:</label>
-              <select
-                value={form.entrenamiento?.nivel}
-                onChange={(e) => handleEntrenamientoChange('nivel', e.target.value)}
-              >
-                <option>Principiante</option>
-                <option>Intermedio</option>
-                <option>Avanzado</option>
-              </select>
-            </div>
-
-            <div className={styles['form-group']}>
-              <label>Duración de cada sesión (minutos):</label>
-              <select
-                value={form.entrenamiento?.duracionSesion}
-                onChange={(e) => handleEntrenamientoChange('duracionSesion', Number(e.target.value))}
-              >
-                <option value={30}>30 minutos</option>
-                <option value={45}>45 minutos</option>
-                <option value={60}>60 minutos</option>
-                <option value={90}>90 minutos</option>
-              </select>
-            </div>
-          </div>
-
-          <div className={styles['form-group']}>
-            <label>Objetivos de entrenamiento:</label>
-            <div className={styles['checkbox-group']}>
-              {[
-                'Fuerza',
-                'Hipertrofia',
-                'Resistencia',
-                'Pérdida de grasa',
-                'Flexibilidad',
-                'Salud general'
-              ].map((objetivo) => (
-                <label key={objetivo} className={styles['checkbox-label']}>
-                  <input
-                    type="checkbox"
-                    value={objetivo}
-                    checked={form.entrenamiento?.objetivos.includes(objetivo)}
-                    onChange={handleEntrenamientoObjetivosChange}
-                  />
-                  <span>{objetivo}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div className={styles['form-group']}>
-            <label>¿Qué material tienes disponible?</label>
-            <div className={styles['material-grid']}>
-              <label className={styles['material-option']}>
-                <input
-                  type="checkbox"
-                  checked={form.entrenamiento?.material.pesas}
-                  onChange={(e) => handleMaterialChange('pesas', e.target.checked)}
-                />
-                <span>🏋️‍♂️ Pesas</span>
-              </label>
-              <label className={styles['material-option']}>
-                <input
-                  type="checkbox"
-                  checked={form.entrenamiento?.material.bandas}
-                  onChange={(e) => handleMaterialChange('bandas', e.target.checked)}
-                />
-                <span>🎯 Bandas elásticas</span>
-              </label>
-              <label className={styles['material-option']}>
-                <input
-                  type="checkbox"
-                  checked={form.entrenamiento?.material.maquinas}
-                  onChange={(e) => handleMaterialChange('maquinas', e.target.checked)}
-                />
-                <span>🏋️‍♀️ Máquinas</span>
-              </label>
-              <label className={styles['material-option']}>
-                <input
-                  type="checkbox"
-                  checked={form.entrenamiento?.material.barras}
-                  onChange={(e) => handleMaterialChange('barras', e.target.checked)}
-                />
-                <span>⚡ Barras</span>
-              </label>
-            </div>
-
-            <div className={styles['form-group']}>
-              <label>Otro material disponible:</label>
-              <textarea
-                value={form.entrenamiento?.material.otros.join(', ')}
-                onChange={handleOtrosMaterialesChange}
-                placeholder="Escribe otros materiales que tengas disponibles, separados por comas"
-                className={styles['textarea']}
-              />
-              <small className={styles['help-text']}>
-                Indica cualquier otro material o equipamiento que tengas disponible para entrenar.
-              </small>
-            </div>
-          </div>
-
-          <div className={styles['form-group']}>
-            <label>Lesiones o limitaciones físicas:</label>
+        );
+      case 'alimentosNoDeseados':
+        return (
+          <div className={styles['wizard-step']}>
+            <label htmlFor="alimentosNoDeseados" className={styles['form-label']}>{etiquetas.alimentosNoDeseados}</label>
             <textarea
-              value={form.entrenamiento?.lesiones.join(', ')}
-              onChange={handleEntrenamientoLesionesChange}
-              placeholder="Escribe cualquier lesión o limitación física que tengas, separadas por comas"
+              name="alimentosNoDeseados"
+              id="alimentosNoDeseados"
+              value={alimentosNoDeseadosTexto}
+              onChange={handleAlimentosNoDeseadosChange}
+              onBlur={handleAlimentosNoDeseadosBlur}
+              placeholder="Escribe los alimentos que no te gustan separados por comas, punto y coma o en líneas distintas (ej: brócoli, coliflor; hígado\no cada uno en una línea)"
               className={styles['textarea']}
             />
             <small className={styles['help-text']}>
-              Es importante indicar cualquier lesión o limitación para adaptar el entrenamiento a tus necesidades.
+              Indica los alimentos o ingredientes que no te gustan o no quieres comer. Sepáralos por comas.
             </small>
+            <div className={styles['wizard-nav']}>
+              <button type="button" onClick={() => setPaso(paso - 1)} className={styles['wizard-back']}>Atrás</button>
+              <button type="button" onClick={() => setPaso(paso + 1)} className={styles['wizard-next']}>Siguiente</button>
+            </div>
           </div>
-
-          <div className={styles['form-group']}>
-            <label>Preferencias de entrenamiento:</label>
-            <textarea
-              value={form.entrenamiento?.preferencias.join(', ')}
-              onChange={handleEntrenamientoPreferenciasChange}
-              placeholder="Escribe tus preferencias de entrenamiento (ej: prefiero cardio, me gustan los ejercicios de peso libre, etc.)"
-              className={styles['textarea']}
-            />
+        );
+      case 'tipoDieta':
+        return (
+          <div className={styles['wizard-step']}>
+            <label htmlFor="tipoDieta">{etiquetas.tipoDieta}</label>
+            <select
+              name="tipoDieta"
+              id="tipoDieta"
+              value={form.tipoDieta || ''}
+              onChange={e => setForm(prev => ({ ...prev, tipoDieta: e.target.value }))}
+              className={styles['wizard-select']}
+            >
+              <option value="">Sin preferencia</option>
+              <option value="vegana">Vegana</option>
+              <option value="vegetariana">Vegetariana</option>
+              <option value="keto">Keto</option>
+              <option value="mediterranea">Mediterránea</option>
+            </select>
             <small className={styles['help-text']}>
-              Indica tus preferencias o tipos de ejercicios que te gustan o prefieres evitar.
+              Selecciona un tipo de dieta para filtrar solo los alimentos aptos.
             </small>
+            <div className={styles['wizard-nav']}>
+              <button type="button" onClick={() => setPaso(paso - 1)} className={styles['wizard-back']}>Atrás</button>
+              <button type="button" onClick={() => setPaso(paso + 1)} className={styles['wizard-next']}>Siguiente</button>
+            </div>
           </div>
+        );
+      // Eliminar el paso de servicios, ya no es necesario aquí
+      case 'entrenamiento':
+        return (
+          <div className={styles['wizard-step']}>
+            <label className={styles['wizard-label']}>{etiquetas.entrenamiento}</label>
 
-          <div className={styles['form-group']}>
-            <label>Días de Entrenamiento (elige los días):</label>
-            <div className={styles['dias-semana-grid']}>
-              {DIAS_SEMANA.map(dia => (
-                <label key={dia} className={styles['checkbox-dia']}>
+            {/* Solo pedir edad, peso y altura si NO está activado nutrición */}
+            {!form.servicios.nutricion && (
+              <div className={styles['form-row']}>
+                <div className={styles['form-group']}>
+                  <label>Edad:</label>
+                  <input type="number" name="edad" value={form.edad} onChange={handleChange} />
+                </div>
+                <div className={styles['form-group']}>
+                  <label>Peso (kg):</label>
+                  <input type="number" name="peso" value={form.peso} onChange={handleChange} />
+                </div>
+                <div className={styles['form-group']}>
+                  <label>Altura (cm):</label>
+                  <input type="number" name="altura" value={form.altura} onChange={handleChange} />
+                </div>
+              </div>
+            )}
+
+            <div className={styles['form-group']}>
+              <label>¿Dónde vas a entrenar?</label>
+              <div className={styles['radio-group']}>
+                <label className={styles['radio-option']}>
+                  <input
+                    type="radio"
+                    name="ubicacion"
+                    value="casa"
+                    checked={form.entrenamiento?.ubicacion === 'casa'}
+                    onChange={(e) => handleEntrenamientoChange('ubicacion', e.target.value)}
+                  />
+                  <span>🏠 En casa</span>
+                </label>
+                <label className={styles['radio-option']}>
+                  <input
+                    type="radio"
+                    name="ubicacion"
+                    value="gimnasio"
+                    checked={form.entrenamiento?.ubicacion === 'gimnasio'}
+                    onChange={(e) => handleEntrenamientoChange('ubicacion', e.target.value)}
+                  />
+                  <span>💪 En gimnasio</span>
+                </label>
+              </div>
+            </div>
+
+            <div className={styles['form-row'] + ' ' + styles['experiencia-duracion']}>
+              <div className={styles['form-group']}>
+                <label>Nivel de experiencia:</label>
+                <select
+                  value={form.entrenamiento?.nivel}
+                  onChange={(e) => handleEntrenamientoChange('nivel', e.target.value)}
+                >
+                  <option>Principiante</option>
+                  <option>Intermedio</option>
+                  <option>Avanzado</option>
+                </select>
+              </div>
+
+              <div className={styles['form-group']}>
+                <label>Duración de cada sesión (minutos):</label>
+                <select
+                  value={form.entrenamiento?.duracionSesion}
+                  onChange={(e) => handleEntrenamientoChange('duracionSesion', Number(e.target.value))}
+                >
+                  <option value={30}>30 minutos</option>
+                  <option value={45}>45 minutos</option>
+                  <option value={60}>60 minutos</option>
+                  <option value={90}>90 minutos</option>
+                </select>
+              </div>
+            </div>
+
+            <div className={styles['form-group']}>
+              <label>Objetivos de entrenamiento:</label>
+              <div className={styles['checkbox-group']}>
+                {[
+                  'Fuerza',
+                  'Hipertrofia',
+                  'Resistencia',
+                  'Pérdida de grasa',
+                  'Flexibilidad',
+                  'Salud general'
+                ].map((objetivo) => (
+                  <label key={objetivo} className={styles['checkbox-label']}>
+                    <input
+                      type="checkbox"
+                      value={objetivo}
+                      checked={form.entrenamiento?.objetivos.includes(objetivo)}
+                      onChange={handleEntrenamientoObjetivosChange}
+                    />
+                    <span>{objetivo}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles['form-group']}>
+              <label>¿Qué material tienes disponible?</label>
+              <div className={styles['material-grid']}>
+                <label className={styles['material-option']}>
                   <input
                     type="checkbox"
-                    checked={diasSeleccionados.includes(dia)}
-                    onChange={() => handleDiaSeleccion(dia)}
+                    checked={form.entrenamiento?.material.pesas}
+                    onChange={(e) => handleMaterialChange('pesas', e.target.checked)}
                   />
-                  <span>{dia.charAt(0).toUpperCase() + dia.slice(1)}</span>
+                  <span>🏋️‍♂️ Pesas</span>
                 </label>
-              ))}
+                <label className={styles['material-option']}>
+                  <input
+                    type="checkbox"
+                    checked={form.entrenamiento?.material.bandas}
+                    onChange={(e) => handleMaterialChange('bandas', e.target.checked)}
+                  />
+                  <span>🎯 Bandas elásticas</span>
+                </label>
+                <label className={styles['material-option']}>
+                  <input
+                    type="checkbox"
+                    checked={form.entrenamiento?.material.maquinas}
+                    onChange={(e) => handleMaterialChange('maquinas', e.target.checked)}
+                  />
+                  <span>🏋️‍♀️ Máquinas</span>
+                </label>
+                <label className={styles['material-option']}>
+                  <input
+                    type="checkbox"
+                    checked={form.entrenamiento?.material.barras}
+                    onChange={(e) => handleMaterialChange('barras', e.target.checked)}
+                  />
+                  <span>⚡ Barras</span>
+                </label>
+              </div>
+
+              <div className={styles['form-group']}>
+                <label>Otro material disponible:</label>
+                <textarea
+                  value={form.entrenamiento?.material.otros.join(', ')}
+                  onChange={handleOtrosMaterialesChange}
+                  placeholder="Escribe otros materiales que tengas disponibles, separados por comas"
+                  className={styles['textarea']}
+                />
+                <small className={styles['help-text']}>
+                  Indica cualquier otro material o equipamiento que tengas disponible para entrenar.
+                </small>
+              </div>
             </div>
-            <small className={styles['help-text']}>
-              Selecciona los días concretos en los que quieres entrenar. Puedes elegir cualquier combinación de lunes a domingo.
-            </small>
+
+            <div className={styles['form-group']}>
+              <label>Lesiones o limitaciones físicas:</label>
+              <textarea
+                value={form.entrenamiento?.lesiones.join(', ')}
+                onChange={handleEntrenamientoLesionesChange}
+                placeholder="Escribe cualquier lesión o limitación física que tengas, separadas por comas"
+                className={styles['textarea']}
+              />
+              <small className={styles['help-text']}>
+                Es importante indicar cualquier lesión o limitación para adaptar el entrenamiento a tus necesidades.
+              </small>
+            </div>
+
+            <div className={styles['form-group']}>
+              <label>Preferencias de entrenamiento:</label>
+              <textarea
+                value={form.entrenamiento?.preferencias.join(', ')}
+                onChange={handleEntrenamientoPreferenciasChange}
+                placeholder="Escribe tus preferencias de entrenamiento (ej: prefiero cardio, me gustan los ejercicios de peso libre, etc.)"
+                className={styles['textarea']}
+              />
+              <small className={styles['help-text']}>
+                Indica tus preferencias o tipos de ejercicios que te gustan o prefieres evitar.
+              </small>
+            </div>
+
+            <div className={styles['form-group']}>
+              <label>Días de Entrenamiento (elige los días):</label>
+              <div className={styles['dias-semana-grid']}>
+                {DIAS_SEMANA.map(dia => (
+                  <label key={dia} className={styles['checkbox-dia']}>
+                    <input
+                      type="checkbox"
+                      checked={diasSeleccionados.includes(dia)}
+                      onChange={() => handleDiaSeleccion(dia)}
+                    />
+                    <span>{dia.charAt(0).toUpperCase() + dia.slice(1)}</span>
+                  </label>
+                ))}
+              </div>
+              <small className={styles['help-text']}>
+                Selecciona los días concretos en los que quieres entrenar. Puedes elegir cualquier combinación de lunes a domingo.
+              </small>
+            </div>
+
+            <div className={styles['wizard-nav']}>
+              <button type="button" onClick={() => setPaso(paso - 1)} className={styles['wizard-back']}>Atrás</button>
+              <button type="button" onClick={() => setPaso(paso + 1)} className={styles['wizard-next']}>Siguiente</button>
+            </div>
           </div>
-        </div>
-      )}
+        );
+      // Al final, muestra un botón para enviar el formulario
+      default:
+        return (
+          <div className={styles['wizard-step']}>
+            <button type="submit" className={styles['wizard-submit']}>🧠 Generar plan personalizado</button>
+          </div>
+        );
+    }
+  }
 
-      {/* Botón solo si hay algún servicio distinto de asesoría seleccionado */}
-      { (form.servicios.nutricion || form.servicios.entrenamiento) && !(
-        asesoria && !form.servicios.nutricion && !form.servicios.entrenamiento
-      ) && (
-        <button type="submit" className={styles['submit-button']}>
-          🧠 Generar plan personalizado
-        </button>
+  // --- Render principal ---
+  return (
+    <div>
+      {renderSelectorServicios()}
+      {servicioSeleccionado && (
+        <form onSubmit={handleSubmit} className={styles['form-wrapper']}>
+          <div className={styles['wizard-progress']}>
+            Paso {paso + 1} de {pasosWizard.length}
+          </div>
+          {renderPaso()}
+        </form>
       )}
-
-      {/* Mostrar asesoría profesional justo debajo del botón */}
-      {asesoria && (
-        <div style={{margin: '2rem 0'}}>
-          <AsesoriaProfesional />
-        </div>
-      )}
-    </form>
+    </div>
   );
 };
 
