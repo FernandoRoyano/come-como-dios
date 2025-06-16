@@ -366,48 +366,40 @@ export default function Home() {
       <div className={styles.container}>
         <header className={styles.header}>
           <div className={styles.headerContent}>
-            <h1 className={styles.title}>Come y Entrena Como Dios</h1>
-            <p className={styles.subtitle}>Tu asistente personal de nutrición y entrenamiento</p>
+            <img src="/vercel.svg" alt="Logo" width={70} height={70} style={{marginBottom: 16}} />
+            <h1 className={styles.title} style={{fontSize:'2.7rem',fontWeight:900,letterSpacing:'-0.03em'}}>Come y Entrena Como Dios</h1>
+            <p className={styles.subtitle} style={{fontSize:'1.35rem',color:'#e0e7ef',marginTop:8}}>Tu asistente personal de nutrición y entrenamiento</p>
           </div>
         </header>
         <main className={styles.main + ' ' + styles.mainWide}>
           <section className={styles.marketingBlock + ' ' + styles.marketingBlockWide}>
-            {/* Título y subtítulo solo una vez, fuera del bloque de marketing */}
-            <h2 className={styles.marketingTitle}>
-              🧠 Transforma tu cuerpo con inteligencia artificial
-            </h2>
-            <p className={styles.marketingSubtitle}>
-              Planes de nutrición y entrenamiento personalizados, sin pagar a un entrenador.<br/>
-              Olvídate de las dietas genéricas o rutinas copiadas de internet.<br/>
-              Esta app usa IA avanzada para crear el plan perfecto para ti, según tus objetivos, cuerpo y estilo de vida.
-            </p>
-            <div className={styles.marketingCta}>
-              <div>🧪 <b>Empieza GRATIS</b></div>
-              <div>🔓 Accede a tu plan de muestra gratis durante 3 días</div>
-              <div>🕐 Sin compromiso, sin tarjetas</div>
-              <div>🔥 Disponible por tiempo limitado</div>
-            </div>
-            <div className={styles.featuresUnified + ' ' + styles.featuresGrid} style={{ marginTop: '2.5rem', marginBottom: '2.5rem' }}>
-              <div className={styles.feature}>
-                <span role="img" aria-label="Nutrición">🍎</span>
+            <h2 className={styles.marketingTitle} style={{marginBottom:32}}>🧠 Transforma tu cuerpo con inteligencia artificial</h2>
+            <div style={{display:'flex',flexWrap:'wrap',justifyContent:'center',gap:'2.5rem',marginBottom:'2.5rem'}}>
+              <div className={styles.feature} style={{minWidth:220}}>
+                <span role="img" aria-label="Nutrición" style={{fontSize:'2.2rem'}}>🍎</span>
                 <h3>Plan Nutricional</h3>
                 <p>Dieta personalizada según tus objetivos, restricciones y gustos.</p>
               </div>
-              <div className={styles.feature}>
-                <span role="img" aria-label="Entrenamiento">💪</span>
+              <div className={styles.feature} style={{minWidth:220}}>
+                <span role="img" aria-label="Entrenamiento" style={{fontSize:'2.2rem'}}>💪</span>
                 <h3>Plan de Entrenamiento</h3>
                 <p>Rutinas adaptadas a tu nivel, material disponible y metas.</p>
               </div>
-              <div className={styles.feature}>
-                <span role="img" aria-label="IA">🤖</span>
+              <div className={styles.feature} style={{minWidth:220}}>
+                <span role="img" aria-label="IA" style={{fontSize:'2.2rem'}}>🤖</span>
                 <h3>100% Personalizado</h3>
                 <p>Planes generados por IA, únicos para ti, en segundos.</p>
               </div>
-              <div className={styles.feature}>
-                <span role="img" aria-label="Fácil">⚡</span>
+              <div className={styles.feature} style={{minWidth:220}}>
+                <span role="img" aria-label="Fácil" style={{fontSize:'2.2rem'}}>⚡</span>
                 <h3>Fácil y Rápido</h3>
                 <p>Solo responde unas preguntas y obtén tu plan al instante.</p>
               </div>
+            </div>
+            <div className={styles.marketingCta} style={{marginTop:32,marginBottom:32}}>
+              <div style={{fontWeight:700, fontSize:'1.2rem', marginBottom:'1rem',color:'#145a86'}}>¡Empieza GRATIS!</div>
+              <div style={{marginBottom:'1.2rem'}}>Accede a tu plan de muestra gratis durante 3 días.<br/>Sin compromiso, sin tarjetas.</div>
+              <button className={styles.landingButton} style={{fontSize:'1.2rem',padding:'1rem 2.2rem'}} onClick={() => signIn('google')}>Iniciar con Google</button>
             </div>
             <div className={styles.marketingFeatures}>
               <div>🚀 <b>¿Qué obtienes?</b></div>
@@ -425,7 +417,6 @@ export default function Home() {
               </ol>
             </div>
           </section>
-          {/* Tabs de monetización en vez de menú de tarjetas */}
           <MonetizationTabs isLoggedIn={false} />
         </main>
       </div>

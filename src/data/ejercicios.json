@@ -147,8 +147,8 @@
   },
   {
     "nombre": "Press militar con mancuernas",
-    "imagen": "press-militar-con-mancuernas.png",
-    "descripcion": "Ejercicio de hombros con mancuernas."
+    "imagen": "press-militar-con-mancuernas.svg",
+    "descripcion": "Ejercicio de hombros con mancuernas. (placeholder)"
   },
   {
     "nombre": "Press militar",
@@ -307,7 +307,7 @@
   },
   {
     "nombre": "Peso muerto sumo",
-    "imagen": "",
+    "imagen": "peso-muerto-sumo.png",
     "descripcion": "Variante de peso muerto con piernas separadas y agarre estrecho."
   },
   {
