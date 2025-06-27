@@ -1,7 +1,6 @@
 import styles from './TrainingViewer.module.css';
 import { PlanEntrenamiento, Ejercicio } from '@/types/plan';
 import { useEffect, useState, useCallback } from 'react';
-import Image from 'next/image';
 import ejerciciosData from '@/data/ejercicios.json';
 import { obtenerNombreEjercicioAlias } from '@/lib/ejerciciosAlias';
 
@@ -14,28 +13,26 @@ function normalizarNombre(nombre: string) {
     .trim();
 }
 
-function obtenerImagenEjercicio(nombre: string) {
-  // Aplicar alias antes de buscar
+function obtenerVideoEjercicio(nombre: string): string | undefined {
   const nombreAlias = obtenerNombreEjercicioAlias(nombre);
   const nombreNormalizado = normalizarNombre(nombreAlias);
-  // 1. Coincidencia exacta
-  let ejercicio = (ejerciciosData as Array<{nombre: string, imagen: string}>).find(e =>
+  // Buscar por coincidencia normalizada, no exacta
+  const ejercicio = (ejerciciosData as Array<{nombre: string, video?: string}>).find(e =>
     normalizarNombre(e.nombre) === nombreNormalizado
   );
-  if (ejercicio) return `/ejercicios/${ejercicio.imagen}`;
-  // 2. Coincidencia por inclusión (más largo contiene al más corto)
-  ejercicio = (ejerciciosData as Array<{nombre: string, imagen: string}>).find(e =>
-    normalizarNombre(e.nombre).includes(nombreNormalizado) || nombreNormalizado.includes(normalizarNombre(e.nombre))
-  );
-  if (ejercicio) return `/ejercicios/${ejercicio.imagen}`;
-  // 3. Coincidencia por palabra clave (alguna palabra del nombre existe en el JSON)
-  const palabras = nombreNormalizado.split(' ');
-  ejercicio = (ejerciciosData as Array<{nombre: string, imagen: string}>).find(e =>
-    palabras.some(palabra => normalizarNombre(e.nombre).includes(palabra))
-  );
-  if (ejercicio) return `/ejercicios/${ejercicio.imagen}`;
-  // Si no existe, devuelve un SVG gris como imagen por defecto
-  return 'data:image/svg+xml;utf8,<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="200" fill="%23f0f0f0"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23999" font-size="16">Sin imagen</text></svg>';
+  return ejercicio?.video;
+}
+
+// Extrae el ID de YouTube de cualquier formato de URL o acepta el ID directamente
+function extraerIdYoutube(urlOrId?: string): string | undefined {
+  if (!urlOrId) return undefined;
+  // Si es solo el ID
+  if (/^[\w-]{11}$/.test(urlOrId)) return urlOrId;
+  // Soporta formatos: https://www.youtube.com/watch?v=ID, https://youtu.be/ID, https://www.youtube.com/embed/ID, etc.
+  const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/;
+  const match = urlOrId.match(regex);
+  if (match && match[1]) return match[1];
+  return undefined;
 }
 
 interface Props {
@@ -45,15 +42,13 @@ interface Props {
 }
 
 const TrainingViewer = ({ plan, resumen, pdfButtonRef }: Props) => {
-  const [html2pdf, setHtml2pdf] = useState<(() => unknown) | null>(null); // Uso unknown en vez de any para cumplir ESLint
-  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+  const [html2pdf, setHtml2pdf] = useState<(() => unknown) | null>(null);
   const [isPdfLoading, setIsPdfLoading] = useState<boolean>(false);
 
   useEffect(() => {
     let mounted = true;
-
     const loadHtml2pdf = async () => {
-      if (typeof window === 'undefined') return; // Solo en cliente
+      if (typeof window === 'undefined') return;
       try {
         const moduleHtml2Pdf = await import('html2pdf.js');
         if (mounted) {
@@ -63,52 +58,23 @@ const TrainingViewer = ({ plan, resumen, pdfButtonRef }: Props) => {
         console.error('Error al cargar html2pdf:', error);
       }
     };
-
     loadHtml2pdf();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  const handleImageError = useCallback((ejercicioId: string) => {
-    setImageErrors(prev => {
-      if (prev[ejercicioId]) return prev; // Evitar actualizaciones innecesarias
-      return { ...prev, [ejercicioId]: true };
-    });
-  }, []);
-
-  const getPlaceholderImage = useCallback(() => {
-    return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2YwZjBmMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JbWFnZW4gbm8gZGlzcG9uaWJsZTwvdGV4dD48L3N2Zz4=';
+    return () => { mounted = false; };
   }, []);
 
   const handleDownloadPDF = useCallback(async () => {
     if (!html2pdf) return;
-
     const element = document.getElementById('training-plan');
     if (!element) return;
-
     try {
       setIsPdfLoading(true);
       const opt = {
         margin: [10, 10, 10, 10],
         filename: 'plan-entrenamiento.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-          scale: 2,
-          useCORS: true,
-          logging: false,
-          letterRendering: true,
-          allowTaint: true
-        },
-        jsPDF: { 
-          unit: 'mm', 
-          format: 'a4', 
-          orientation: 'portrait',
-          compress: true
-        }
+        html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true, allowTaint: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
       };
-
       const pdf = html2pdf();
       if (typeof pdf === 'object' && pdf !== null && 'set' in pdf && typeof pdf.set === 'function') {
         await pdf.set(opt).from(element).save();
@@ -122,40 +88,6 @@ const TrainingViewer = ({ plan, resumen, pdfButtonRef }: Props) => {
       setIsPdfLoading(false);
     }
   }, [html2pdf]);
-
-  const renderEjercicio = useCallback((ejercicio: Ejercicio, index: number) => {
-    const ejercicioId = `${ejercicio.nombre}-${index}`;
-    const hasError = imageErrors[ejercicioId];
-    let imageSrc = getPlaceholderImage();
-    if (hasError) imageSrc = getPlaceholderImage();
-
-    return (
-      <div key={index} className={styles['ejercicio-card']}>
-        <div className={styles['ejercicio-header']}>
-          <h5>{ejercicio.nombre}</h5>
-        </div>
-        <div className={styles['ejercicio-imagen']}>
-          <Image 
-            src={obtenerImagenEjercicio(ejercicio.nombre) || '/ejercicios/clean.png'}
-            alt={ejercicio.nombre}
-            layout="responsive"
-            width={500}
-            height={500}
-            loading="lazy"
-            onError={() => handleImageError(ejercicio.id)}
-          />
-        </div>
-        <div className={styles['ejercicio-detalles']}>
-          <span>Series: {ejercicio.series}</span>
-          <span>Repeticiones: {ejercicio.repeticiones}</span>
-          <span>Descanso: {ejercicio.descanso}</span>
-        </div>
-        {!obtenerImagenEjercicio(ejercicio.nombre) && (
-          <div style={{color: 'red', fontSize: '0.9em'}}>Sin imagen para este ejercicio</div>
-        )}
-      </div>
-    );
-  }, [imageErrors, handleImageError]);
 
   // Explicación del tipo de entrenamiento
   const explicacionEntrenamiento = (
@@ -200,24 +132,36 @@ const TrainingViewer = ({ plan, resumen, pdfButtonRef }: Props) => {
                     <h5>{ejercicio.nombre}</h5>
                   </div>
                   <div className={styles['ejercicio-imagen']}>
-                    <Image 
-                      src={obtenerImagenEjercicio(ejercicio.nombre) || '/ejercicios/clean.png'}
-                      alt={ejercicio.nombre}
-                      layout="responsive"
-                      width={500}
-                      height={500}
-                      loading="lazy"
-                      onError={() => handleImageError(ejercicio.id)}
-                    />
+                    <div style={{color:'red',fontWeight:'bold'}}>Render OK</div>
+                    {(() => {
+                      const videoUrl = obtenerVideoEjercicio(ejercicio.nombre);
+                      const videoId = extraerIdYoutube(videoUrl);
+                      console.log('DEBUG VIDEO', { nombre: ejercicio.nombre, videoUrl, videoId });
+                      if (videoId) {
+                        return (
+                          <div style={{position:'relative',paddingBottom:'56.25%',height:0,overflow:'hidden',borderRadius:12,boxShadow:'0 2px 12px #0001',marginBottom:8}}>
+                            <iframe
+                              src={`https://www.youtube.com/embed/${videoId}`}
+                              title={ejercicio.nombre}
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              style={{position:'absolute',top:0,left:0,width:'100%',height:'100%'}}
+                            />
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <div style={{textAlign:'center',color:'#888',fontSize:'1rem',padding:'1.5rem 0'}}>Sin video disponible</div>
+                        );
+                      }
+                    })()}
                   </div>
                   <div className={styles['ejercicio-detalles']}>
                     <span>Series: {ejercicio.series}</span>
                     <span>Repeticiones: {ejercicio.repeticiones}</span>
                     <span>Descanso: {ejercicio.descanso}</span>
                   </div>
-                  {!obtenerImagenEjercicio(ejercicio.nombre) && (
-                    <div style={{color: 'red', fontSize: '0.9em'}}>Sin imagen para este ejercicio</div>
-                  )}
                 </div>
               ))}
             </div>

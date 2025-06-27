@@ -313,7 +313,7 @@ export default function InputFormEntrenamiento({ onSubmit, onBack }: { onSubmit:
   };
 
   return (
-    <form onSubmit={e => { e.preventDefault(); onSubmit({ ...form, entrenamiento: { ...form.entrenamiento! } }); }} className={styles['form-wrapper']}>
+    <form className="formContainer" onSubmit={e => { e.preventDefault(); onSubmit({ ...form, entrenamiento: { ...form.entrenamiento! } }); }} className={styles['form-wrapper']}>
       <div className={styles['wizard-progress']}>
         Paso {paso + 1} de {pasosEntrenamiento.length} (Entrenamiento)
       </div>

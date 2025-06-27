@@ -799,7 +799,7 @@ const handleEntrenamientoObjetivosChange = (e: React.ChangeEvent<HTMLInputElemen
     <div>
       {renderSelectorServicios()}
       {servicioSeleccionado && (
-        <form onSubmit={handleSubmit} className={styles['form-wrapper']}>
+        <form className="formContainer" onSubmit={handleSubmit} autoComplete="off">
           <div className={styles['wizard-progress']}>
             Paso {paso + 1} de {pasosWizard.length}
           </div>

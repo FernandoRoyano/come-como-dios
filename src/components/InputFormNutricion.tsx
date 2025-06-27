@@ -121,7 +121,7 @@ export default function InputFormNutricion({ onSubmit, onBack }: { onSubmit: (da
   };
 
   return (
-    <form onSubmit={e => { e.preventDefault(); onSubmit(form); }} className={styles['form-wrapper']}>
+    <form className="formContainer" onSubmit={e => { e.preventDefault(); onSubmit(form); }} autoComplete="off">
       <div className={styles['wizard-progress']}>
         Paso {paso + 1} de {pasosNutricion.length} (Nutrición)
       </div>
