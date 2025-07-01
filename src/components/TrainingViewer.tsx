@@ -145,18 +145,18 @@ const TrainingViewer = ({ plan, resumen, pdfButtonRef }: Props) => {
                       <h5>{ejercicio.nombre}</h5>
                     </div>
                     <div className={styles['ejercicio-imagen']}>
-                      <div style={{ color: 'red', fontWeight: 'bold' }}>Render OK</div>
                       {videoId ? (
-                        <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 12, boxShadow: '0 2px 12px #0001', marginBottom: 8 }}>
-                          <iframe
-                            src={`https://www.youtube.com/embed/${videoId}`}
-                            title={ejercicio.nombre}
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                          />
-                        </div>
+                       <div style={{ aspectRatio: '16/9', borderRadius: 12, overflow: 'hidden', boxShadow: '0 2px 12px #0001', marginBottom: 8 }}>
+  <iframe
+    src={`https://www.youtube.com/embed/${videoId}`}
+    title={ejercicio.nombre}
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+    style={{ width: '100%', height: '100%', border: 'none' }}
+  />
+</div>
+
                       ) : (
                         <div style={{ textAlign: 'center', color: '#888', fontSize: '1rem', padding: '1.5rem 0' }}>Sin video disponible</div>
                       )}
