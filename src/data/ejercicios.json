@@ -1,93 +1,121 @@
 [
   {
-    "nombre": "Peso muerto sumo",
-    "descripcion": "Variante de peso muerto con piernas separadas y agarre estrecho.",
-    "video": "R_zKVMj8BBQ"
+    "nombre": "Sentadilla",
+    "descripcion": "",
+    "video": "BjixzWEw4EY",
+    "patron": "pierna",
+    "modalidad": "barra"
   },
   {
-    "nombre": "Flexión con rodillas apoyadas",
-    "descripcion": "Flexión de brazos apoyando las rodillas para facilitar el movimiento.",
-    "video": "wCh875grFbU"
+    "nombre": "Dominadas",
+    "descripcion": "",
+    "video": "637SzIkGrIg",
+    "patron": "traccion",
+    "modalidad": "peso corporal"
   },
   {
-    "nombre": "Hip thrust en banco",
-    "descripcion": "Elevación de cadera apoyando la espalda en un banco.",
-    "video": "gGsGaDG5htM"
+    "nombre": "Fondos en paralelas",
+    "descripcion": "",
+    "video": "CjGPpeM_Kog",
+    "patron": "empuje",
+    "modalidad": "peso corporal"
   },
   {
-    "nombre": "Hip thrust en suelo",
-    "descripcion": "Elevación de cadera desde el suelo, sin banco.",
-    "video": "C_SnTT1C8cI"
+    "nombre": "Elevaciones laterales",
+    "descripcion": "",
+    "video": "hgLpdwMtEEs",
+    "patron": "empuje",
+    "modalidad": "pesas"
   },
   {
-    "nombre": "Peso muerto con barra hexagonal",
-    "descripcion": "Peso muerto usando barra hexagonal (trap bar).",
-    "video": "s4pt5zpUbSs"
+    "nombre": "Curl de bíceps con barra",
+    "descripcion": "",
+    "video": "a9hli15uWiA",
+    "patron": "traccion",
+    "modalidad": "barra"
   },
   {
-    "nombre": "Press de banca con barra",
-    "descripcion": "Press de banca clásico usando barra.\n1- Túmbate recto. Hombros y glúteos están sobre el banco. \n2- Coloca el peso justo encima de tu pecho sujetándolo con una anchura de manos un poco mayor que tus hombros.\n3- Baja el peso lentamente flexionando tus codos hasta el pecho. \n4- Empuja hacia arriba para volver hacia la posición incial hasta que tus brazos vuelvan a estar rectos. \n5- Baja la barra para volver a la posición inical con brazos estirados. \n6- Espalda recta en todo momento.",
-    "video": "o_BFLCmzrE0"
+    "nombre": "Aperturas con mancuernas",
+    "descripcion": "",
+    "video": "xyHdY99F640",
+    "patron": "empuje",
+    "modalidad": "mancuernas"
   },
   {
-    "nombre": "Activacion de pecho con goma",
-    "descripcion": "Activación de pecho con goma elastica para calentar los músculos pectorales.",
-    "video": "dQw4w9WgXcQ"
+    "nombre": "Remo con barra",
+    "descripcion": "",
+    "video": "P_kNA_HElgA",
+    "patron": "traccion",
+    "modalidad": "barra"
   },
   {
-    "nombre": "Adductor en máquina",
-    "descripcion": "Ejercicio para trabajar los aductores en máquina.",
-    "video": "dQw4w9WgXcQ"
+    "nombre": "Flexiones diamante",
+    "descripcion": "",
+    "video": "PJmOZaGnScA",
+    "patron": "empuje",
+    "modalidad": "peso corporal"
   },
   {
-    "nombre": "Elevación de talones en máquina",
-    "descripcion": "Elevación de talones para trabajar los gemelos en máquina.",
-    "video": "dQw4w9WgXcQ"
+    "nombre": "Curl de bíceps con barra Z",
+    "descripcion": "",
+    "video": "no-dXip-rJM",
+    "patron": "traccion",
+    "modalidad": "barra"
   },
   {
-    "nombre": "Curl de cuádriceps",
-    "descripcion": "Ejercicio para trabajar los cuádriceps en máquina.",
-    "video": "dQw4w9WgXcQ"
+    "nombre": "Estiramiento de cuádriceps",
+    "descripcion": "",
+    "video": "jRmmKyfnLzo",
+    "patron": "movilidad",
+    "modalidad": "estiramiento"
   },
   {
-    "nombre": "Curl de femoral en máquina",
-    "descripcion": "Ejercicio para trabajar los isquiotibiales en máquina.",
-    "video": "dQw4w9WgXcQ"
+    "nombre": "Estiramiento de tríceps",
+    "descripcion": "",
+    "video": "uat-1v1WbsE",
+    "patron": "movilidad",
+    "modalidad": "estiramiento"
   },
   {
-    "nombre": "Peso muerto con barra hexagonal (Trap Bar Deadlift)",
-    "descripcion": "Peso muerto usando barra hexagonal (trap bar). Variante conocida como Trap Bar Deadlift.",
-    "video": "s4pt5zpUbSs"
+    "nombre": "Estiramiento de espalda",
+    "descripcion": "",
+    "video": "XcJ1zVXfTfQ",
+    "patron": "movilidad",
+    "modalidad": "estiramiento"
   },
   {
-    "nombre": "Peso muerto sumo (Sumo Deadlift)",
-    "descripcion": "Variante de peso muerto con piernas separadas y agarre estrecho, conocida como Sumo Deadlift.",
-    "video": "dQw4w9WgXcQ"
+    "nombre": "Estiramiento de hombros",
+    "descripcion": "",
+    "video": "DxK-XWpBxKM",
+    "patron": "movilidad",
+    "modalidad": "estiramiento"
   },
   {
-    "nombre": "Curl de bíceps de pie con barra recta",
-    "descripcion": "Ejercicio clásico de bíceps realizado de pie con barra recta.",
-    "video": "dQw4w9WgXcQ"
+    "nombre": "Press de banca",
+    "descripcion": "",
+    "video": "SCVCLChPQFY",
+    "patron": "empuje",
+    "modalidad": "barra"
   },
   {
-    "nombre": "Flexión (Push-up)",
-    "descripcion": "Ejercicio básico de empuje para pectoral, tríceps y deltoides, realizado en el suelo.",
-    "video": "dQw4w9WgXcQ"
+    "nombre": "Peso muerto",
+    "descripcion": "",
+    "video": "ytGaGIn3SjE",
+    "patron": "pierna",
+    "modalidad": "barra"
   },
   {
-    "nombre": "Press militar con barra (Military Press)",
-    "descripcion": "Ejercicio de empuje para hombros y tríceps realizado de pie con barra.",
-    "video": "dQw4w9WgXcQ"
+    "nombre": "Press militar",
+    "descripcion": "",
+    "video": "qEwKCR5JCog",
+    "patron": "empuje",
+    "modalidad": "barra"
   },
   {
-    "nombre": "Press militar (con mancuerna)",
-    "descripcion": "Ejercicio de empuje para hombros realizado de pie con mancuernas.",
-    "video": "dQw4w9WgXcQ"
-  },
-  {
-    "nombre": "Plancha con toques",
-    "descripcion": "Plancha tocando hombros alternos.",
-    "video": "YrwqkAWLnWI"
+    "nombre": "Pull-Ups",
+    "descripcion": "",
+    "video": "eGo4IYlbE5g",
+    "patron": "traccion",
+    "modalidad": "peso corporal"
   }
 ]
-

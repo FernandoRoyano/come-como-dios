@@ -1,38 +1,47 @@
 import styles from './TrainingViewer.module.css';
-import { PlanEntrenamiento, Ejercicio } from '@/types/plan';
+import { PlanEntrenamiento } from '@/types/plan';
 import { useEffect, useState, useCallback } from 'react';
 import ejerciciosData from '@/data/ejercicios.json';
-import { obtenerNombreEjercicioAlias } from '@/lib/ejerciciosAlias';
+import stringSimilarity from 'string-similarity';
 
 function normalizarNombre(nombre: string) {
   return nombre
     .toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quita tildes
-    .replace(/[^a-z0-9 ]/g, '') // solo letras, numeros y espacios
-    .replace(/\s+/g, ' ') // espacios múltiples a uno
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9 ]/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
 function obtenerVideoEjercicio(nombre: string): string | undefined {
-  const nombreAlias = obtenerNombreEjercicioAlias(nombre);
-  const nombreNormalizado = normalizarNombre(nombreAlias);
-  // Buscar por coincidencia normalizada, no exacta
-  const ejercicio = (ejerciciosData as Array<{nombre: string, video?: string}>).find(e =>
-    normalizarNombre(e.nombre) === nombreNormalizado
-  );
-  return ejercicio?.video;
+  const ejercicios = ejerciciosData as Array<{ nombre: string; video?: string }>;
+  const nombreNormalizado = normalizarNombre(nombre);
+  const nombresEjercicios = ejercicios.map(e => normalizarNombre(e.nombre));
+  const mejorCoincidencia = stringSimilarity.findBestMatch(nombreNormalizado, nombresEjercicios).bestMatch;
+
+  if (mejorCoincidencia.rating >= 0.5) {
+    const index = nombresEjercicios.indexOf(mejorCoincidencia.target);
+    const ejercicioOriginal = ejercicios[index];
+    console.log('✅ Mejor coincidencia por similitud:', ejercicioOriginal.nombre, '→', ejercicioOriginal.video);
+    return ejercicioOriginal.video;
+  }
+
+  const fallback = ejercicios.find(e => normalizarNombre(e.nombre).includes(nombreNormalizado));
+  if (fallback) {
+    console.log('⚠️ Coincidencia débil, usando fallback:', fallback.nombre, '→', fallback.video);
+    return fallback.video;
+  }
+
+  console.warn('❌ Sin coincidencia para:', nombre);
+  return undefined;
 }
 
-// Extrae el ID de YouTube de cualquier formato de URL o acepta el ID directamente
 function extraerIdYoutube(urlOrId?: string): string | undefined {
   if (!urlOrId) return undefined;
-  // Si es solo el ID
   if (/^[\w-]{11}$/.test(urlOrId)) return urlOrId;
-  // Soporta formatos: https://www.youtube.com/watch?v=ID, https://youtu.be/ID, https://www.youtube.com/embed/ID, etc.
   const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/;
   const match = urlOrId.match(regex);
-  if (match && match[1]) return match[1];
-  return undefined;
+  return match?.[1];
 }
 
 interface Props {
@@ -89,7 +98,6 @@ const TrainingViewer = ({ plan, resumen, pdfButtonRef }: Props) => {
     }
   }, [html2pdf]);
 
-  // Explicación del tipo de entrenamiento
   const explicacionEntrenamiento = (
     <div className={styles['explicacion-entrenamiento']}>
       <h3>¿Por qué este tipo de entrenamiento?</h3>
@@ -126,44 +134,41 @@ const TrainingViewer = ({ plan, resumen, pdfButtonRef }: Props) => {
             <p>Intensidad: {detalles.intensidad}</p>
             <p>Calorías: {detalles.calorias}</p>
             <div className={styles['ejercicios-grid']}>
-              {detalles.ejercicios.map((ejercicio, index) => (
-                <div key={index} className={styles['ejercicio-card']}>
-                  <div className={styles['ejercicio-header']}>
-                    <h5>{ejercicio.nombre}</h5>
+              {detalles.ejercicios.map((ejercicio, index) => {
+                const videoUrl = obtenerVideoEjercicio(ejercicio.nombre);
+                const videoId = extraerIdYoutube(videoUrl);
+                console.log('DEBUG VIDEO', { nombre: ejercicio.nombre, videoUrl, videoId });
+
+                return (
+                  <div key={index} className={styles['ejercicio-card']}>
+                    <div className={styles['ejercicio-header']}>
+                      <h5>{ejercicio.nombre}</h5>
+                    </div>
+                    <div className={styles['ejercicio-imagen']}>
+                      <div style={{ color: 'red', fontWeight: 'bold' }}>Render OK</div>
+                      {videoId ? (
+                        <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 12, boxShadow: '0 2px 12px #0001', marginBottom: 8 }}>
+                          <iframe
+                            src={`https://www.youtube.com/embed/${videoId}`}
+                            title={ejercicio.nombre}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                          />
+                        </div>
+                      ) : (
+                        <div style={{ textAlign: 'center', color: '#888', fontSize: '1rem', padding: '1.5rem 0' }}>Sin video disponible</div>
+                      )}
+                    </div>
+                    <div className={styles['ejercicio-detalles']}>
+                      <span>Series: {ejercicio.series}</span>
+                      <span>Repeticiones: {ejercicio.repeticiones}</span>
+                      <span>Descanso: {ejercicio.descanso}</span>
+                    </div>
                   </div>
-                  <div className={styles['ejercicio-imagen']}>
-                    <div style={{color:'red',fontWeight:'bold'}}>Render OK</div>
-                    {(() => {
-                      const videoUrl = obtenerVideoEjercicio(ejercicio.nombre);
-                      const videoId = extraerIdYoutube(videoUrl);
-                      console.log('DEBUG VIDEO', { nombre: ejercicio.nombre, videoUrl, videoId });
-                      if (videoId) {
-                        return (
-                          <div style={{position:'relative',paddingBottom:'56.25%',height:0,overflow:'hidden',borderRadius:12,boxShadow:'0 2px 12px #0001',marginBottom:8}}>
-                            <iframe
-                              src={`https://www.youtube.com/embed/${videoId}`}
-                              title={ejercicio.nombre}
-                              frameBorder="0"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                              style={{position:'absolute',top:0,left:0,width:'100%',height:'100%'}}
-                            />
-                          </div>
-                        );
-                      } else {
-                        return (
-                          <div style={{textAlign:'center',color:'#888',fontSize:'1rem',padding:'1.5rem 0'}}>Sin video disponible</div>
-                        );
-                      }
-                    })()}
-                  </div>
-                  <div className={styles['ejercicio-detalles']}>
-                    <span>Series: {ejercicio.series}</span>
-                    <span>Repeticiones: {ejercicio.repeticiones}</span>
-                    <span>Descanso: {ejercicio.descanso}</span>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         ))
