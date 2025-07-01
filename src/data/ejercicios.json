@@ -1,121 +1,2060 @@
 [
   {
+    "nombre": "Press horizontal unilateral",
+    "descripcion": "",
+    "video": "2PM8PJvbURc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo desde Plancha",
+    "descripcion": "",
+    "video": "n9CppgeQswk",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Cargada más Remo",
+    "descripcion": "",
+    "video": "Fh6shoIAIrU",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento cadena posterior cruzada",
+    "descripcion": "",
+    "video": "D29-JTKfkAg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento del sóleo",
+    "descripcion": "",
+    "video": "HcWpSDuk6ok",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento de isquios con goma",
+    "descripcion": "",
+    "video": "91_R-jHyQjg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento de aductores",
+    "descripcion": "",
+    "video": "dw97r1QIo94",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento dinámico tren inferior",
+    "descripcion": "",
+    "video": "f5EPNF3zzpY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Skateboard en el gimnasio",
+    "descripcion": "",
+    "video": "ibxaCjEN0E0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo TRX",
+    "descripcion": "",
+    "video": "05lXkvxC1AI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Paseo del Granjero Unilateral",
+    "descripcion": "",
+    "video": "1B_jHM9n81U",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Inclinado con mancuernas",
+    "descripcion": "",
+    "video": "FXmkOb8zKz0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Paseo del Granjero con mancuernas",
+    "descripcion": "",
+    "video": "nSD8nbOYc0k",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Antilateral con polea",
+    "descripcion": "",
+    "video": "mUHDtlmdxXU",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Extensiones de Tríceps con cuerda",
+    "descripcion": "",
+    "video": "Tey5xjNoqPY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Carrera",
+    "descripcion": "",
+    "video": "ukklfOXSXIg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Carrera con inclinación",
+    "descripcion": "",
+    "video": "2Od76913Qq0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Elíptica",
+    "descripcion": "",
+    "video": "trurw6wvKWg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Rotaciones en punta",
+    "descripcion": "",
+    "video": "s6OzGEV0iWQ",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Press vertical en punta",
+    "descripcion": "",
+    "video": "_CzWDRrJJgc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press unilateral en punta",
+    "descripcion": "",
+    "video": "J8mPej5rReI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press vertical en punta",
+    "descripcion": "",
+    "video": "rcVpYtNKeZI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo en punta",
+    "descripcion": "",
+    "video": "GeT2QOyYEjA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla frontal en punta",
+    "descripcion": "",
+    "video": "e1sQFkTOjeY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha Dinámica con rueda",
+    "descripcion": "",
+    "video": "9xDvQ8fLLvg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Retracción Escapular con goma",
+    "descripcion": "",
+    "video": "SNHZJw03vAw",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha en fitball",
+    "descripcion": "",
+    "video": "pivzrDQZel0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha Dinámica en fitball",
+    "descripcion": "",
+    "video": "2B8fi2VJKXc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Extensión de Cadera con Fitball",
+    "descripcion": "",
+    "video": "qEadOuFEYEA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Curl Femoral con fitball",
+    "descripcion": "",
+    "video": "_KEgFffqZB4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha + Flexión  de Cadera con fitball",
+    "descripcion": "",
+    "video": "cHeDw3HeNRg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Pallof",
+    "descripcion": "",
+    "video": "eOorwF7I9Yg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Flexión de Cadera en paralelas",
+    "descripcion": "",
+    "video": "YtFljLutKAI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Flexión Unilt. De Cadera en paralelas",
+    "descripcion": "",
+    "video": "90wGxluVaio",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Fondos en Paralelas",
+    "descripcion": "",
+    "video": "FN_ezI3x6Lc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Golpeó al Suelo con balón de rodillas",
+    "descripcion": "",
+    "video": "_LRgQUSmVAs",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Lanzm. Posterior de balón",
+    "descripcion": "",
+    "video": "V1RkBvScLIc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Golpeó al suelo con balón",
+    "descripcion": "",
+    "video": "VCUXQOPaQ-I",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Rotación + Bote explosivo.",
+    "descripcion": "",
+    "video": "kg8ztpcj8es",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Giro dinamico + Lanz. Horizontal de balón",
+    "descripcion": "",
+    "video": "W-mI6tMS7Bk",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Bote + Lanzm. Horizontal de balón con rotación",
+    "descripcion": "",
+    "video": "3QOZrqToMjE",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lanzm. Horizontal de balón + Rotación",
+    "descripcion": "",
+    "video": "2t8TEx6vd1Q",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Lanzm. Vertical de balón",
+    "descripcion": "",
+    "video": "ArXgHcOHps4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Golpes Simultáneos + Sentadilla",
+    "descripcion": "",
+    "video": "VwW3k0naIjc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Cortasetos con cuerda",
+    "descripcion": "",
+    "video": "k2c6HDnMGYE",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Golpes Simultáneos con cuerda",
+    "descripcion": "",
+    "video": "qdwfumULTcY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Golpes Amplios Alternos con cuerda",
+    "descripcion": "",
+    "video": "eai--yFFoIU",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Golpes Cortos Alternos con cuerda",
+    "descripcion": "",
+    "video": "JXqKHtXvNTo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Anterior con goma",
+    "descripcion": "",
+    "video": "xJifXzx221E",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Abducción de Cadera con goma",
+    "descripcion": "",
+    "video": "RjjaOSw1qOE",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Pasos altérales con goma",
+    "descripcion": "",
+    "video": "nWMFhZOyXjk",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Aperturas Posteriores en Kinesis",
+    "descripcion": "",
+    "video": "6XQuqazDyT4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Gemelo Unilateral en Kinesis",
+    "descripcion": "",
+    "video": "nsVHUwTe634",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge en Kinesis",
+    "descripcion": "",
+    "video": "EWXFsSHT4Oc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Subida Frontal al Step en Kinesis",
+    "descripcion": "",
+    "video": "-KsMo7kFx-s",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Jalón unilateral",
+    "descripcion": "",
+    "video": "BjAPAm5p3vA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Posterior en Kinesis",
+    "descripcion": "",
+    "video": "cZPnDraMGeM",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla en Kinesis",
+    "descripcion": "",
+    "video": "wk866StHub8",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Alto en Kinesis",
+    "descripcion": "",
+    "video": "FGpETpxMSpA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Horizontal en Kinesis",
+    "descripcion": "",
+    "video": "YC0rmNY-bNY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Vertical en Kinesis",
+    "descripcion": "",
+    "video": "uKVJUdCr7VY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Horizontal en kinesis",
+    "descripcion": "",
+    "video": "uhiOS-go7FQ",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Aperturas Anteriores en máquina contractora",
+    "descripcion": "",
+    "video": "9tnjnzOPhmY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Adducción de Cadera en máquina",
+    "descripcion": "",
+    "video": "StYthkfmplg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Abducción de Cadera en máquina",
+    "descripcion": "",
+    "video": "kxRUahG6O_o",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Gemelo en Prensa",
+    "descripcion": "",
+    "video": "R4AR5n-orpI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Prensa Horizontal",
+    "descripcion": "",
+    "video": "pyv4Dj3XL5M",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Curl de Cuádriceps",
+    "descripcion": "",
+    "video": "JWXqMRQMaW4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Curl Femoral Tumbado",
+    "descripcion": "",
+    "video": "SEvUzP42H0Y",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla Frontal con mancuernas",
+    "descripcion": "",
+    "video": "f9J4Ha2k1X4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Dinámico con mancuerna",
+    "descripcion": "",
+    "video": "1u5xh5Qd3ho",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Posterior + Curl de Biceps con mancuerna",
+    "descripcion": "",
+    "video": "yQ8jdoptefo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Curl de Biceps",
+    "descripcion": "",
+    "video": "V28y-eLqaaM",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Arrancada Unilateral con mancuerna",
+    "descripcion": "",
+    "video": "ciHUmslUIB4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Elevación Frontal con mancuernas",
+    "descripcion": "",
+    "video": "5Pbny3rfWOQ",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Posterior + Press Vertical con mancuerna",
+    "descripcion": "",
+    "video": "GoTRRiQjb4o",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge + Press Vertical con mancuernas",
+    "descripcion": "",
+    "video": "aDU8Eg0hrao",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Curl de Biceps + Press Vertical con mancuerna",
+    "descripcion": "",
+    "video": "G_jjEjzliTU",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Press Vertical Unilateral con mancuerna",
+    "descripcion": "",
+    "video": "pCkI3dwnzYA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Press Vertical con mancuerna",
+    "descripcion": "",
+    "video": "GwImVz9naxs",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Elevaciones Frontales con mancuerna",
+    "descripcion": "",
+    "video": "MoF9eNqMVic",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Aperturas Laterales con mancuernas",
+    "descripcion": "",
+    "video": "d6-1XPkYH8g",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Curo de Biceps",
+    "descripcion": "",
+    "video": "QYkBJIZUOUA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Vertical Unilateral de pie con mancuernas",
+    "descripcion": "",
+    "video": "U2cNicrr2L8",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Vertical de Pie con mancuernas",
+    "descripcion": "",
+    "video": "Vpj_2delRVM",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Vertical Unilateral con mancuernas",
+    "descripcion": "",
+    "video": "L5JwXVZwGYI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Vertical con mancuernas",
+    "descripcion": "",
+    "video": "Eh9ijqq_VZc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Frances con mancuernas",
+    "descripcion": "",
+    "video": "nQMimDY1n_I",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Horizontal Unilateral con mancuerna",
+    "descripcion": "",
+    "video": "v_bCPpwFgBs",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Horizontal con mancuernas",
+    "descripcion": "",
+    "video": "STsIGD_VHgg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Unilateral con apoyo",
+    "descripcion": "",
+    "video": "uS57kDim_m4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Unilateral con mancuerna",
+    "descripcion": "",
+    "video": "GC6ayYV1Od0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo con mancuerna",
+    "descripcion": "",
+    "video": "GJftTOLM4vk",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Peso Muerto Unilateral con mancuerna",
+    "descripcion": "",
+    "video": "f9BV14SYwbg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Peso Muerto con mancuerna",
+    "descripcion": "",
+    "video": "0udUy9SSHsk",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Posterior Frontal con mancuerna",
+    "descripcion": "",
+    "video": "OoH5ubKgX6E",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge posterior con mancuerna",
+    "descripcion": "",
+    "video": "uzAbyA6K8v4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Anterior con mancuerna",
+    "descripcion": "",
+    "video": "Y0oCcQjjETo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge con mancuernas",
+    "descripcion": "",
+    "video": "222erK-yUng",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla Globet",
+    "descripcion": "",
+    "video": "o-iXClucWZQ",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Swing de kettlebell",
+    "descripcion": "",
+    "video": "vqdQ9snz60Y",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Swing Americano de kettlebell",
+    "descripcion": "",
+    "video": "hx2LLi7KAEE",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Levantamiento Turco con kettlebell",
+    "descripcion": "",
+    "video": "FAQspIvVkeA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Swing Unilateral de kettlebell",
+    "descripcion": "",
+    "video": "os-wt6DQ-Kc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Swing Lateral de Kettlebell",
+    "descripcion": "",
+    "video": "funY6bjXdNU",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Cargada de kettlebell",
+    "descripcion": "",
+    "video": "t3ZOgoc0EF0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Cargada Unilateral de kettlebell",
+    "descripcion": "",
+    "video": "x0mah5Xw7XI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Horizontal Trx",
+    "descripcion": "",
+    "video": "vmsazpgGqwg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha + Pull Over",
+    "descripcion": "",
+    "video": "SfurJgIi18g",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla Búlgara Trx",
+    "descripcion": "",
+    "video": "E-_kyhWAN38",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Unilateral",
+    "descripcion": "",
+    "video": "n-algGjqKls",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Curl Femoral Trx",
+    "descripcion": "",
+    "video": "Ng1DnT6DnLg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha Trx",
+    "descripcion": "",
+    "video": "Ho8llOX0w0I",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Uve Invertida",
+    "descripcion": "",
+    "video": "Ahf3uBjRkok",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha + Flexión Oblicua de Cadera",
+    "descripcion": "",
+    "video": "yJ20mEjEc14",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Curl de Bíceps Trx",
+    "descripcion": "",
+    "video": "iapyYLjUTgY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Curl de Tríceps Trx",
+    "descripcion": "",
+    "video": "l1fyV6nJeyY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo + Plancha Trx",
+    "descripcion": "",
+    "video": "DYT3Cs_HUXE",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge + Pull Over Trx",
+    "descripcion": "",
+    "video": "BUjgXFGzxnU",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Skipping Trx",
+    "descripcion": "",
+    "video": "Bc1bKv_QhEM",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge + Aperturas Anteriores",
+    "descripcion": "",
+    "video": "K6HyIwC7pog",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Superman Trx",
+    "descripcion": "",
+    "video": "0xfMmU68KNY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo + Curl de tríceps Trx",
+    "descripcion": "",
+    "video": "HAVwu9d7MYg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Remo Trx",
+    "descripcion": "",
+    "video": "RleoWNC3m8M",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Rotaciones Verticales",
+    "descripcion": "",
+    "video": "nnEtoBKAB84",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Rotación Horizontal",
+    "descripcion": "",
+    "video": "iTAWre60Cv8",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Pallof + Lunge Isom.",
+    "descripcion": "",
+    "video": "JW6lxHkYvHo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Unilateral  + Rotación",
+    "descripcion": "",
+    "video": "tEtlTXTDXA8",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Horizontal Unilateral + Rotación",
+    "descripcion": "",
+    "video": "V-o_pVMX720",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Rotaciones Horizontales + Flexión de Columna",
+    "descripcion": "",
+    "video": "PVZRVR2mRY4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Rotaciones Horizontales",
+    "descripcion": "",
+    "video": "dEAkqPv50Co",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge + Press Horizontal Unilateral",
+    "descripcion": "",
+    "video": "-ZX2IFVPCFs",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge + Press Horizontal",
+    "descripcion": "",
+    "video": "5tX60RVznE4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge",
+    "descripcion": "",
+    "video": "5SPQgF_A89k",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "El Gato. Mov de Columna Vertebral",
+    "descripcion": "",
+    "video": "p5eUBHZE9Ug",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Supermán",
+    "descripcion": "",
+    "video": "0ldgOAn8dmo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Rotación de Columna con Flexión de Cadera",
+    "descripcion": "",
+    "video": "m-h8MHmZ77s",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Mov Cintura Escapular y Cadera",
+    "descripcion": "",
+    "video": "hxcs3z-cfNo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Cobra + Estiramiento Posterior.",
+    "descripcion": "",
+    "video": "ksCIBc2_mco",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento Psoas + Rotación de Columna",
+    "descripcion": "",
+    "video": "W4qA5g2FbOo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento antero-posterior",
+    "descripcion": "",
+    "video": "NlW0a0A96UE",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento del Cuádriceps",
+    "descripcion": "",
+    "video": "f7hsv_uVEg0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento del Dorsal + Mov. De Cadera",
+    "descripcion": "",
+    "video": "I-4JqOfES4c",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento Isquios",
+    "descripcion": "",
+    "video": "k6e0TFGpUwc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento Glúteo y Piramidal",
+    "descripcion": "",
+    "video": "9obtzIdUauQ",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento Isquios + Rotación",
+    "descripcion": "",
+    "video": "vGvP8Fk9DI0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento Glúteo y Piramidal",
+    "descripcion": "",
+    "video": "SooDIAZP2AY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Cobra",
+    "descripcion": "",
+    "video": "c3UadmZrjpI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Movilidad Escapular + Rotación de Columna",
+    "descripcion": "",
+    "video": "62YlypXyRYI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Movilidad Cintura Escapular",
+    "descripcion": "",
+    "video": "LweWSui4_fQ",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Flexión Profunda + Rotación de Columna",
+    "descripcion": "",
+    "video": "lUzqXttGlAY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Movilidad De la Cadera",
+    "descripcion": "",
+    "video": "Go2t5o9WYL0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento Cadena Posterior",
+    "descripcion": "",
+    "video": "ZzQ7NOA4ko0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento Adductor e isquio",
+    "descripcion": "",
+    "video": "5RjqeRIbtBo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento Posterior + Rotación de Columna",
+    "descripcion": "",
+    "video": "P5-GWmK6jC0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Flexión Dorsal",
+    "descripcion": "",
+    "video": "vhwdKUsS2Zo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Uve Invertida",
+    "descripcion": "",
+    "video": "Ovrlx6ZeRT0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Estiramiento del Piramidal",
+    "descripcion": "",
+    "video": "KNCzrTuqCHU",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Movilidad Cintura Escapular",
+    "descripcion": "",
+    "video": "9xlLtXpYXEg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Flexión de cadera + Mov Escapular",
+    "descripcion": "",
+    "video": "HxOF4lFXqy0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Lateral + Remo Unilateral",
+    "descripcion": "",
+    "video": "W3ickugRNMI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Posterior + Remo Unilateral",
+    "descripcion": "",
+    "video": "XQOqrd3n0X8",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge + Remo Unilateral",
+    "descripcion": "",
+    "video": "cFAQkRKRqD4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Remo Unilateral",
+    "descripcion": "",
+    "video": "RLU43xVyb58",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla + Remo",
+    "descripcion": "",
+    "video": "bLQG5shF-2A",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Peso Muerto Unilateral",
+    "descripcion": "",
+    "video": "br2oZmzLIRk",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Hip Trust",
+    "descripcion": "",
+    "video": "trXvEHS2aS0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Lateral",
+    "descripcion": "",
+    "video": "Mu-z4TM0KgY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge",
+    "descripcion": "",
+    "video": "00gmmFgumY0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Aperturas Anteriores",
+    "descripcion": "",
+    "video": "o9y1ZK6cTUo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Banca",
+    "descripcion": "",
+    "video": "v2skYTMaRpM",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Banca Cerrado",
+    "descripcion": "",
+    "video": "IG9UARBsGkA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Dinámico Posterior",
+    "descripcion": "",
+    "video": "OpvrfEfAHLo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Dinámico Anterior",
+    "descripcion": "",
+    "video": "M_STSirFM2o",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla Trasera",
+    "descripcion": "",
+    "video": "ud0TZ93c6gA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla Profunda",
+    "descripcion": "",
+    "video": "QE0OOrtQVG4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Vertical",
+    "descripcion": "",
+    "video": "eChPVVhRhKI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Peso Muerto Rumano",
+    "descripcion": "",
+    "video": "v-L9Gwl21eA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Peso Muerto Convencional",
+    "descripcion": "",
+    "video": "OHwfSBvfS3c",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Puente",
+    "descripcion": "",
+    "video": "o3tABxQInzQ",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Hip Trust",
+    "descripcion": "",
+    "video": "S6FRZDb6LRo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Francés",
+    "descripcion": "",
+    "video": "sZH-2RbSFXo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
     "nombre": "Sentadilla",
     "descripcion": "",
-    "video": "BjixzWEw4EY",
-    "patron": "pierna",
-    "modalidad": "barra"
+    "video": "9CLXfCQqO_A",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Dominadas",
+    "nombre": "Curl de Biceps",
     "descripcion": "",
-    "video": "637SzIkGrIg",
-    "patron": "traccion",
-    "modalidad": "peso corporal"
+    "video": "BRdewaFaJ1Y",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Fondos en paralelas",
+    "nombre": "Peso Muerto",
     "descripcion": "",
-    "video": "CjGPpeM_Kog",
-    "patron": "empuje",
-    "modalidad": "peso corporal"
+    "video": "bS1qQtJX5pY",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Elevaciones laterales",
+    "nombre": "Remo al Mentón",
     "descripcion": "",
-    "video": "hgLpdwMtEEs",
-    "patron": "empuje",
-    "modalidad": "pesas"
+    "video": "NqMONsVXXEg",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Curl de bíceps con barra",
+    "nombre": "Remo Supino",
     "descripcion": "",
-    "video": "a9hli15uWiA",
-    "patron": "traccion",
-    "modalidad": "barra"
+    "video": "c8Q4D9osvAk",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Aperturas con mancuernas",
+    "nombre": "Remo Prono",
     "descripcion": "",
-    "video": "xyHdY99F640",
-    "patron": "empuje",
-    "modalidad": "mancuernas"
+    "video": "G8rPyi-6Sbg",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Remo con barra",
+    "nombre": "Peso Muerto Unilateral",
     "descripcion": "",
-    "video": "P_kNA_HElgA",
-    "patron": "traccion",
-    "modalidad": "barra"
+    "video": "dHcgrK-ydbE",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Flexiones diamante",
+    "nombre": "Peso Muerto Sumó",
     "descripcion": "",
-    "video": "PJmOZaGnScA",
-    "patron": "empuje",
-    "modalidad": "peso corporal"
+    "video": "VKoJyhNqJ1c",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Curl de bíceps con barra Z",
+    "nombre": "Peso Muerto",
     "descripcion": "",
-    "video": "no-dXip-rJM",
-    "patron": "traccion",
-    "modalidad": "barra"
+    "video": "Vo-VssC0z_0",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Estiramiento de cuádriceps",
+    "nombre": "Lunge Unilateral",
     "descripcion": "",
-    "video": "jRmmKyfnLzo",
-    "patron": "movilidad",
-    "modalidad": "estiramiento"
+    "video": "kmjbQJSQERk",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Estiramiento de tríceps",
+    "nombre": "Sentadilla Un Agarre",
     "descripcion": "",
-    "video": "uat-1v1WbsE",
-    "patron": "movilidad",
-    "modalidad": "estiramiento"
+    "video": "jLGaottKyQw",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Estiramiento de espalda",
+    "nombre": "Flexión de Hombros Frontal",
     "descripcion": "",
-    "video": "XcJ1zVXfTfQ",
-    "patron": "movilidad",
-    "modalidad": "estiramiento"
+    "video": "-Gwe4wjgOfg",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Estiramiento de hombros",
+    "nombre": "Sentadilla",
     "descripcion": "",
-    "video": "DxK-XWpBxKM",
-    "patron": "movilidad",
-    "modalidad": "estiramiento"
+    "video": "5WdzVcRoSpw",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Press de banca",
+    "nombre": "Abd de Hombro Unilateral",
     "descripcion": "",
-    "video": "SCVCLChPQFY",
-    "patron": "empuje",
-    "modalidad": "barra"
+    "video": "fZqDh-n5alc",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Peso muerto",
+    "nombre": "Abducción de Hombro",
     "descripcion": "",
-    "video": "ytGaGIn3SjE",
-    "patron": "pierna",
-    "modalidad": "barra"
+    "video": "lFzV-PkwPhc",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Press militar",
+    "nombre": "Press Vertical Unilateral",
     "descripcion": "",
-    "video": "qEwKCR5JCog",
-    "patron": "empuje",
-    "modalidad": "barra"
+    "video": "ERF138ELDVQ",
+    "patron": "",
+    "modalidad": ""
   },
   {
-    "nombre": "Pull-Ups",
+    "nombre": "Press Vertical",
     "descripcion": "",
-    "video": "eGo4IYlbE5g",
-    "patron": "traccion",
-    "modalidad": "peso corporal"
+    "video": "NMe7Hdypq_w",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Horizontal Unilateral",
+    "descripcion": "",
+    "video": "x5JzWL-LgzQ",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Inclinado",
+    "descripcion": "",
+    "video": "3_AgvmRkqC4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Declinado",
+    "descripcion": "",
+    "video": "bHsemmwYSPw",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press Horizontal",
+    "descripcion": "",
+    "video": "4EfvtrI4twQ",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Jalon Cerrado Neutro",
+    "descripcion": "",
+    "video": "LQOyJOrghgM",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Jalon Abierto Prono",
+    "descripcion": "",
+    "video": "ItP5WKVB1d4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Gironda",
+    "descripcion": "",
+    "video": "S6IWfJBAks8",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Cerrado Alto",
+    "descripcion": "",
+    "video": "UDRpH9I1dk0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo cerrado horizontal",
+    "descripcion": "",
+    "video": "omJH5Ohe5-U",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Abierto Horizontal",
+    "descripcion": "",
+    "video": "0yA2Lg67bqg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Jalón de Pie",
+    "descripcion": "",
+    "video": "CLWHq5yGlHQ",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Alto Abierto",
+    "descripcion": "",
+    "video": "CArgX53PuT8",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Pull-Over Unilateral",
+    "descripcion": "",
+    "video": "yYhGKJzAFFE",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Face Pull",
+    "descripcion": "",
+    "video": "BTsmjFPfsck",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Pull-Over",
+    "descripcion": "",
+    "video": "5P9JOWO-hak",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Aperturas Posteriores",
+    "descripcion": "",
+    "video": "tqpBgiaP3xQ",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Bajo Abierto",
+    "descripcion": "",
+    "video": "sRKxotWY5Xw",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Unilateral",
+    "descripcion": "",
+    "video": "2IJEZ6uhT9s",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Unilateral Alto",
+    "descripcion": "",
+    "video": "a4jqjkP2NyM",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Remo Unilateral Bajo",
+    "descripcion": "",
+    "video": "g2_chJIXI4c",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Dominada Neutra",
+    "descripcion": "",
+    "video": "BR1Q5_ju3Lc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Dominada Supino",
+    "descripcion": "",
+    "video": "EPfAyemSw9Q",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Dominada Prono",
+    "descripcion": "",
+    "video": "0Erzpm0beGY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Subida al Cajón Dinámica",
+    "descripcion": "",
+    "video": "P91zQ5aozBc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Subida al Cajón Lateral",
+    "descripcion": "",
+    "video": "jbt1HpqzZRg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Subida al Cajon Frontal",
+    "descripcion": "",
+    "video": "DXanWesS8OU",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Fondos con Despegue",
+    "descripcion": "",
+    "video": "6eVzXx41EDI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Fondos Spiderman",
+    "descripcion": "",
+    "video": "MzZtMp12hwI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Fondos Superman",
+    "descripcion": "",
+    "video": "vAukxkivJQo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Fondos Cerrados",
+    "descripcion": "",
+    "video": "zqXtkVGsQVs",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Fondos",
+    "descripcion": "",
+    "video": "LDpNvyS5rjs",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Fondos con Rodillas",
+    "descripcion": "",
+    "video": "nzIBb7_4muQ",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha Lateral + Abd de Cadera",
+    "descripcion": "",
+    "video": "Ga-TC7ZsKDI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha Lateral",
+    "descripcion": "",
+    "video": "NIjaxpk_1Es",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha + Rotación",
+    "descripcion": "",
+    "video": "zg_zNMCZ7W4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "El Escalador",
+    "descripcion": "",
+    "video": "GLEuVyv6tUA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha Un Apoyo Superior",
+    "descripcion": "",
+    "video": "NqcC7gn8Bdo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha + Ext. De Cadera",
+    "descripcion": "",
+    "video": "iyzngG1GFtA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha + Abd de Cadera",
+    "descripcion": "",
+    "video": "X9X6Ou5sbSM",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "El Oso Un Apoyo",
+    "descripcion": "",
+    "video": "xnJ6K9x8mME",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "El Oso",
+    "descripcion": "",
+    "video": "s171JjztLOs",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha Apoyo Cruzado",
+    "descripcion": "",
+    "video": "DOGLLdsdHqI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha Un Apoyo Superior",
+    "descripcion": "",
+    "video": "sEBfOL8uNzk",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha Un Apoyo Inferior",
+    "descripcion": "",
+    "video": "7kLH88w-wGM",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha",
+    "descripcion": "",
+    "video": "GA8UaSNT0UY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Puente Elevado",
+    "descripcion": "",
+    "video": "Cy1TaycyHF0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Puente Rana",
+    "descripcion": "",
+    "video": "SfyYt64Ri0Q",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Puente Unilateral",
+    "descripcion": "",
+    "video": "33ZE8wyNBBI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Puente",
+    "descripcion": "",
+    "video": "MHe3ucr2tiw",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Peso Muerto Unilateral",
+    "descripcion": "",
+    "video": "IirzxP1BUng",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla Sumo",
+    "descripcion": "",
+    "video": "-2-jCCJkvbo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Desplazamiento lateral",
+    "descripcion": "",
+    "video": "rCP5lSx7ptc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Contra Skipping",
+    "descripcion": "",
+    "video": "mQMiU-Svk6I",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Skipping",
+    "descripcion": "",
+    "video": "7cAcnuv3sT0",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Jumping Jacks",
+    "descripcion": "",
+    "video": "vPeH_GjcA-Q",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge + Salto",
+    "descripcion": "",
+    "video": "cWzF_arOfCU",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Salto Vertical",
+    "descripcion": "",
+    "video": "Jzm_G_6i77w",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla Búlgara",
+    "descripcion": "",
+    "video": "6RWq2wCgfD8",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Dinámico Lateral",
+    "descripcion": "",
+    "video": "QxYLOKJxgeE",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge Dinámico Posterior",
+    "descripcion": "",
+    "video": "ZLbO4H-R60M",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge dinamico anterior",
+    "descripcion": "",
+    "video": "9tGlS6L22iE",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Lunge",
+    "descripcion": "",
+    "video": "ghIkrF_ZO6E",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla libre",
+    "descripcion": "",
+    "video": "PKHbHagnQec",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "De pike a plancha frontal",
+    "descripcion": "",
+    "video": "g6z7WlIfdlw",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Pike push-up con cajón",
+    "descripcion": "",
+    "video": "YU0RgwNsln4",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "De pike a plancha frontal con cajón",
+    "descripcion": "",
+    "video": "1rqJEyL7WV8",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Vertical isométrica",
+    "descripcion": "",
+    "video": "gunM7zdtv4Y",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Push-up vertical adaptado",
+    "descripcion": "",
+    "video": "6jPSaYDwJBY",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Push-up vertical espalda contra la pared",
+    "descripcion": "",
+    "video": "ZhPReal1wvc",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Push-up vertical espalda contra la pared adaptado",
+    "descripcion": "",
+    "video": "lUAL6BJy82c",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "De plegado a trípode",
+    "descripcion": "",
+    "video": "eJN7cUysx28",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "De trípode a vertical (extensión de cadera invertida con piernas estiradas)",
+    "descripcion": "",
+    "video": "su1_ydpBlYg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "De plegado a vertical adaptada",
+    "descripcion": "",
+    "video": "_qy7XEsHido",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "De trípode a vertical adaptada con piernas estiradas",
+    "descripcion": "",
+    "video": "uSeuyt8s_-c",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "De plancha a plancha frontal plegado (con banda)",
+    "descripcion": "",
+    "video": "yNu41lUajlM",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Posición plegado suspendida con banda",
+    "descripcion": "",
+    "video": "WhTEdyiCXbg",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "De plancha frontal a pseudo push up",
+    "descripcion": "",
+    "video": "sqHPRtyRgMU",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Retracción y protación escapular en plancha frontal",
+    "descripcion": "",
+    "video": "EMXzcBTI8FU",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Push up asistida con banda",
+    "descripcion": "",
+    "video": "YepW9_VfuaA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Dragon flag a una pierna",
+    "descripcion": "",
+    "video": "4l4hPAkUl1U",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Elevación frontal con mancuernas",
+    "descripcion": "",
+    "video": "stQMGfJ-G9s",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Russian twist",
+    "descripcion": "",
+    "video": "0S1wfEAMGes",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Sentadilla con kettlebell",
+    "descripcion": "",
+    "video": "EwKpUZUlhOk",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Extension de cadera polea",
+    "descripcion": "",
+    "video": "pSj3QQmHxt8",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Patada de glúteo",
+    "descripcion": "",
+    "video": "o7iWG0Zc8kM",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha isométrica en fitball",
+    "descripcion": "",
+    "video": "44xefPbZ9Wo",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha pull through",
+    "descripcion": "",
+    "video": "08RS2zVQOF8",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Press francés",
+    "descripcion": "",
+    "video": "2QhRtkLZrvU",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Push press",
+    "descripcion": "",
+    "video": "cPYLcTzJRjw",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha sierra",
+    "descripcion": "",
+    "video": "gydQKt9ldQE",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Antirotación con kettlebell",
+    "descripcion": "",
+    "video": "vcB-qHnmqBs",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Flexión de cadera con discos",
+    "descripcion": "",
+    "video": "s2lArmlm7bI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha sierra con TRX",
+    "descripcion": "",
+    "video": "gLVwNaEVwvA",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Plancha sierra en fitball",
+    "descripcion": "",
+    "video": "uPG9zw26lvI",
+    "patron": "",
+    "modalidad": ""
+  },
+  {
+    "nombre": "Flexión de cadera en fonderas",
+    "descripcion": "",
+    "video": "eVxd4uNI3AE",
+    "patron": "",
+    "modalidad": ""
   }
 ]

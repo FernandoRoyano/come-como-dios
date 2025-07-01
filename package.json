@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "@next/eslint-plugin-next": "^15.3.2",
-    "axios": "^1.9.0",
     "html2pdf.js": "^0.10.3",
     "mongodb": "^6.17.0",
     "next": "15.3.2",
     "next-auth": "^4.24.11",
+    "node-fetch": "^2.7.0",
     "openai": "^4.103.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -26,15 +26,17 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
-    "@types/node": "^20",
+    "@types/node": "^20.19.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/string-similarity": "^4.0.2",
     "@types/uuid": "^10.0.0",
+    "axios": "^1.10.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
     "node-mocks-http": "^1.17.2",
     "ts-jest": "^29.3.4",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
